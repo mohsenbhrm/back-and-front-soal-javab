@@ -45,7 +45,6 @@
                 </tag-input-dropdown>
               </tag-input>
               <span *ngIf="editQuestionForm.get('tags').hasError('required') &&
-              editQuestionForm.get('tags').value === null &&
               editQuestionForm.get('tags').touched" class="text-danger">
                 <small>تگ الزامی است</small>
               </span>

@@ -37,7 +37,6 @@
               <!-- <label for="exampleFormControlTextarea1">Example textarea</label> -->
               <textarea formControlName="questionBody" class="form-control" placeholder="متن سوال" rows="6"></textarea>
               <span *ngIf="registerQuestion.get('questionBody').hasError('required') &&
-              registerQuestion.get('questionBody').value === null &&
               registerQuestion.get('questionBody').touched" class="text-danger">
                 <small>متن سوال الزامی است</small>
               </span>
@@ -57,7 +56,6 @@
                 </tag-input-dropdown>
               </tag-input>
               <span *ngIf="registerQuestion.get('tags').hasError('required') &&
-              registerQuestion.get('tags').value === null &&
               registerQuestion.get('tags').touched" class="text-danger">
                 <small>تگ الزامی است</small>
               </span>

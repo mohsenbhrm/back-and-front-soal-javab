@@ -65,6 +65,10 @@ export class EditQuestionModalComponent implements OnInit {
   }
 
   sendEditedQuestionBack() {
+    if (this.editQuestionForm.invalid) {
+      this.editQuestionForm.markAllAsTouched();
+      return;
+    }
     const editedFormData = this.editQuestionForm.getRawValue();
     const mappedTags = [];
     editedFormData.tags.forEach(element => {

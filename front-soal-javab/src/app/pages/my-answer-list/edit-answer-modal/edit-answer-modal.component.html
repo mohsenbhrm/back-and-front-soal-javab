@@ -10,6 +10,8 @@
     <div class="form-group">
         <input class="form-control" [(ngModel)]="matn">
       </div>
+
+      <small *ngIf="!matn" class="text-danger">متن نمی تواند خالی باشد</small>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-success" (click)="sendEditedAnswerBack()">ویرایش</button>

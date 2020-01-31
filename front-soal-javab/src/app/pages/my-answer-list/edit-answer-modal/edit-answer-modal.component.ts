@@ -17,6 +17,9 @@ export class EditAnswerModalComponent implements OnInit {
   }
 
   sendEditedAnswerBack() {
+    if (!this.matn) {
+      return;
+    }
     this.activeModal.close(this.matn);
   }
 }
