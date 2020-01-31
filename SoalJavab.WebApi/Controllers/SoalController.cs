@@ -45,7 +45,7 @@ namespace SoalJavab.WebApi.Controllers
             if (q != null)
                 return Ok(q);
             else
-                return Ok("چیزی نیست");
+                return NoContent();
         }
         [HttpPost]
         [IgnoreAntiforgeryToken]
@@ -54,18 +54,18 @@ namespace SoalJavab.WebApi.Controllers
             if (!ModelState.IsValid
             || (soal == null))
             {
-                return BadRequest("**  شیطون بلا  **");
+                return BadRequest();
             }
             var q = _soal.postforSoal(soal, _users.GetCurrentUserId());
             if (q)
             {
-                return Ok(new JsonResult("*** علی باوامی ***"));
+                return Ok();
             }
             return StatusCode(500);
         }
         [HttpPut("{id}")]
         [IgnoreAntiforgeryToken]
-        public IActionResult Put(long id, [FromBody] SoalEditVM soal)
+        public IActionResult Put(long id, [FromBody] SoalVM soal)
         {
             var us = _users.GetCurrentUserId();
             if (
@@ -76,7 +76,7 @@ namespace SoalJavab.WebApi.Controllers
             {
                 return BadRequest();
             }
-            var q = _soal.EditforSoal(soal);
+            var q = _soal.newEditforSoal(soal);
 
             if (q)
             {

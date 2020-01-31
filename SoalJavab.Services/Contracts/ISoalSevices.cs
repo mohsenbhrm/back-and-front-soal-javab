@@ -18,6 +18,7 @@ namespace SoalJavab.Services.Contracts
         IList<SoalOfUserVM> getSoalbyIdUserDeleted(long IdIdUser);
         SoalVM getSoalForEdit(long id);
         bool isSoalOfuser(long IdSoal, long IdUser);
+        bool newEditforSoal(SoalVM soalVM);
         bool postforSoal(SoalVM soalVM, long UserId);
     }
 }

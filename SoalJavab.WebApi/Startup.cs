@@ -51,7 +51,7 @@ namespace SoalJavab.WebApi
                     }, "RefreshTokenExpirationMinutes is less than AccessTokenExpirationMinutes. Obtaining new tokens using the refresh token should happen only if the access token has expired.");
             services.AddOptions<ApiSettings>()
                     .Bind(Configuration.GetSection("ApiSettings"));
-
+            #region  injections 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAntiForgeryCookieService, AntiForgeryCookieService>();
             services.AddScoped<IUnitOfWork, ApplicationDbContext>();
@@ -76,7 +76,7 @@ namespace SoalJavab.WebApi
             //services.AddScoped<IJavabRepository,JavabRepository>();
             services.AddScoped<ISoalToUserServices, SoalToUserservices>();
             services.AddScoped<IZirReshtehServices, ZirReshtehServices>();
-
+            #endregion
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -174,25 +174,12 @@ namespace SoalJavab.WebApi
 
             #region MY CODE 
 
-            //services.AddEntityFrameworkSqlServer()
-            //    .AddDbContext<ApplicationDbContext>(
-            //    options =>
-            //    {
-            //        options.UseSqlServer(Configuration["ConnectionStrings:ApplicationDbContextConnection"]);
 
-            //    });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-
-
-
-
-
-           
-            // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSpaStaticFiles(configuration =>
            {
                configuration.RootPath = "front-soal-javab/dist";
@@ -208,7 +195,6 @@ namespace SoalJavab.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            #region new code 
             if (!env.IsDevelopment())
             {
                 app.UseHsts();
@@ -272,7 +258,7 @@ namespace SoalJavab.WebApi
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath =env.ContentRootPath + "\\..\\"+ "front-soal-javab";
+                spa.Options.SourcePath = env.ContentRootPath + "\\..\\" + "front-soal-javab";
 
                 if (env.IsDevelopment())
                 {
@@ -280,43 +266,15 @@ namespace SoalJavab.WebApi
                 }
             });
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            // catch-all handler for HTML5 client routes - serve index.html
-            // app.Run();
-            // (async context =>
-            // {
-            //     context.Response.ContentType = "text/html";
-            //     await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
-            // });
-            #endregion
-
-
-
-
-
-            #region my code 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseAuthentication();
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseDatabaseErrorPage();
-            //}
-            //else
-            //{
-            //    The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    app.UseHsts();
-            //}
-
-            // app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
 
             app.UseMvc();
-
-            #endregion
 
         }
     }

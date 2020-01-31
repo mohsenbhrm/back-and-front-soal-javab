@@ -112,4 +112,10 @@ namespace SoalJavab.Services.Models
         public long RoleId { get; set; }
 
     }
+    public class changepassword
+    {
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
+
 }
