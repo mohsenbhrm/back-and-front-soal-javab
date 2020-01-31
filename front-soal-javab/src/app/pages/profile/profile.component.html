@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-12">
             <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs">
                 <li [ngbNavItem]="1">
                     <a ngbNavLink>تغییر رمز</a>
@@ -19,8 +19,7 @@
                                 <small
                                     *ngIf="changePasswordForm.get('newPassword').hasError('required') && changePasswordForm.get('newPassword').touched"
                                     class="text-danger">رمز جدید الزامی است</small>
-                                    <small
-                                    *ngIf="changePasswordForm.get('newPassword').hasError('minlength')"
+                                <small *ngIf="changePasswordForm.get('newPassword').hasError('minlength')"
                                     class="text-danger">رمز جدید حداقل باید 6 حرف باشد</small>
                             </div>
                             <div class="form-group">
@@ -29,38 +28,62 @@
                                 <small
                                     *ngIf="changePasswordForm.get('repeatPassword').hasError('required') && changePasswordForm.get('repeatPassword').touched"
                                     class="text-danger">تکرار رمز الزامی است</small>
-                                <small
-                                    *ngIf="changePasswordForm.get('repeatPassword').hasError('mustMatch')"
+                                <small *ngIf="changePasswordForm.get('repeatPassword').hasError('mustMatch')"
                                     class="text-danger">رمز عبور تطابق ندارد</small>
                             </div>
                             <button class="btn btn-primary" (click)="changePassword()">تغییر</button>
                         </form>
-                        
+
                     </ng-template>
                 </li>
                 <li [ngbNavItem]="2">
                     <a ngbNavLink>انتخاب تخصص</a>
                     <ng-template ngbNavContent>
-                        <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan
-                            four loko
-                            farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk
-                            aliquip jean
-                            shorts
-                            ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus
-                            mollit.
-                            Keytar
-                            helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio
-                            cillum wes
-                            anderson
-                            8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art
-                            party
-                            scenester
-                            stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                        <form [formGroup]="selectFieldForm">
+                            <div class="form-group">
+                                <!-- <label for="exampleFormControlSelect1">رشته</label> -->
+                                <select formControlName="field" class="form-control">
+                                    <option [ngValue]="null" disabled>رشته</option>
+                                    <option *ngFor="let item of fields" [ngValue]="item.id">{{item.onvan}}</option>
+                                </select>
+                                <span *ngIf="selectFieldForm.get('field').hasError('required') &&
+                             selectFieldForm.get('field').value === null &&
+                             selectFieldForm.get('field').touched" class="text-danger">
+                                    <small>رشته الزامی است</small>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <!-- <label for="exampleFormControlSelect1">زیر رشته</label> -->
+                                <select formControlName="subField" class="form-control">
+                                    <option [ngValue]="null" disabled>زیر رشته</option>
+                                    <option *ngFor="let item of activeSubFields" [ngValue]="item.id">{{item.onvan}}
+                                    </option>
+                                </select>
+                                <span *ngIf="selectFieldForm.get('subField').hasError('required') &&
+                            selectFieldForm.get('subField').value === null &&
+                            selectFieldForm.get('subField').touched" class="text-danger">
+                                    <small>زیر رشته الزامی است</small>
+                                </span>
+                            </div>
+                            <button class="btn btn-primary" [disabled]="selectFieldForm.invalid" (click)="addSubField()">افزودن</button>
+                        </form>
+                        <div class="mt-5 mb-2">
+                            <div *ngFor="let item of subfieldArray" class="alert bg-light alert-dismissible fade show"
+                                role="alert">
+                                <span>{{item.onvan}}</span>
+                                <button type="button" class="close" (click)="deleteSubFields(item)" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <button class="btn btn-success" (click)="saveFields()">ذخیره</button>
+                        </div>
                     </ng-template>
                 </li>
             </ul>
 
             <div [ngbNavOutlet]="nav" class="mt-2"></div>
         </div>
+
     </div>
 </div>

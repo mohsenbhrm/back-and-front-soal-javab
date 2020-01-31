@@ -48,7 +48,7 @@ export class MyQuestionListComponent implements OnInit {
 
     modalRef.result.then(
       resolve => {
-        console.log(resolve);
+        // console.log(resolve);
         const body = {
           ZirReshtehId: item.idZirreshteh,
           Id: item.soalId,

@@ -15,4 +15,12 @@ export class ProfileService {
   changePassword(body): Observable<any> {
     return this.http.post(`${environment.apiConfig.baseUrl}/api/Account/ChangePassword`, body);
   }
+
+  getEssentialForQuestion(): Observable<any> {
+    return this.http.get(`${environment.apiConfig.baseUrl}/api/Essentials`);
+  }
+
+  setSubfields(ids: any): Observable<any> {
+    return this.http.post(`${environment.apiConfig.baseUrl}/api/UserReshteh`, ids);
+  }
 }

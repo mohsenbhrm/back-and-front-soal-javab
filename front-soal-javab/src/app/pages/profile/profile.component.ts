@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProfileService } from './profile.service';
 import { ToastrService } from 'ngx-toastr';
+import { HeaderService } from '@app/layout/header/header.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,14 +12,32 @@ import { ToastrService } from 'ngx-toastr';
 export class ProfileComponent implements OnInit {
 
   changePasswordForm: FormGroup;
+  selectFieldForm: FormGroup;
+
+  fields: any[];
+  activeSubFields: any[];
+
+  subfieldArray: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
     this.initChangePassForm();
+    this.initSelectFieldFrom();
+    this.getEssentials();
+    this.getUserFields();
+
+    this.selectFieldForm.controls.field.valueChanges.subscribe(changes => {
+      const x = this.fields.find(el => el.id === changes);
+      if (x) {
+        this.activeSubFields = x.zirreshteh;
+      }
+    });
   }
 
   initChangePassForm() {
@@ -30,6 +49,13 @@ export class ProfileComponent implements OnInit {
       {
         validator: this.MustMatch('newPassword', 'repeatPassword')
       });
+  }
+
+  initSelectFieldFrom() {
+    this.selectFieldForm = this.fb.group({
+      field: [null, Validators.required],
+      subField: [null, Validators.required]
+    });
   }
 
   MustMatch(controlName: string, matchingControlName: string) {
@@ -60,7 +86,7 @@ export class ProfileComponent implements OnInit {
       CurrentPassword: tmp.currentPassword,
       NewPassword: tmp.newPassword
     };
-    console.log(body);
+    // console.log(body);
 
     this.profileService.changePassword(body).subscribe(
       res => {
@@ -71,5 +97,62 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+  getEssentials() {
+    this.profileService.getEssentialForQuestion().subscribe(fields => {
+      this.fields = fields;
+    });
+  }
+
+  getUserFields() {
+    this.headerService.userInfo.subscribe(userFields => {
+      this.subfieldArray = userFields.zirReshteh;
+    });
+  }
+
+  deleteSubFields(item) {
+    this.subfieldArray = this.subfieldArray.filter(el => el.id !== item.id);
+  }
+
+  addSubField() {
+    if (this.selectFieldForm.invalid) {
+      this.selectFieldForm.markAllAsTouched();
+      return;
+    }
+
+    const tmpfields = this.fields.find(el => el.id === this.selectFieldForm.controls.field.value);
+    if (tmpfields) {
+      const subtmp: any[] = tmpfields.zirreshteh;
+      const tmpSubFields = subtmp.find(el => el.id === this.selectFieldForm.controls.subField.value);
+      if (tmpSubFields) {
+        const findDup = this.subfieldArray.find(el => el.id === tmpSubFields.id);
+        if (!findDup) {
+          this.subfieldArray.push({
+            id: tmpSubFields.id,
+            onvan: tmpSubFields.onvan,
+            reshteh: tmpfields.onvan
+          });
+          this.selectFieldForm.reset();
+
+        } else {
+          this.toastrService.warning('زیر رشته تکراری است', 'زیررشته');
+        }
+      }
+    }
+  }
+
+  saveFields() {
+    const subFieldsArrayID = [];
+    this.subfieldArray.forEach(element => {
+      subFieldsArrayID.push(element.id);
+    });
+
+    this.profileService.setSubfields({ Name: 'UpdateTags', Id: subFieldsArrayID }).subscribe(res => {
+      this.headerService.getUserInfo().subscribe(userFields => {
+        this.subfieldArray = userFields.zirReshteh;
+      });
+    });
+  }
+
 
 }
