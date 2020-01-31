@@ -8,6 +8,7 @@ import { MyAnswerListComponent } from './my-answer-list/my-answer-list.component
 import { QuestionsFeedComponent } from './questions-feed/questions-feed.component';
 import { EditQuestionModalComponent } from './my-question-list/edit-question-modal/edit-question-modal.component';
 import { EditAnswerModalComponent } from './my-answer-list/edit-answer-modal/edit-answer-modal.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -19,7 +20,8 @@ import { EditAnswerModalComponent } from './my-answer-list/edit-answer-modal/edi
     MyAnswerListComponent,
     QuestionsFeedComponent,
     EditQuestionModalComponent,
-    EditAnswerModalComponent
+    EditAnswerModalComponent,
+    ProfileComponent
   ],
   imports: [
     SharedModule

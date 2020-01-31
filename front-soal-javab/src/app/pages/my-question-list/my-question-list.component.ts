@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MyQuestionListService } from './my-question-list.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditQuestionModalComponent } from './edit-question-modal/edit-question-modal.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-my-question-list',
@@ -46,7 +47,20 @@ export class MyQuestionListComponent implements OnInit {
     modalRef.componentInstance.item = item;
 
     modalRef.result.then(
-      resolve => { },
+      resolve => {
+        console.log(resolve);
+        const body = {
+          ZirReshtehId: item.idZirreshteh,
+          Id: item.soalId,
+          Tags: resolve.tags,
+          Matn: resolve.questionBody
+        };
+        this.myQListService.editQuestion(item.soalId, body).subscribe(res => {
+          this.myQListService.getMyQuestions().subscribe(res2 => {
+            this.questionList = res2;
+          });
+        });
+      },
       reject => { }
     );
   }

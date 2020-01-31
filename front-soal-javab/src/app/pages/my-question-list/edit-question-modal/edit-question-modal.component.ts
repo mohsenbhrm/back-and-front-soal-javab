@@ -30,16 +30,25 @@ export class EditQuestionModalComponent implements OnInit {
   }
 
   initForm() {
+
+    const oldTags: TagModel[] = [];
+    this.item.tags.forEach(element => {
+      oldTags.push({
+        value: element.id,
+        display: element.onvan
+      });
+    });
+
     this.editQuestionForm = this.fb.group({
-      questionBody: [null, Validators.required],
-      tags: [[], Validators.required]
+      questionBody: [this.item.matn, Validators.required],
+      tags: [oldTags, Validators.required]
     });
   }
 
   checkIfAvalable($event) {
     if (typeof ($event.value) === 'string') {
 
-      const url = `${environment.apiConfig.baseUrl}/api/Tags/${this.editQuestionForm.controls.subField.value}/${$event.display}/`;
+      const url = `${environment.apiConfig.baseUrl}/api/Tags/${this.item.idZirreshteh}/${$event.display}/`;
       return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
         const result = res.find(el => el.display === $event.display);
         if (result) {
@@ -51,18 +60,22 @@ export class EditQuestionModalComponent implements OnInit {
   }
 
   requestAutocompleteItems = (text: string): Observable<any> => {
-    // if (this.editQuestionForm.controls.subField.hasError('required')) {
-    //   this.editQuestionForm.controls.subField.markAsTouched();
-    //   this.editQuestionForm.controls.field.markAsTouched();
-    //   return (of([]).pipe(map(data => {
-    //     return data;
-    //   })));
-    // } else {
     const url = `${environment.apiConfig.baseUrl}/api/Tags/${this.item.idZirreshteh}/${text}`;
     return this.questionService.tryTagSearch(url);
-    // }
   }
 
-  editQuestion() { }
+  sendEditedQuestionBack() {
+    const editedFormData = this.editQuestionForm.getRawValue();
+    const mappedTags = [];
+    editedFormData.tags.forEach(element => {
+      mappedTags.push({
+        Id: (typeof element.value === 'string') ? 0 : element.value,
+        name: element.display
+      });
+    });
+
+    editedFormData.tags = mappedTags;
+    this.activeModal.close(editedFormData);
+  }
 
 }

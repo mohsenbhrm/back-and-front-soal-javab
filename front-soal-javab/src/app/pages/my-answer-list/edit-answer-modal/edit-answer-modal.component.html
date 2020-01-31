@@ -8,11 +8,11 @@
     <!-- <span>{{item | json}}</span> -->
 
     <div class="form-group">
-        <input class="form-control" value="{{item.matn}}">
+        <input class="form-control" [(ngModel)]="matn">
       </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="activeModal.close('Close click')">ویرایش</button>
+    <button type="button" class="btn btn-success" (click)="sendEditedAnswerBack()">ویرایش</button>
     <button type="button" NgbAutoFocus class="btn btn-danger" (click)="activeModal.dismiss()">لغو</button>
 
 </div>

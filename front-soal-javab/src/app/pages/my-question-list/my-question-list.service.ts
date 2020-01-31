@@ -21,5 +21,9 @@ export class MyQuestionListService {
   deleteQuestion(id): Observable<any> {
     return this.http.delete(`${environment.apiConfig.baseUrl}/api/Soal/${id}`);
   }
+
+  editQuestion(id, item): Observable<any> {
+    return this.http.put(`${environment.apiConfig.baseUrl}/api/Soal/${id}`, item);
+  }
 }
 
