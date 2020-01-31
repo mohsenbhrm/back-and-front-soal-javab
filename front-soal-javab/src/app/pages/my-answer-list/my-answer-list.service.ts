@@ -21,4 +21,8 @@ export class MyAnswerListService {
   deleteAnswer(id): Observable<any> {
     return this.http.delete(`${environment.apiConfig.baseUrl}/api/Javab/${id}`);
   }
+
+  editAnswer(id, body): Observable<any> {
+    return this.http.put(`${environment.apiConfig.baseUrl}/api/Javab/${id}`, body);
+  }
 }

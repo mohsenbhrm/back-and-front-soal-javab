@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbDropdownModule, NgbAccordionModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbAccordionModule, NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -18,6 +18,7 @@ import { TagInputModule } from 'ngx-chips';
     NgbDropdownModule,
     NgbModalModule,
     NgbAccordionModule,
+    NgbNavModule,
     TagInputModule,
     TranslateModule
   ],
@@ -28,6 +29,7 @@ import { TagInputModule } from 'ngx-chips';
     NgbDropdownModule,
     NgbModalModule,
     NgbAccordionModule,
+    NgbNavModule,
     TagInputModule,
     TranslateModule
   ]

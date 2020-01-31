@@ -9,9 +9,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class EditAnswerModalComponent implements OnInit {
 
   @Input() item;
+  matn: string;
   constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
+    this.matn = this.item.matn;
   }
 
+  sendEditedAnswerBack() {
+    this.activeModal.close(this.matn);
+  }
 }

@@ -9,6 +9,7 @@ import { MyQuestionListComponent } from './pages/my-question-list/my-question-li
 import { MyAnswerListComponent } from './pages/my-answer-list/my-answer-list.component';
 import { QuestionsFeedComponent } from './pages/questions-feed/questions-feed.component';
 import { SignUpComponent } from './login/sign-up/sign-up.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 
 const routes: Routes = [
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'question-feed',
         component: QuestionsFeedComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
       }
     ]
   },

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QuestionsFeedService } from './questions-feed.service';
 import { ToastrService } from 'ngx-toastr';
+import { interval, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-questions-feed',
@@ -8,13 +9,14 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./questions-feed.component.scss']
 })
 export class QuestionsFeedComponent implements OnInit, OnDestroy {
+  subscription: Subscription[] = [];
 
   questionList: any[];
   answer: string;
   hasZirreshteh = false;
   loadMoreLoading = false;
   answerLoading = false;
-  private timerHandleId;
+  newFeedTimer: Observable<any>;
   constructor(
     private questionFeedService: QuestionsFeedService,
     private toastrService: ToastrService
@@ -27,7 +29,8 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
         this.questionFeedService.getInitFeeds().subscribe(res => {
           this.questionList = res;
         });
-        this.timerHandleId = setInterval(() => {
+        this.newFeedTimer = interval(60000);
+        const timer = this.newFeedTimer.subscribe(ii => {
           this.questionFeedService.getNewFeeds().subscribe((newFeed: any[]) => {
             if (newFeed) {
               newFeed.forEach(el => {
@@ -36,11 +39,14 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
               this.questionList = [...this.questionList];
             }
           });
-        }, 60000);
+        });
+        this.subscription.push(timer);
       } else {
         this.hasZirreshteh = false;
       }
     });
+
+
   }
 
   loadMore() {
@@ -75,7 +81,9 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    clearInterval(this.timerHandleId);
+    this.subscription.forEach(el => {
+      el.unsubscribe();
+    });
   }
 
 }

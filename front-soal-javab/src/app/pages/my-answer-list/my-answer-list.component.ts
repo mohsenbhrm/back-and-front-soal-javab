@@ -46,7 +46,18 @@ export class MyAnswerListComponent implements OnInit {
     modalRef.componentInstance.item = item;
 
     modalRef.result.then(
-      resolve => { },
+      resolve => {
+        console.log(resolve);
+        const body = {
+          Id: item.id,
+          Matn: resolve
+        };
+        this.answerListService.editAnswer(item.id, body).subscribe(res => {
+          this.answerListService.getMyAnswersList().subscribe(res => {
+            this.answerList = res;
+          });
+        });
+      },
       reject => { }
     );
   }
