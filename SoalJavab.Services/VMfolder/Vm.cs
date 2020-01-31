@@ -117,5 +117,8 @@ namespace SoalJavab.Services.Models
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
     }
-
+    public class userreshtehVm {
+        public string Name {get;set;}
+        public long[] Id {get;set;}
+    }
 }

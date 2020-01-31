@@ -13,5 +13,6 @@ namespace SoalJavab.Services.Contracts
         IList<ZirReshtehVm> GetByUser(long id);
         bool ValidateZirreshteh(long[] id);
         bool ValidateZirreshteh(long id);
+        Task<bool> AddZirreshtehUserAsync(long[] id);
     }
 }

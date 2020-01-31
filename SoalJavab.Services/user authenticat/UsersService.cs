@@ -32,7 +32,6 @@ namespace SoalJavab.Services
 
     public class UsersService : IUsersService
     {
-        private readonly IZirReshtehServices _zirreshteh;
         private readonly IUnitOfWork _uow;
         private readonly DbSet<ApplicationUser> _users;
         private readonly ISecurityService _securityService;
@@ -41,10 +40,9 @@ namespace SoalJavab.Services
         public UsersService(
             IUnitOfWork uow,
             ISecurityService securityService,
-            IHttpContextAccessor contextAccessor,
-            IZirReshtehServices IZirReshtehServices)
+            IHttpContextAccessor contextAccessor
+            )
         {
-            _zirreshteh = IZirReshtehServices;
             _uow = uow;
             _uow.CheckArgumentIsNull(nameof(_uow));
 

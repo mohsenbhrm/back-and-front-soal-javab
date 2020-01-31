@@ -76,6 +76,10 @@ namespace SoalJavab.WebApi.Controllers
             {
                 return BadRequest();
             }
+            if(!soal.Tags.Any())
+            {
+                soal.Tags.Add(new JsonVm{ Id = 1});
+            }
             var q = _soal.newEditforSoal(soal);
 
             if (q)

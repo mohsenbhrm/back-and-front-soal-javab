@@ -7,21 +7,22 @@ using SoalJavab.DomainClasses;
 using SoalJavab.Services.Contracts;
 using SoalJavab.Services.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SoalJavab.Services.myservices
 {
 
     public class ZirReshtehServices : IZirReshtehServices
     {
-        private IReshteh _reshteh;
         private IUnitOfWork _db;
         private DbSet<ZirReshteh> _zirreshteh;
+        private IUsersService _user;
 
-        public ZirReshtehServices(IUnitOfWork unitOfWork, IReshteh reshteh)
+        public ZirReshtehServices(IUnitOfWork unitOfWork, IUsersService usersService)
         {
-            _reshteh = reshteh;
             _db = unitOfWork;
             _zirreshteh = _db.Set<ZirReshteh>();
+            _user = usersService;
         }
         public IList<ZirReshtehVm> GetByReshteh(long id)
         {
@@ -40,9 +41,9 @@ namespace SoalJavab.Services.myservices
         }
         public IList<ZirReshtehVm> GetByUser(long id)
         {
-            var q1 = _db.Set<ReshtehUser>().Where(x => x.User.Id == id && !x.IsDeleted).Select(i=>i.ZirReshtehId).ToList();
+            var q1 = _db.Set<ReshtehUser>().Where(x => x.User.Id == id && !x.IsDeleted).Select(i => i.ZirReshtehId).ToList();
 
-            var q = _zirreshteh.Where(x =>q1.Contains(x.Id) && !x.IsDeleted).Include(rs=>rs.Reshteh)
+            var q = _zirreshteh.Where(x => q1.Contains(x.Id) && !x.IsDeleted).Include(rs => rs.Reshteh)
             .ToList();
 
             if (q == null)
@@ -73,6 +74,35 @@ namespace SoalJavab.Services.myservices
             var q = _zirreshteh.Find(id);
             if (q == null) return false;
             return true;
+        }
+
+        public async Task<bool> AddZirreshtehUserAsync(long[] id)
+        {
+            var user = _user.GetCurrentUserId();
+            var ur = _db.Set<ReshtehUser>();
+            var s = ur.Where(d => d.ApplicationUserId == user);
+            ur.RemoveRange(s);
+            // if(s.Any())
+            // {
+            //     foreach(var f in s)
+            //     {
+            //         f.IsDeleted =true;
+            //     }
+            // }
+            List<ReshtehUser> newReshtehUsers = new List<ReshtehUser>();
+            foreach (var n in id)
+            {
+                newReshtehUsers.Add(new ReshtehUser
+                {
+                    ApplicationUserId = user,
+                    IsDeleted = false,
+                    ZirReshtehId = n
+                });
+            }
+            await ur.AddRangeAsync(newReshtehUsers);
+            var x = await _db.SaveAllChangesAsync();
+            if (x > 0) return true;
+            return false;
         }
     }
 }

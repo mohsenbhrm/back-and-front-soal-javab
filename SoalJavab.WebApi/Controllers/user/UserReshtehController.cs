@@ -9,6 +9,7 @@ using SoalJavab.DataLayer;
 using SoalJavab.DomainClasses;
 using SoalJavab.Services;
 using SoalJavab.Services.Contracts;
+using SoalJavab.Services.Models;
 
 namespace SoalJavab.WebApi.Controllers
 {
@@ -44,11 +45,15 @@ namespace SoalJavab.WebApi.Controllers
             return Ok();
         }
         // POST api/values
+        [IgnoreAntiforgeryToken]
         [HttpPost]
-        public IActionResult Post([FromBody] long[] Id)
+        public async Task<IActionResult> Post([FromBody] userreshtehVm reshte)
         {
-            if (!_zirReshteh.ValidateZirreshteh(Id)) return BadRequest();
-            return Ok();
+            var Id = reshte.Id;
+            if (!_zirReshteh.ValidateZirreshteh(Id)) return BadRequest(new JsonResult("مقادیر نامعتر هستند"));
+            var result =await _zirReshteh.AddZirreshtehUserAsync(Id);
+            if (result) return Ok();
+            return BadRequest(new JsonResult("در حین کار خطایی رخ داده است"));
         }
 
         // PUT api/values/5

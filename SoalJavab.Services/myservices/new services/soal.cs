@@ -47,7 +47,7 @@ namespace SoalJavab.Services.myservices
         }
 
 
-        private IEnumerable<TagVM> _InsertTags(SoalVM soalVM)
+        private (List<TagVM> newtags, List<TagVM> oldtags) _InsertTags(SoalVM soalVM)
         {
             var q = new List<TagVM>();
 
@@ -76,8 +76,8 @@ namespace SoalJavab.Services.myservices
                 );
             }
 
-            var s = q.Union(e);
-            return s;
+            //var s = q.Union(e);
+            return (q.ToList(), e.ToList());
         }
         public bool postforSoal(SoalVM soalVM, long UserId)
         {
@@ -110,8 +110,10 @@ namespace SoalJavab.Services.myservices
                 //     );
                 // }
 
-                // var s = q.Union(e);
-                var s = _InsertTags(soalVM);
+                var (nw, old) = _InsertTags(soalVM);
+                var s = old.Union(nw);
+                // // var s = q.Union(e);
+                // var s = _InsertTags(soalVM);
                 var w = s.Select(c => c.Id).ToArray();
 
                 // q.AddRange(soalVM.Tags.Where(x => x.Id == 0)
@@ -169,13 +171,20 @@ namespace SoalJavab.Services.myservices
             try
             {
                 var sl = _soalRepository.GetById(soalVM.Id);
-                
+
                 sl.Matn = soalVM.Matn;
                 if (soalVM.Tags != null)
                 {
-                    var s = _InsertTags(soalVM);
-                    var w = s.Select(x=>x.Id).ToArray();
-                    
+                    var (nw, old) = _InsertTags(soalVM);
+                    var d = old.Select(f=>f.Id);
+
+                    var delettags = db.Set<TagSoal>().Where(c => c.Soal == sl).ToList();
+                    // delettags.ForEach(v=> v.Isdeleted = true
+                    // );
+                    db.Set<TagSoal>().RemoveRange(delettags);
+                    db.SaveAllChanges();
+                    var s = old.Union(nw);
+                    var w = s.Select(x => x.Id).ToArray();
                     foreach (var n in w)
                     {
                         db.Addnew<TagSoal>(new TagSoal { Isdeleted = false, TagId = n, Soal = sl });
