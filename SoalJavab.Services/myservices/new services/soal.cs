@@ -45,38 +45,73 @@ namespace SoalJavab.Services.myservices
             }
             catch { return null; }
         }
+
+
+        private IEnumerable<TagVM> _InsertTags(SoalVM soalVM)
+        {
+            var q = new List<TagVM>();
+
+            var e = new List<TagVM>();
+
+            foreach (var n in soalVM.Tags.Where(x => x.Id == 0))
+            {
+                q.Add(new TagVM
+                {
+                    Onvan = n.name,
+                    Id = n.Id,
+                    ZirReshtehId = soalVM.ZirReshtehId
+                }
+                );
+            }
+            q = _tagRepository.CreatRange(q).ToList();
+
+            foreach (var n in soalVM.Tags.Where(x => x.Id != 0))
+            {
+                e.Add(new TagVM
+                {
+                    Onvan = n.name,
+                    Id = n.Id,
+                    ZirReshtehId = soalVM.ZirReshtehId
+                }
+                );
+            }
+
+            var s = q.Union(e);
+            return s;
+        }
         public bool postforSoal(SoalVM soalVM, long UserId)
         {
             try
             {
-                var q = new List<TagVM>();
+                // var q = new List<TagVM>();
 
-                var e = new List<TagVM>();
+                // var e = new List<TagVM>();
 
-                foreach (var n in soalVM.Tags.Where(x => x.Id == 0))
-                {
-                    q.Add(new TagVM
-                    {
-                        Onvan = n.name,
-                        Id = n.Id,
-                        ZirReshtehId = soalVM.ZirReshtehId
-                    }
-                    );
-                }
-                 q =  _tagRepository.CreatRange(q).ToList();
+                // foreach (var n in soalVM.Tags.Where(x => x.Id == 0))
+                // {
+                //     q.Add(new TagVM
+                //     {
+                //         Onvan = n.name,
+                //         Id = n.Id,
+                //         ZirReshtehId = soalVM.ZirReshtehId
+                //     }
+                //     );
+                // }
+                // q = _tagRepository.CreatRange(q).ToList();
 
-                foreach (var n in soalVM.Tags.Where(x => x.Id != 0))
-                {
-                    e.Add(new TagVM
-                    {
-                        Onvan = n.name,
-                        Id = n.Id,
-                        ZirReshtehId = soalVM.ZirReshtehId
-                    }
-                    );
-                }
-                
-                var s = q.Union(e);
+                // foreach (var n in soalVM.Tags.Where(x => x.Id != 0))
+                // {
+                //     e.Add(new TagVM
+                //     {
+                //         Onvan = n.name,
+                //         Id = n.Id,
+                //         ZirReshtehId = soalVM.ZirReshtehId
+                //     }
+                //     );
+                // }
+
+                // var s = q.Union(e);
+                var s = _InsertTags(soalVM);
                 var w = s.Select(c => c.Id).ToArray();
 
                 // q.AddRange(soalVM.Tags.Where(x => x.Id == 0)
@@ -101,8 +136,8 @@ namespace SoalJavab.Services.myservices
                 sl.Matn = soalVM.Matn;
                 if (soalVM.TagsId != null)
                 {
-                    var tags = db.Set<TagSoal>().Include(S=>S.Soal).ToList().Where(x => x.Soal.Id.Equals(soalVM.Id));
-                    
+                    var tags = db.Set<TagSoal>().Include(S => S.Soal).ToList().Where(x => x.Soal.Id.Equals(soalVM.Id));
+
                     var s = (from c in tags.Where(x => !soalVM.TagsId.Contains(x.Id)) select c).ToList();
                     s.ForEach(x => x.Isdeleted = true);
                     soalVM.TagsId.Except(tags.Where(x => !x.Isdeleted).Select(x => x.Id));
@@ -120,7 +155,39 @@ namespace SoalJavab.Services.myservices
                     tg.ForEach(x => x.Isdeleted = true);
                 }
                 db.MarkAsChanged<Soal>(sl);
+
+                db.SaveAllChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool newEditforSoal(SoalVM soalVM)
+        {
+            try
+            {
+                var sl = _soalRepository.GetById(soalVM.Id);
                 
+                sl.Matn = soalVM.Matn;
+                if (soalVM.Tags != null)
+                {
+                    var s = _InsertTags(soalVM);
+                    var w = s.Select(x=>x.Id).ToArray();
+                    
+                    foreach (var n in w)
+                    {
+                        db.Addnew<TagSoal>(new TagSoal { Isdeleted = false, TagId = n, Soal = sl });
+                    }
+                }
+                else
+                {
+                    var tg = db.Set<TagSoal>().Where(x => x.Soal.Id.Equals(soalVM.Id)).ToList();
+                    tg.ForEach(x => x.Isdeleted = true);
+                }
+                db.MarkAsChanged<Soal>(sl);
+
                 db.SaveAllChanges();
                 return true;
             }
@@ -133,55 +200,55 @@ namespace SoalJavab.Services.myservices
         {
             try
             {
-                var x = _Soals.Where(s =>s.Id == IdSoal).Select(c=>new SoalOfUserVM
+                var x = _Soals.Where(s => s.Id == IdSoal).Select(c => new SoalOfUserVM
                 {
                     RegDate = c.Regdat.ToString(),
-                   JavabCount =c.Javab.Where(i=>!i.IsDeleted).LongCount(),
+                    JavabCount = c.Javab.Where(i => !i.IsDeleted).LongCount(),
                     SoalId = c.Id,
                     Matn = c.Matn,
                     Reshteh = c.ZirReshteh.Reshteh.Onvan,
                     Zirreshteh = c.ZirReshteh.Onvan,
-                    username = c.User.Username                    
+                    username = c.User.Username
                 }).FirstOrDefault();
                 return x;
             }
             catch { return null; }
         }
-        
 
-       public IList<SoalOfUserVM> getSoalbyIdUser(long IdUser)
+
+        public IList<SoalOfUserVM> getSoalbyIdUser(long IdUser)
         {
             try
             {
                 var t = _Soals.Where(x => x.User.Id == IdUser && !x.IsDeleted && x.TagSoal.Any())
-                .Include(b=>b.Javab)
-                .Include(z=>z.ZirReshteh)
-                .ThenInclude(y=>y.Reshteh)
-                .Include(tg => tg.TagSoal).ThenInclude(th=>th.Tag).ToList();                
-                  var q =   t.Select(x => new SoalOfUserVM
-                     {
+                .Include(b => b.Javab)
+                .Include(z => z.ZirReshteh)
+                .ThenInclude(y => y.Reshteh)
+                .Include(tg => tg.TagSoal).ThenInclude(th => th.Tag).ToList();
+                var q = t.Select(x => new SoalOfUserVM
+                {
 
 
-                      RegDate = x.Regdat.ToString(),
-                      SoalId = x.Id,
-                      Matn = x.Matn,
-                      Reshteh = x.ZirReshteh.Reshteh.Onvan,
-                      Zirreshteh = x.ZirReshteh.Onvan,
-                      JavabCount = x.Javab.Where(j => !j.IsDeleted).LongCount(),
-                      IdZirreshteh = x.ZirReshtehId,
-                      Tags = x.TagSoal.Select(c => new TagVM
-                      {
-                          Id = c.TagId,
-                          Onvan = c.Tag.Onvan
-                      }).ToList()
-                  }).ToList();
+                    RegDate = x.Regdat.ToString(),
+                    SoalId = x.Id,
+                    Matn = x.Matn,
+                    Reshteh = x.ZirReshteh.Reshteh.Onvan,
+                    Zirreshteh = x.ZirReshteh.Onvan,
+                    JavabCount = x.Javab.Where(j => !j.IsDeleted).LongCount(),
+                    IdZirreshteh = x.ZirReshtehId,
+                    Tags = x.TagSoal.Select(c => new TagVM
+                    {
+                        Id = c.TagId,
+                        Onvan = c.Tag.Onvan
+                    }).ToList()
+                }).ToList();
                 return q;
             }
             catch { return null; }
         }
         public IList<SoalOfUserVM> getSoalbyIdAnswered(long IdUser)
         {
-              try
+            try
             {
                 var t = _soalRepository.GetAllDeletedByUserID(IdUser)
                     .Select(x => new SoalOfUserVM
@@ -204,7 +271,7 @@ namespace SoalJavab.Services.myservices
 
         }
 
-       
+
         public IList<SoalOfUserVM> getSoalbyIdUserAnswered(long IdIdUser)
         {
             throw new NotImplementedException();
@@ -224,15 +291,16 @@ namespace SoalJavab.Services.myservices
 
         public bool isSoalOfuser(long IdSoal, long IdUser)
         {
-            try {
-                var S = GetById(IdSoal).User.Id;
-            if (S == IdUser)
+            try
             {
-                return true;
+                var S = GetById(IdSoal).User.Id;
+                if (S == IdUser)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
-            }
-            catch 
+            catch
             {
                 return false;
             }
@@ -240,9 +308,9 @@ namespace SoalJavab.Services.myservices
 
         public bool DeleteSoal(long Idsoal)
         {
-            if (Idsoal>0)
+            if (Idsoal > 0)
             {
-            var s = _Soals.Where(x => x.Id == Idsoal).FirstOrDefault();
+                var s = _Soals.Where(x => x.Id == Idsoal).FirstOrDefault();
                 if (s != null)
                 {
                     s.IsDeleted = true;
@@ -250,12 +318,12 @@ namespace SoalJavab.Services.myservices
                     db.SaveAllChanges();
                     return true;
                 }
-                return false; 
+                return false;
             }
             return false;
         }
-    
-    public IEnumerable<Soal> GetAllByzirreshteh(long ZirReshtehID)
+
+        public IEnumerable<Soal> GetAllByzirreshteh(long ZirReshtehID)
         {
             try
             {
@@ -266,8 +334,8 @@ namespace SoalJavab.Services.myservices
                 var e = _Soals.Where(x =>
                                 w.Contains(x.TagSoal.FirstOrDefault().TagId)
                                 && !x.IsDeleted)
-                                .Include(x=>x.SoalToUser)
-                                .Include(u=>u.User).ToList();
+                                .Include(x => x.SoalToUser)
+                                .Include(u => u.User).ToList();
                 return e.ToList();
             }
             catch { return null; }

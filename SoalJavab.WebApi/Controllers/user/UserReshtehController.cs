@@ -20,20 +20,21 @@ namespace SoalJavab.WebApi.Controllers
     {
         private IUsersService _user;
         private IReshtehServices _reshteh;
+        private IZirReshtehServices _zirReshteh;
 
-        public UserReshtehController (IUsersService usersService,IReshtehServices reshtehServices)
+        public UserReshtehController (IUsersService usersService,IReshtehServices reshtehServices,IZirReshtehServices zirReshteh)
         {
             _user = usersService;
             _reshteh = reshtehServices;
+            _zirReshteh = zirReshteh;
         }
 
         // GET api/values
         [HttpGet]
         public IActionResult Get()
-        {
-            _user.GetCurrentUserId();
-            // var q = _reshteh.
-            return Ok();
+        {var user = _user.GetCurrentUserId();
+        var s =_zirReshteh.GetByUser(user);
+            return Ok(s);
         }
 
         // GET api/values/5
@@ -44,9 +45,10 @@ namespace SoalJavab.WebApi.Controllers
         }
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] long[] Id)
         {
-            
+            if (!_zirReshteh.ValidateZirreshteh(Id)) return BadRequest();
+            return Ok();
         }
 
         // PUT api/values/5

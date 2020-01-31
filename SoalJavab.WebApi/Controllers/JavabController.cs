@@ -91,13 +91,14 @@ namespace SoalJavab.WebApi.Controllers
             return BadRequest();
         }
         
-        [HttpPut]
+        [HttpPut("{id}")]
         [IgnoreAntiforgeryToken]
         public IActionResult Put(long id, [FromBody] JavabVM javab)
         {
+            var user = _user.GetCurrentUserId();
             if (
                 !ModelState.IsValid
-            || !_javab.isJavabOfuser(javab.Id, 1)
+            || !_javab.isJavabOfuser(javab.Id, user)
             || (javab.Id != id)
             || (javab == null || id < 1))
             {
@@ -107,7 +108,7 @@ namespace SoalJavab.WebApi.Controllers
 
             if (q)
             {
-                return Ok("*** علی باوامی ***");
+                return Ok();
             }
             else return BadRequest();
         }

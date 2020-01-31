@@ -15,7 +15,9 @@ namespace SoalJavab.WebApi.Controllers
 {
 
     [Route("api/[controller]")]
+    [ApiController]
     [EnableCors("CorsPolicy")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IZirReshtehServices _zirreshte;
@@ -129,9 +131,11 @@ namespace SoalJavab.WebApi.Controllers
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var q = _zirreshte.GetByUser(_usersService.GetCurrentUserId());
-            return Json(new { Username = claimsIdentity.Name,
-            zirReshteh = q
-             });
+            return Json(new
+            {
+                Username = claimsIdentity.Name,
+                zirReshteh = q
+            });
         }
 
         [AllowAnonymous]
@@ -146,5 +150,16 @@ namespace SoalJavab.WebApi.Controllers
             return await Login(q);
         }
 
+        [HttpPost("[action]")]
+        [Authorize]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ChangePassword([FromBody] changepassword password)
+        {
+            var user = await _usersService.GetCurrentUserAsync();
+            var (b, error) = await _usersService.ChangePasswordAsync(user, password.CurrentPassword, password.NewPassword);
+            if (b)
+                return Ok();
+            return BadRequest(error);
+        }
     }
 }
