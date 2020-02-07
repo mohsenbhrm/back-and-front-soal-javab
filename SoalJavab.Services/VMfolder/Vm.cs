@@ -123,6 +123,6 @@ namespace SoalJavab.Services.Models
     }
     public class userTagVm {
         public string Name {get;set;}
-        public long[] Id {get;set;}
+        public long Id {get;set;}
     }
 }
