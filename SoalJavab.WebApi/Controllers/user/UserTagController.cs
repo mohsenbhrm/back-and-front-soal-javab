@@ -34,7 +34,11 @@ namespace SoalJavab.WebApi.Controllers
         {
             var user =await _user.GetCurrentUserAsync();
             var s =await _tag.GetByUserAsync(user);
-            return Ok(s);
+            return Ok(s.Select(c => new TagVM
+            {
+                Id = c.Id,
+                Onvan = c.Onvan
+            }).ToList());
         }
 
         // GET api/values/5
@@ -46,11 +50,11 @@ namespace SoalJavab.WebApi.Controllers
         // POST api/values
         [IgnoreAntiforgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] userTagVm tagVm)
+        public async Task<IActionResult> Post([FromBody] IList<userTagVm> tagVm)
         {
-            var Id = tagVm.Id;
+            var Id = tagVm.Where(c=>c.Id >0).Select(x=>x.Id).ToArray();
             if (!_tag.ValidateTag(Id)) return BadRequest(new JsonResult("مقادیر نامعتر هستند"));
-            var result = await _tag.AddTagUserAsync(Id);
+            var result = await _tag.AddTagUserAsync(tagVm);
             if (result) return Ok();
             return BadRequest(new JsonResult("در حین کار خطایی رخ داده است"));
         }

@@ -59,7 +59,7 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.name,
                     Id = n.Id,
-                    ZirReshtehId = soalVM.ZirReshtehId
+                    ZirReshtehId = 1
                 }
                 );
             }
@@ -71,7 +71,7 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.name,
                     Id = n.Id,
-                    ZirReshtehId = soalVM.ZirReshtehId
+                    ZirReshtehId = 1
                 }
                 );
             }
@@ -83,46 +83,16 @@ namespace SoalJavab.Services.myservices
         {
             try
             {
-                // var q = new List<TagVM>();
-
-                // var e = new List<TagVM>();
-
-                // foreach (var n in soalVM.Tags.Where(x => x.Id == 0))
-                // {
-                //     q.Add(new TagVM
-                //     {
-                //         Onvan = n.name,
-                //         Id = n.Id,
-                //         ZirReshtehId = soalVM.ZirReshtehId
-                //     }
-                //     );
-                // }
-                // q = _tagRepository.CreatRange(q).ToList();
-
-                // foreach (var n in soalVM.Tags.Where(x => x.Id != 0))
-                // {
-                //     e.Add(new TagVM
-                //     {
-                //         Onvan = n.name,
-                //         Id = n.Id,
-                //         ZirReshtehId = soalVM.ZirReshtehId
-                //     }
-                //     );
-                // }
-
                 var (nw, old) = _InsertTags(soalVM);
                 var s = old.Union(nw);
-                // // var s = q.Union(e);
-                // var s = _InsertTags(soalVM);
+                
                 var w = s.Select(c => c.Id).ToArray();
 
-                // q.AddRange(soalVM.Tags.Where(x => x.Id == 0)
-                // .Select(c => new TagVM { ZirReshtehId = c.Id }));
                 _soalRepository.Insert(new Soal
                 {
                     Matn = soalVM.Matn,
                     ApplicationUserId = UserId,
-                    ZirReshtehId = soalVM.ZirReshtehId
+                    ZirReshtehId = 1
                 },
                 w);
                 db.SaveAllChanges();
@@ -143,9 +113,11 @@ namespace SoalJavab.Services.myservices
                     var s = (from c in tags.Where(x => !soalVM.TagsId.Contains(x.Id)) select c).ToList();
                     s.ForEach(x => x.Isdeleted = true);
                     soalVM.TagsId.Except(tags.Where(x => !x.Isdeleted).Select(x => x.Id));
+
                     //یک فیلتر یا کوئری برای اضافه کردن رکورد جدید به جدول
                     //تگ سوال برای تگهای جدید اضافه
                     //شده توسط کاربر باید نوشته شد
+                    
                     foreach (var n in soalVM.TagsId)
                     {
                         db.Addnew<TagSoal>(new TagSoal { Isdeleted = false, TagId = n, Soal = sl });

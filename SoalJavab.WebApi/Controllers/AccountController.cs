@@ -20,7 +20,8 @@ namespace SoalJavab.WebApi.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly IZirReshtehServices _zirreshte;
+        private readonly IZirReshtehServices _zirreshteh;
+        private readonly ITagServices _Tags;
         private readonly IUsersService _usersService;
         private readonly ITokenStoreService _tokenStoreService;
         private readonly IUnitOfWork _uow;
@@ -33,10 +34,12 @@ namespace SoalJavab.WebApi.Controllers
             ITokenFactoryService tokenFactoryService,
             IUnitOfWork uow,
             IAntiForgeryCookieService antiforgery,
-            IZirReshtehServices zirReshtehServices
+            ITagServices tagServices,
+            IZirReshtehServices zirReshteh
             )
         {
-            _zirreshte = zirReshtehServices;
+            _zirreshteh = zirReshteh;
+            _Tags = tagServices;
             _usersService = usersService;
             _usersService.CheckArgumentIsNull(nameof(usersService));
 
@@ -126,15 +129,23 @@ namespace SoalJavab.WebApi.Controllers
             return User.Identity.IsAuthenticated;
         }
 
-        [HttpGet("[action]"), HttpPost("[action]")]
-        public IActionResult GetUserInfo()
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUserInfo()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            var q = _zirreshte.GetByUser(_usersService.GetCurrentUserId());
+            // var q = _zirreshteh.GetByUser(_usersService.GetCurrentUserId());
+            var q =await _Tags.GetByUserAsync(await _usersService.GetCurrentUserAsync());
+            // var q = _Tags.GetByUser(_usersService.GetCurrentUserId());
+            if (q!=null)
             return Json(new
             {
                 Username = claimsIdentity.Name,
-                zirReshteh = q
+                Tags = q
+            });
+            return Json(new
+            {
+                Username = claimsIdentity.Name,
+                Tags = " "
             });
         }
 

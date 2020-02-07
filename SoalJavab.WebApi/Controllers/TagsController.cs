@@ -27,14 +27,14 @@ namespace SoalJavab.WebApi.Controllers
             _tags = itag;
         }
 
-        [HttpGet("{id}/{TagName}")]
-        public IActionResult Get(long id, string TagName)
+        [HttpGet("{TagName}")]
+        public IActionResult Get(string TagName)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var q = _tags.GetTags(id, TagName);
+                    var q = _tags.GetTags(TagName);
 
                     if (q != null) return Ok(q);
 
@@ -42,7 +42,7 @@ namespace SoalJavab.WebApi.Controllers
                 }
                 else
                 {
-                    return BadRequest(id + TagName);
+                    return BadRequest(TagName);
                 }
             }
             catch (Exception e)
@@ -54,7 +54,6 @@ namespace SoalJavab.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
             return Ok("بدون پیاده سازی");
         }
 
