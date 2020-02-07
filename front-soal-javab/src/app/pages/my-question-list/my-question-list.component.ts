@@ -50,7 +50,7 @@ export class MyQuestionListComponent implements OnInit {
       resolve => {
         // console.log(resolve);
         const body = {
-          ZirReshtehId: item.idZirreshteh,
+          // ZirReshtehId: item.idZirreshteh,
           Id: item.soalId,
           Tags: resolve.tags,
           Matn: resolve.questionBody

@@ -3,6 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProfileService } from './profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from '@app/layout/header/header.service';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { QuestionService } from '../question/question.service';
+import { TagModel } from '../question/question.component';
 
 @Component({
   selector: 'app-profile',
@@ -12,32 +16,28 @@ import { HeaderService } from '@app/layout/header/header.service';
 export class ProfileComponent implements OnInit {
 
   changePasswordForm: FormGroup;
-  selectFieldForm: FormGroup;
+  selectTagsForm: FormGroup;
 
-  fields: any[];
-  activeSubFields: any[];
+  // fields: any[];
+  // activeSubFields: any[];
 
-  subfieldArray: any[] = [];
+  // subfieldArray: any[] = [];
+
+  userTags = [];
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
     private toastrService: ToastrService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private questionService: QuestionService
   ) { }
 
   ngOnInit() {
     this.initChangePassForm();
-    this.initSelectFieldFrom();
-    this.getEssentials();
-    this.getUserFields();
+    this.getUserTags();
+    this.initSelectTagsFrom();
 
-    this.selectFieldForm.controls.field.valueChanges.subscribe(changes => {
-      const x = this.fields.find(el => el.id === changes);
-      if (x) {
-        this.activeSubFields = x.zirreshteh;
-      }
-    });
   }
 
   initChangePassForm() {
@@ -51,10 +51,9 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  initSelectFieldFrom() {
-    this.selectFieldForm = this.fb.group({
-      field: [null, Validators.required],
-      subField: [null, Validators.required]
+  initSelectTagsFrom() {
+    this.selectTagsForm = this.fb.group({
+      tags: [this.userTags, Validators.required]
     });
   }
 
@@ -98,59 +97,54 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  getEssentials() {
-    this.profileService.getEssentialForQuestion().subscribe(fields => {
-      this.fields = fields;
+
+  getUserTags() {
+    this.headerService.userInfo.subscribe(userInfo => {
+      userInfo.tags.forEach(el => this.userTags.push({ display: el.onvan, value: el.id }));
+
     });
   }
 
-  getUserFields() {
-    this.headerService.userInfo.subscribe(userFields => {
-      this.subfieldArray = userFields.zirReshteh;
-    });
+  requestAutocompleteItems = (text: string): Observable<any> => {
+    const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
+    return this.questionService.tryTagSearch(url);
   }
 
-  deleteSubFields(item) {
-    this.subfieldArray = this.subfieldArray.filter(el => el.id !== item.id);
+  checkIfAvalable($event) {
+    if (typeof ($event.value) === 'string') {
+
+      const url = `${environment.apiConfig.baseUrl}/api/Tags/${$event.display}/`;
+      return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
+        const result = res.find(el => el.display === $event.display);
+        if (result) {
+          const tagRes = this.selectTagsForm.controls.tags.value.find(el => el.display === $event.display);
+          tagRes.value = result.value;
+        }
+      });
+    }
   }
 
-  addSubField() {
-    if (this.selectFieldForm.invalid) {
-      this.selectFieldForm.markAllAsTouched();
+
+
+  saveTags() {
+    if (this.selectTagsForm.invalid) {
+      this.selectTagsForm.markAllAsTouched();
       return;
     }
-
-    const tmpfields = this.fields.find(el => el.id === this.selectFieldForm.controls.field.value);
-    if (tmpfields) {
-      const subtmp: any[] = tmpfields.zirreshteh;
-      const tmpSubFields = subtmp.find(el => el.id === this.selectFieldForm.controls.subField.value);
-      if (tmpSubFields) {
-        const findDup = this.subfieldArray.find(el => el.id === tmpSubFields.id);
-        if (!findDup) {
-          this.subfieldArray.push({
-            id: tmpSubFields.id,
-            onvan: tmpSubFields.onvan,
-            reshteh: tmpfields.onvan
-          });
-          this.selectFieldForm.reset();
-
-        } else {
-          this.toastrService.warning('زیر رشته تکراری است', 'زیررشته');
-        }
-      }
-    }
-  }
-
-  saveFields() {
-    const subFieldsArrayID = [];
-    this.subfieldArray.forEach(element => {
-      subFieldsArrayID.push(element.id);
+    const editedFormData = this.selectTagsForm.getRawValue();
+    const mappedTags = [];
+    editedFormData.tags.forEach(element => {
+      mappedTags.push({
+        Id: (typeof element.value === 'string') ? 0 : element.value,
+        name: element.display
+      });
     });
 
-    this.profileService.setSubfields({ Name: 'UpdateTags', Id: subFieldsArrayID }).subscribe(res => {
-      this.headerService.getUserInfo().subscribe(userFields => {
-        this.subfieldArray = userFields.zirReshteh;
-      });
+    this.profileService.setTags(mappedTags).subscribe(res => {
+      this.toastrService.success('ثبت شد', 'res', { timeOut: 2000 });
+    },
+    err => {
+      this.toastrService.error('خطا', 'res', { timeOut: 2000 });
     });
   }
 

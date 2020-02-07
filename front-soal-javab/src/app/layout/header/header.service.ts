@@ -11,7 +11,7 @@ export class HeaderService implements OnDestroy {
   userInfo: BehaviorSubject<any> = new BehaviorSubject(
     {
       username: null,
-      zirReshteh: []
+      tags: []
     }
   );
   constructor(

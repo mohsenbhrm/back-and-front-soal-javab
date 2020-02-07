@@ -16,11 +16,7 @@ export class ProfileService {
     return this.http.post(`${environment.apiConfig.baseUrl}/api/Account/ChangePassword`, body);
   }
 
-  getEssentialForQuestion(): Observable<any> {
-    return this.http.get(`${environment.apiConfig.baseUrl}/api/Essentials`);
-  }
-
-  setSubfields(ids: any): Observable<any> {
-    return this.http.post(`${environment.apiConfig.baseUrl}/api/UserReshteh`, ids);
+  setTags(body: any): Observable<any> {
+    return this.http.post(`${environment.apiConfig.baseUrl}/api/UserTag`, body);
   }
 }

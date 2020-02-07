@@ -39,44 +39,25 @@
                 <li [ngbNavItem]="2">
                     <a ngbNavLink>انتخاب تخصص</a>
                     <ng-template ngbNavContent>
-                        <form [formGroup]="selectFieldForm">
-                            <div class="form-group">
-                                <!-- <label for="exampleFormControlSelect1">رشته</label> -->
-                                <select formControlName="field" class="form-control">
-                                    <option [ngValue]="null" disabled>رشته</option>
-                                    <option *ngFor="let item of fields" [ngValue]="item.id">{{item.onvan}}</option>
-                                </select>
-                                <span *ngIf="selectFieldForm.get('field').hasError('required') &&
-                             selectFieldForm.get('field').value === null &&
-                             selectFieldForm.get('field').touched" class="text-danger">
-                                    <small>رشته الزامی است</small>
+                        <form [formGroup]="selectTagsForm">
+                            <div class="form-group bg-white">
+                                <tag-input  formControlName="tags" (onAdd)="checkIfAvalable($event)" theme='bootstrap' [onlyFromAutocomplete]="false"
+                                [placeholder]="'تگ بعدی'" [secondaryPlaceholder]="'تگ را وارد کنید'"
+                                [separatorKeyCodes]="[32]" [allowDupes]="false">
+                                  <tag-input-dropdown [keepOpen]="false" [autocompleteObservable]='requestAutocompleteItems' [showDropdownIfEmpty]="true">
+                                    <ng-template let-item="item" let-index="index">
+                                      {{ item.display }}
+                                    </ng-template>
+                                  </tag-input-dropdown>
+                                </tag-input>
+                                <span *ngIf="selectTagsForm.get('tags').hasError('required') &&
+                                selectTagsForm.get('tags').touched" class="text-danger">
+                                  <small>تگ الزامی است</small>
                                 </span>
-                            </div>
-
-                            <div class="form-group">
-                                <!-- <label for="exampleFormControlSelect1">زیر رشته</label> -->
-                                <select formControlName="subField" class="form-control">
-                                    <option [ngValue]="null" disabled>زیر رشته</option>
-                                    <option *ngFor="let item of activeSubFields" [ngValue]="item.id">{{item.onvan}}
-                                    </option>
-                                </select>
-                                <span *ngIf="selectFieldForm.get('subField').hasError('required') &&
-                            selectFieldForm.get('subField').value === null &&
-                            selectFieldForm.get('subField').touched" class="text-danger">
-                                    <small>زیر رشته الزامی است</small>
-                                </span>
-                            </div>
-                            <button class="btn btn-primary" [disabled]="selectFieldForm.invalid" (click)="addSubField()">افزودن</button>
+                              </div>
                         </form>
                         <div class="mt-5 mb-2">
-                            <div *ngFor="let item of subfieldArray" class="alert bg-light alert-dismissible fade show"
-                                role="alert">
-                                <span>{{item.onvan}}</span>
-                                <button type="button" class="close" (click)="deleteSubFields(item)" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <button class="btn btn-success" (click)="saveFields()">ذخیره</button>
+                            <button class="btn btn-success" (click)="saveTags()">ذخیره</button>
                         </div>
                     </ng-template>
                 </li>

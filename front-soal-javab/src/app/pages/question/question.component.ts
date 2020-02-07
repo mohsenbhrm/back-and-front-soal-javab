@@ -20,8 +20,8 @@ export interface TagModel {
 export class QuestionComponent implements OnInit {
 
   registerQuestion: FormGroup;
-  fields: any[];
-  activeSubFields: any[];
+  // fields: any[];
+  // activeSubFields: any[];
 
   disabled = false;
 
@@ -32,40 +32,40 @@ export class QuestionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.questionService.getEssentialForQuestion().subscribe(fields => {
-      this.fields = fields;
-      // console.log(fields);
+    // this.questionService.getEssentialForQuestion().subscribe(fields => {
+    //   this.fields = fields;
+    //   // console.log(fields);
 
-    });
+    // });
     this.initForm();
 
-    this.registerQuestion.controls.field.valueChanges.subscribe(changes => {
-      const x = this.fields.find(el => el.id === changes);
-      if (x) {
-        this.activeSubFields = x.zirreshteh;
-      }
+    // this.registerQuestion.controls.field.valueChanges.subscribe(changes => {
+    //   const x = this.fields.find(el => el.id === changes);
+    //   if (x) {
+    //     this.activeSubFields = x.zirreshteh;
+    //   }
 
-    });
+    // });
   }
 
   requestAutocompleteItems = (text: string): Observable<any> => {
-    if (this.registerQuestion.controls.subField.hasError('required')) {
-      this.registerQuestion.controls.subField.markAsTouched();
-      this.registerQuestion.controls.field.markAsTouched();
-      return (of([]).pipe(map(data => {
-        return data;
-      })));
-    } else {
-      const url = `${environment.apiConfig.baseUrl}/api/Tags/${this.registerQuestion.controls.subField.value}/${text}`;
-      return this.questionService.tryTagSearch(url);
-    }
+    // if (this.registerQuestion.controls.subField.hasError('required')) {
+    //   this.registerQuestion.controls.subField.markAsTouched();
+    //   this.registerQuestion.controls.field.markAsTouched();
+    //   return (of([]).pipe(map(data => {
+    //     return data;
+    //   })));
+    // } else {
+    const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
+    return this.questionService.tryTagSearch(url);
+    // }
 
   }
 
   checkIfAvalable($event) {
     if (typeof ($event.value) === 'string') {
 
-      const url = `${environment.apiConfig.baseUrl}/api/Tags/${this.registerQuestion.controls.subField.value}/${$event.display}/`;
+      const url = `${environment.apiConfig.baseUrl}/api/Tags/${$event.display}/`;
       return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
         const result = res.find(el => el.display === $event.display);
         if (result) {
@@ -78,8 +78,8 @@ export class QuestionComponent implements OnInit {
 
   initForm() {
     this.registerQuestion = this.fb.group({
-      field: [null, Validators.required],
-      subField: [null, Validators.required],
+      // field: [null, Validators.required],
+      // subField: [null, Validators.required],
       questionBody: [null, Validators.required],
       tags: [[], Validators.required]
     });
@@ -104,7 +104,7 @@ export class QuestionComponent implements OnInit {
     const body = {
       id: 0,
       matn: this.registerQuestion.controls.questionBody.value,
-      zirReshtehId: this.registerQuestion.controls.subField.value,
+      // zirReshtehId: this.registerQuestion.controls.subField.value,
       tags: tagsArr
     };
 

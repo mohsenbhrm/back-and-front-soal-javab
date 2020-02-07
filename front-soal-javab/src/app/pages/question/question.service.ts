@@ -9,9 +9,9 @@ import { TagModel } from './question.component';
 export class QuestionService {
   constructor(private http: HttpClient) { }
 
-  getEssentialForQuestion(): Observable<any> {
-    return this.http.get(`${environment.apiConfig.baseUrl}/api/Essentials`);
-  }
+  // getEssentialForQuestion(): Observable<any> {
+  //   return this.http.get(`${environment.apiConfig.baseUrl}/api/Essentials`);
+  // }
 
   tryTagSearch(url): Observable<any> {
     return this.http.get(url)

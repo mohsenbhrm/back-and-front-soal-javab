@@ -8,7 +8,7 @@
     <!-- <span>{{item | json}}</span> -->
     <form [formGroup]="editQuestionForm">
         <div class="row">
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <div class="form-group">
               <label for="exampleFormControlSelect1">رشته</label>
               <input disabled class="form-control" value="{{item.reshteh}}">
@@ -19,10 +19,9 @@
               <label for="exampleFormControlSelect1">زیر رشته</label>
               <input class="form-control" disabled value="{{item.zirreshteh}}">
             </div>
-          </div>
+          </div> -->
           <div class="col-12">
             <div class="form-group">
-              <!-- <label for="exampleFormControlTextarea1">Example textarea</label> -->
               <textarea formControlName="questionBody" class="form-control" placeholder="متن سوال" rows="6"></textarea>
               <span *ngIf="editQuestionForm.get('questionBody').hasError('required') &&
               editQuestionForm.get('questionBody').value === null &&
@@ -34,7 +33,6 @@
 
           <div class="col-12">
             <div class="form-group">
-              <!-- <label for="exampleFormControlTextarea1">Example textarea</label> -->
               <tag-input  formControlName="tags" (onAdd)="checkIfAvalable($event)" theme='bootstrap' [onlyFromAutocomplete]="false"
               [placeholder]="'تگ بعدی'" [secondaryPlaceholder]="'تگ را وارد کنید'"
               [separatorKeyCodes]="[32]" [allowDupes]="false">

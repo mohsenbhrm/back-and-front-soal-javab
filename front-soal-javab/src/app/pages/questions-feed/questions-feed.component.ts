@@ -13,7 +13,7 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
 
   questionList: any[];
   answer: string;
-  hasZirreshteh = false;
+  hasTags = false;
   loadMoreLoading = false;
   answerLoading = false;
   newFeedTimer: Observable<any>;
@@ -24,8 +24,8 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.questionFeedService.getUserInfoSubject().subscribe(info => {
-      if (info && info.zirReshteh.length > 0) {
-        this.hasZirreshteh = true;
+      if (info && info.tags.length > 0) {
+        this.hasTags = true;
         this.questionFeedService.getInitFeeds().subscribe(res => {
           this.questionList = res;
         });
@@ -42,7 +42,7 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
         });
         this.subscription.push(timer);
       } else {
-        this.hasZirreshteh = false;
+        this.hasTags = false;
       }
     });
 

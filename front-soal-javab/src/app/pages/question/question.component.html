@@ -4,9 +4,8 @@
       <h4>پرسش سوال</h4>
       <form [formGroup]="registerQuestion">
         <div class="row">
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <div class="form-group">
-              <!-- <label for="exampleFormControlSelect1">رشته</label> -->
               <select formControlName="field" class="form-control">
                 <option [ngValue]="null" disabled>رشته</option>
                 <option *ngFor="let item of fields" [ngValue]="item.id">{{item.onvan}}</option>
@@ -20,7 +19,6 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <!-- <label for="exampleFormControlSelect1">زیر رشته</label> -->
               <select formControlName="subField" class="form-control">
                 <option [ngValue]="null" disabled>زیر رشته</option>
                 <option *ngFor="let item of activeSubFields" [ngValue]="item.id">{{item.onvan}}</option>
@@ -31,10 +29,9 @@
                 <small>زیر رشته الزامی است</small>
               </span>
             </div>
-          </div>
+          </div> -->
           <div class="col-12">
             <div class="form-group">
-              <!-- <label for="exampleFormControlTextarea1">Example textarea</label> -->
               <textarea formControlName="questionBody" class="form-control" placeholder="متن سوال" rows="6"></textarea>
               <span *ngIf="registerQuestion.get('questionBody').hasError('required') &&
               registerQuestion.get('questionBody').touched" class="text-danger">
@@ -45,7 +42,6 @@
 
           <div class="col-12">
             <div class="form-group">
-              <!-- <label for="exampleFormControlTextarea1">Example textarea</label> -->
               <tag-input  formControlName="tags" (onAdd)="checkIfAvalable($event)" theme='bootstrap' [onlyFromAutocomplete]="false"
               [placeholder]="'تگ بعدی'" [secondaryPlaceholder]="'تگ را وارد کنید'"
               [separatorKeyCodes]="[32]" [allowDupes]="false">
