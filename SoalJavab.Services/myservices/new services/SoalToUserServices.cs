@@ -77,6 +77,28 @@ namespace SoalJavab.Services.myservices
              var User = _users.GetCurrentUserAsync().Result;
 
             var stu = new List<SoalToUserVM>();
+
+            var u = _Userrepository.GetTagIdbyUserId(userId);
+
+            var sq = _soal.GetAllByTag(u)
+            .Where(x => x.ApplicationUserId != userId).ToList();
+
+            if (sq.Count() < 1)
+            { return stu; }
+             stu = sq.Select(x=> new SoalToUserVM {
+                Username = x.User.Username,
+                SoalId = x.Id,
+                Matn = x.Matn,
+                regDate = x.Regdat,
+                SoaltoUserId = x.TagSoal.FirstOrDefault().Id
+            }).OrderByDescending(x=>x.SoalId).ToList();
+            return stu;
+        }
+        private IList<SoalToUserVM> old_Get_new_Soal_To_user_by_UserId(long userId)
+         {
+             var User = _users.GetCurrentUserAsync().Result;
+
+            var stu = new List<SoalToUserVM>();
             var u = _Userrepository.Get_ZirReshtehId_by_UserId(userId);
             //سوالهای جدید را بر اساس شناسه سوال که بزگتر از آخرین سوال پرسیده شده از کاربر باشه رو جدا میکند
             var sq = _soal.GetAllByzirreshteh(u.FirstOrDefault())
@@ -100,6 +122,26 @@ namespace SoalJavab.Services.myservices
             return stu;
         }
          private IList<SoalToUserVM> _Get_new_feed_Soal_To_user_by_UserId(long userId)
+         {
+             var User = _users.GetCurrentUserAsync().Result;
+
+            var stu = new List<SoalToUserVM>();
+            var u = _Userrepository.GetTagIdbyUserId(userId);
+            
+            var sq = _soal.GetAllByTag(u)
+            .Where(x => x.ApplicationUserId != userId && x.Regdat > User.LastLoggedIn).ToList();
+            
+            if (sq.Count() < 1)
+            { return stu; }
+             stu = sq.Select(x=> new SoalToUserVM {
+                Username = x.User.Username,
+                SoalId = x.Id,
+                Matn = x.Matn,
+                regDate = x.Regdat,
+            }).OrderByDescending(x=>x.SoalId).ToList();
+            return stu;
+        }
+        private IList<SoalToUserVM> old_Get_new_feed_Soal_To_user_by_UserId(long userId)
          {
              var User = _users.GetCurrentUserAsync().Result;
 
@@ -129,20 +171,14 @@ namespace SoalJavab.Services.myservices
         private IList<SoalToUserVM> _LoadMoreSoalToUserByLastId(long LastSoalId, long userId)
         {
             var stu = new List<SoalToUserVM>();
-            var u = _Userrepository.Get_ZirReshtehId_by_UserId(userId);
+            var u = _Userrepository.GetTagIdbyUserId(userId);
             //سوالهای جدید را بر اساس شناسه سوال که بزگتر از آخرین سوال پرسیده شده از کاربر باشه رو جدا میکند
-            var sq = _soal.GetAllByzirreshteh(u.FirstOrDefault())
+            var sq = _soal.GetAllByTag(u)
             .Where(x => x.ApplicationUserId != userId && x.Id < LastSoalId).ToList();
-
-            foreach (var n in u.Skip(1))
-            {
-                var q = _soal.GetAllByzirreshteh(n)
-                .Where(x => x.ApplicationUserId != userId && x.Id < LastSoalId).ToList();
-
-                sq.Concat(q);
-            }
+            
             if (sq.Count() < 1)
             { return stu; }
+
             var User = _users.GetCurrentUserAsync().Result;
             stu = sq.Select(x => new SoalToUserVM
             {
@@ -151,6 +187,7 @@ namespace SoalJavab.Services.myservices
                 Matn = x.Matn,
                 regDate = x.Regdat,
             }).TakeLast(10).ToList();
+            
             return stu.OrderByDescending(x=>x.SoalId).ToList();
         }
        

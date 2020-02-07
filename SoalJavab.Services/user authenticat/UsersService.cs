@@ -71,7 +71,7 @@ namespace SoalJavab.Services
 
         public Task<bool> isUserNameExcist(string username)
         {
-            return  _users.AnyAsync(x => x.Username == username);
+            return _users.AnyAsync(x => x.Username == username);
         }
         public async Task<string> GetSerialNumberAsync(long userId)
         {
@@ -126,14 +126,17 @@ namespace SoalJavab.Services
         }
 
 
-        public Task<List<ApplicationUser>> GetAllUsers(){
+        public Task<List<ApplicationUser>> GetAllUsers()
+        {
             return _users.ToListAsync();
         }
-        public Task<List<ApplicationUser>> GetActiveUsers(){
-            return _users.Where(x=> x.IsActive).ToListAsync();
+        public Task<List<ApplicationUser>> GetActiveUsers()
+        {
+            return _users.Where(x => x.IsActive).ToListAsync();
         }
-        public Task<List<ApplicationUser>> GetNotActiveUsers(){
-            return _users.Where(x=> !x.IsActive).ToListAsync();
+        public Task<List<ApplicationUser>> GetNotActiveUsers()
+        {
+            return _users.Where(x => !x.IsActive).ToListAsync();
         }
         public bool addUserReshteh(long[] id)
         {
@@ -153,10 +156,29 @@ namespace SoalJavab.Services
             _uow.SaveAllChanges();
             return true;
         }
+        public bool addUserTag(long[] id)
+        {
+            var q = _uow.Set<Tag>().Where(x => id.Contains(x.Id) && !x.IsDeleted).ToList();
+            var s = _users.Where(x => x.Id == GetCurrentUserId()).FirstOrDefault();
+            var w = _uow.Set<TagUser>();
+            foreach (var n in q)
+            {
+                w.Add(new TagUser
+                {
+                    user = s,
+                    Isdeleted = false,
+                    TagId = n.Id
+                });
+            }
+            _uow.AddThisRange(w);
+            _uow.SaveAllChanges();
+            return true;
+        }
 
         public async Task<LoginVm> AddNewUserAsync(SignUpVm signUp)
-        { 
-                var q =new ApplicationUser{
+        {
+            var q = new ApplicationUser
+            {
                 Username = signUp.Username,
                 Name = signUp.Name,
                 Password = _securityService.GetSha256Hash(signUp.Password),
@@ -165,22 +187,23 @@ namespace SoalJavab.Services
                 LastLoggedIn = DateTimeOffset.Now,
                 NewReg = true,
                 SerialNumber = Guid.NewGuid().ToString("N"),
-                DisplayName = signUp.Name};
-                
-           await _users.AddAsync(q);
-        //    var s = new List<ReshtehUser>();
-        //    foreach(var n in signUp.zirReshteh)
-        //    {
-        //        s.Add(new ReshtehUser {
-        //            ApplicationUserId =q.Id,
-        //            IsDeleted = false,
-        //            ZirReshtehId=n
-        //        });
-        //    }
-        //    await _uow.Set<ReshtehUser>().AddRangeAsync(s);
+                DisplayName = signUp.Name
+            };
+
+            await _users.AddAsync(q);
+            //    var s = new List<ReshtehUser>();
+            //    foreach(var n in signUp.zirReshteh)
+            //    {
+            //        s.Add(new ReshtehUser {
+            //            ApplicationUserId =q.Id,
+            //            IsDeleted = false,
+            //            ZirReshtehId=n
+            //        });
+            //    }
+            //    await _uow.Set<ReshtehUser>().AddRangeAsync(s);
             await _uow.SaveAllChangesAsync();
-           return new LoginVm{ username = signUp.Username , password = signUp.Password};
-            
+            return new LoginVm { username = signUp.Username, password = signUp.Password };
+
             // return null;
 
         }

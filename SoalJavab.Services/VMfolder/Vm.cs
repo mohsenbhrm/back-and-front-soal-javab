@@ -121,4 +121,8 @@ namespace SoalJavab.Services.Models
         public string Name {get;set;}
         public long[] Id {get;set;}
     }
+    public class userTagVm {
+        public string Name {get;set;}
+        public long[] Id {get;set;}
+    }
 }

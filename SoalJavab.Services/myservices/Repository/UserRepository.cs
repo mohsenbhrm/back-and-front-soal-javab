@@ -75,6 +75,14 @@ namespace SoalJavab.Services
                 .Select(c => c.ZirReshtehId)
                 .ToArray();
         }
+        public long[] GetTagIdbyUserId(long UserId)
+        {
+            var user = _user.Find(UserId);
+            return db.Set<TagUser>()
+                .Where(x => x.user.Equals(user) && !x.Isdeleted)
+                .Select(c => c.TagId)
+                .ToArray();
+        }
 
         public IEnumerable<ApplicationUser> Get(Expression<Func<ApplicationUser, bool>> filter = null, Func<IQueryable<ApplicationUser>, IOrderedQueryable<ApplicationUser>> orderBy = null, string includeProperties = "")
         {

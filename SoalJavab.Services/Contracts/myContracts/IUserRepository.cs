@@ -15,6 +15,6 @@ namespace SoalJavab.Services.Contracts
         IEnumerable<ApplicationUser> GetallbyDate(DateTime dt);
         IEnumerable<ApplicationUser> GetallbyReshteh(ZirReshteh ZR);
         long[] Get_ZirReshtehId_by_UserId(long UserId);
-
+        long[] GetTagIdbyUserId(long UserId);
     }
 }

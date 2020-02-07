@@ -16,15 +16,17 @@ namespace SoalJavab.Services.myservices
         private ISoalRepository _soalRepository;
         private ITagRepository _tagRepository;
         private readonly DbSet<Tag> _tags;
+        private readonly IUsersService _user;
 
         public TagServices(IUnitOfWork unitOfWork, ITagRepository tag,
             ISoalRepository soalrepo,
-            ITagRepository tagRepository)
+            ITagRepository tagRepository, IUsersService usersService)
         {
             db = unitOfWork;
             _soalRepository = soalrepo;
             _tagRepository = tagRepository;
             _tags = db.Set<Tag>();
+            _user = usersService;
 
         }
         public IList<TagVM> getTags()
@@ -51,7 +53,7 @@ namespace SoalJavab.Services.myservices
             {
                 var q = _tags.Where(e => !e.IsDeleted && e.ZirReshtehId.Equals(Idzirreshteh));
                 return q.Select(x =>
-              
+
                new TagVM
                {
                    Id = x.Id,
@@ -132,14 +134,16 @@ namespace SoalJavab.Services.myservices
         }
         public IList<JsonVm> GetTags(long IdZirreshte, string TagName)
         {
-            try {
+            try
+            {
 
-        
-            var q = GetTagsByzirreshte(IdZirreshte).Where(x => x.Onvan.Contains(TagName))
-                .Select(e => new JsonVm { Id = e.Id, name = e.Onvan }).ToList();
-            return q;
+
+                var q = GetTagsByzirreshte(IdZirreshte).Where(x => x.Onvan.Contains(TagName))
+                    .Select(e => new JsonVm { Id = e.Id, name = e.Onvan }).ToList();
+                return q;
             }
-            catch{
+            catch
+            {
                 throw new Exception();
             }
         }
@@ -165,7 +169,66 @@ namespace SoalJavab.Services.myservices
             return s;
         }
 
+        public async Task<bool> AddTagUserAsync(long[] id)
+        {
+            var user = await _user.GetCurrentUserAsync();
+            var ur = db.Set<TagUser>();
+            var s = ur.Where(d => d.user == user);
+            if (s != null) ur.RemoveRange(s);
+
+            List<TagUser> tagUsers = new List<TagUser>();
+            foreach (var n in id)
+            {
+                tagUsers.Add(new TagUser
+                {
+                    user = user,
+                    Isdeleted = false,
+                    TagId = n
+                });
+            }
+            await ur.AddRangeAsync(tagUsers);
+            var x = await db.SaveAllChangesAsync();
+            if (x > 0) return true;
+            return false;
+        }
+
+        public bool ValidateTag(long[] id)
+        {
+            foreach (var n in id)
+            {
+                if (ValidateTag(n) == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public bool ValidateTag(long id)
+        {
+            var q = _tags.Find(id);
+            if (q == null) return false;
+            return true;
+        }
 
 
+        public async Task<IList<TagVM>> GetByUserAsync(ApplicationUser user)
+        {
+
+            var q1 =await db.Set<TagUser>().Where(x => x.user == user && !x.Isdeleted)
+            .Select(i => i.TagId).ToListAsync();
+
+            var q =await _tags.Where(x => q1.Contains(x.Id) && !x.IsDeleted)
+            .ToListAsync();
+
+            if (q == null)
+            {
+                return null;
+            }
+            return q.Select(c => new TagVM
+            {
+                Id = c.Id,
+                Onvan = c.Onvan
+            }).ToList();
+        }
     }
 }

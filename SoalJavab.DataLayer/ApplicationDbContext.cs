@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SoalJavab.DataLayer
 {
-    public class ApplicationDbContext : DbContext,IUnitOfWork
+    public class ApplicationDbContext : DbContext, IUnitOfWork
     {
 
         public ApplicationDbContext(DbContextOptions option)
@@ -13,8 +13,8 @@ namespace SoalJavab.DataLayer
         {
         }
 
-       #region app domains
-         //public DbSet<Category> Categories { set; get; }
+        #region app domains
+        //public DbSet<Category> Categories { set; get; }
         public virtual DbSet<Address> Addresses { set; get; }
         public virtual DbSet<Soal> Soals { set; get; }
         public virtual DbSet<Reshteh> Reshtehs { get; set; }
@@ -24,28 +24,30 @@ namespace SoalJavab.DataLayer
         public virtual DbSet<SoalFollower> SoalFollowers { set; get; }
 
         public virtual DbSet<TagSoal> TagSoals { set; get; }
+        public virtual DbSet<TagUser> TagUsers { set; get; }
         public virtual DbSet<JavabLike> JavabLikes { set; get; }
         public virtual DbSet<ZirReshteh> ZirReshtehs { set; get; }
         public virtual DbSet<ReshtehUser> ReshtehUsers { set; get; }
         public virtual DbSet<Sath> Saths { set; get; }
         public virtual DbSet<SathUser> SathUsers { set; get; }
-        public  virtual DbSet<ReportType> ReportTypes { set; get; }
+        public virtual DbSet<ReportType> ReportTypes { set; get; }
         public virtual DbSet<ReportUser> ReportUsers { set; get; }
-        public virtual  DbSet<ReportSoal> ReportSoals { set; get; }
+        public virtual DbSet<ReportSoal> ReportSoals { set; get; }
         public virtual DbSet<ReportJavab> ReportJavabs { set; get; }
 
-#endregion
-#region  user  domains 
+        #endregion
+        #region  user  domains 
         public virtual DbSet<ApplicationUser> Users { set; get; }
         public virtual DbSet<Role> Roles { set; get; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<UserToken> UserTokens { get; set; }
-#endregion
+        #endregion
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ApplicationUser>().HasData(new ApplicationUser {
+            builder.Entity<ApplicationUser>().HasData(new ApplicationUser
+            {
                 Id = 1,
                 Username = "mohsen",
                 IsActive = true,
@@ -53,19 +55,11 @@ namespace SoalJavab.DataLayer
                 Passs = "1234",
                 Name = "mohsen",
                 DisplayName = "mohsen bahrami",
-                Family="bahrami",
+                Family = "bahrami",
                 Ban = false,
                 NewReg = true
             });
-
-            // base.OnModelCreating(builder);
-
-            // builder.Entity<ApplicationUser>().ToTable("Users");
-            // builder.Entity<Role>().ToTable("Roles");
-            // builder.Entity<UserRole>().ToTable("UserRoles");
-
-
-             // it should be placed here, otherwise it will rewrite the following settings!
+            // it should be placed here, otherwise it will rewrite the following settings!
             base.OnModelCreating(builder);
 
             // Custom application mappings
@@ -121,12 +115,12 @@ namespace SoalJavab.DataLayer
 
         public IEnumerable<TEntity> AddThisRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            foreach(var n in entities)
+            foreach (var n in entities)
             {
-                Addnew (n);
+                Addnew(n);
             }
             return entities;
-            
+
             //return ((DbSet<TEntity>)this.Set<TEntity>()).AddRange(entities);
         }
 
@@ -145,12 +139,6 @@ namespace SoalJavab.DataLayer
             //return Database.SqlQuery<T>(sql, parameters).ToList();
         }
 
-        //public void ForceDatabaseInitialize()
-        //{
-        //    Database.EnsureCreated();
-        //    //this.Database.Initialize(force: true);
-        //}
-
         public bool Delete<TEntity>(TEntity entity) where TEntity : class
         {
             if (Entry(entity).State == EntityState.Detached)
@@ -158,10 +146,10 @@ namespace SoalJavab.DataLayer
                 return true;
             }
             return false;
-            
+
         }
-        
+
     }
 
- 
+
 }

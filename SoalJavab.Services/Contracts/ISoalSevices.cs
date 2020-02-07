@@ -8,6 +8,7 @@ namespace SoalJavab.Services.Contracts
     {
         bool DeleteSoal(long Idsoal);
         bool EditforSoal(SoalEditVM soalVM);
+        IEnumerable<Soal> GetAllByTag(long[] Tagid);
         IEnumerable<Soal> GetAllByzirreshteh(long ZirReshtehID);
         Soal GetById(long id);
        // Soal GetById(long id);

@@ -17,25 +17,23 @@ namespace SoalJavab.WebApi.Controllers
     [ApiController]
     [EnableCors("CorsPolicy")]
     [Authorize]
-    public class UserReshtehController : ControllerBase
+    public class UserTagController : ControllerBase
     {
         private IUsersService _user;
-        private IReshtehServices _reshteh;
-        private IZirReshtehServices _zirReshteh;
+        private ITagServices _tag;
 
-        public UserReshtehController(IUsersService usersService, IReshtehServices reshtehServices, IZirReshtehServices zirReshteh)
+        public UserTagController(IUsersService usersService, ITagServices tag)
         {
             _user = usersService;
-            _reshteh = reshtehServices;
-            _zirReshteh = zirReshteh;
+            _tag = tag;
         }
 
         // GET api/values
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var user = _user.GetCurrentUserId();
-            var s = _zirReshteh.GetByUser(user);
+            var user =await _user.GetCurrentUserAsync();
+            var s =await _tag.GetByUserAsync(user);
             return Ok(s);
         }
 
@@ -48,14 +46,15 @@ namespace SoalJavab.WebApi.Controllers
         // POST api/values
         [IgnoreAntiforgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] userreshtehVm reshte)
+        public async Task<IActionResult> Post([FromBody] userTagVm tagVm)
         {
-            var Id = reshte.Id;
-            if (!_zirReshteh.ValidateZirreshteh(Id)) return BadRequest(new JsonResult("مقادیر نامعتر هستند"));
-            var result = await _zirReshteh.AddZirreshtehUserAsync(Id);
+            var Id = tagVm.Id;
+            if (!_tag.ValidateTag(Id)) return BadRequest(new JsonResult("مقادیر نامعتر هستند"));
+            var result = await _tag.AddTagUserAsync(Id);
             if (result) return Ok();
             return BadRequest(new JsonResult("در حین کار خطایی رخ داده است"));
         }
+
 
         // PUT api/values/5
         [HttpPut("{id}")]

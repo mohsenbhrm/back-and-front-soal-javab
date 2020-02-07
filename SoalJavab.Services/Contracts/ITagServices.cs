@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SoalJavab.DomainClasses;
 using SoalJavab.Services.Models;
 
 namespace SoalJavab.Services.Contracts
 {
     public interface ITagServices
     {
+        Task<bool> AddTagUserAsync(long[] id);
         TagVM CreatTag(TagVM tag);
         Task<TagVM> CreatTagAsync(TagVM tag);
+        Task<IList<TagVM>> GetByUserAsync(ApplicationUser user);
         IList<JsonVm> GetOtherTagsforSoal(long Idsoal);
         TagVM getTagForCreat(string ZirReshte);
         IList<JsonVm> GetTags(long IdZirreshte);
@@ -17,5 +20,7 @@ namespace SoalJavab.Services.Contracts
         Task<List<JsonVm>> GetTAGsAsync();
         Task<List<JsonVm>> GetTagsByzirreshteAsync(long Idzirreshteh);
         IList<JsonVm> GetTagsofSoal(long Idsoal);
+        bool ValidateTag(long id);
+        bool ValidateTag(long[] id);
     }
 }

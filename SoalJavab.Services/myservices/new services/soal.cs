@@ -176,7 +176,7 @@ namespace SoalJavab.Services.myservices
                 if (soalVM.Tags != null)
                 {
                     var (nw, old) = _InsertTags(soalVM);
-                    var d = old.Select(f=>f.Id);
+                    var d = old.Select(f => f.Id);
 
                     var delettags = db.Set<TagSoal>().Where(c => c.Soal == sl).ToList();
                     // delettags.ForEach(v=> v.Isdeleted = true
@@ -346,6 +346,19 @@ namespace SoalJavab.Services.myservices
                                 .Include(x => x.SoalToUser)
                                 .Include(u => u.User).ToList();
                 return e.ToList();
+            }
+            catch { return null; }
+        }
+        public IEnumerable<Soal> GetAllByTag(long[] Tagid)
+        {
+            try
+            {
+                var tgs = db.Set<TagSoal>()
+                        .Where(x => Tagid.Contains(x.TagId))
+                        .Select(sl => sl.Soal).Distinct()
+                        .Include(v=>v.User)
+                        .Include(ts=>ts.TagSoal);
+                return tgs.ToList();
             }
             catch { return null; }
         }
