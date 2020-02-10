@@ -13,7 +13,28 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoalJavab.Services", "SoalJ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoalJavab.Ioc", "SoalJavab.Ioc\SoalJavab.Ioc.csproj", "{96CE672E-AEF7-4FCB-B654-02BA454C43A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoalJavab.Common", "SoalJavab.Common\SoalJavab.Common.csproj", "{0D96DE64-C27E-4C39-9EB7-09D79505F8F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoalJavab.Common", "SoalJavab.Common\SoalJavab.Common.csproj", "{0D96DE64-C27E-4C39-9EB7-09D79505F8F3}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "front-soal-javab", "front-soal-javab\", "{495CB174-32AD-4CF8-BEF4-EC97BE30451E}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62789"
+		Debug.AspNetCompiler.PhysicalPath = "front-soal-javab\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62789\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62789"
+		Release.AspNetCompiler.PhysicalPath = "front-soal-javab\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62789\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62789"
+		SlnRelativePath = "front-soal-javab\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +66,10 @@ Global
 		{0D96DE64-C27E-4C39-9EB7-09D79505F8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D96DE64-C27E-4C39-9EB7-09D79505F8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D96DE64-C27E-4C39-9EB7-09D79505F8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495CB174-32AD-4CF8-BEF4-EC97BE30451E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495CB174-32AD-4CF8-BEF4-EC97BE30451E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495CB174-32AD-4CF8-BEF4-EC97BE30451E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{495CB174-32AD-4CF8-BEF4-EC97BE30451E}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
