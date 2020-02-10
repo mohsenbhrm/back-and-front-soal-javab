@@ -29,6 +29,8 @@ namespace SoalJavab.Services.Models
         public long ZirReshtehId { get; set; }
         [Display(Name = "عنوان تگ")]
         public string Onvan { get; set; }
+        public long UsedSoal { get; set; }
+        public long UsedUser { get; set; }
     }
     public class ReshtehVm
     {
@@ -117,12 +119,14 @@ namespace SoalJavab.Services.Models
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
     }
-    public class userreshtehVm {
-        public string Name {get;set;}
-        public long[] Id {get;set;}
+    public class userreshtehVm
+    {
+        public string Name { get; set; }
+        public long[] Id { get; set; }
     }
-    public class userTagVm {
-        public string Name {get;set;}
-        public long Id {get;set;}
+    public class userTagVm
+    {
+        public string Name { get; set; }
+        public long Id { get; set; }
     }
 }
