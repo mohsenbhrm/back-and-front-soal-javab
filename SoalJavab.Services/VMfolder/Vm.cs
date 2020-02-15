@@ -106,14 +106,14 @@ namespace SoalJavab.Services.Models
         public string Email { get; set; }
         public long[] zirReshteh { get; set; }
     }
-    public class UserRoleVM
-    {
-        public long userId { get; set; }
-        public long userRole { get; set; }
-        public string Rolename { get; set; }
-        public long RoleId { get; set; }
+    // public class UserRoleVM
+    // {
+    //     public long userId { get; set; }
+    //     public long userRole { get; set; }
+    //     public string Rolename { get; set; }
+    //     public long RoleId { get; set; }
 
-    }
+    // }
     public class changepassword
     {
         public string CurrentPassword { get; set; }

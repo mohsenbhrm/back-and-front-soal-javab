@@ -15,8 +15,9 @@ namespace SoalJavab.Services.Admin
 {
     public interface ISoalAdminService
     {
-        Task<bool> Delete(long id);
-        Task<List<SoalVM>> GetAll();
+
+        Task<bool> DeleteAsync(long id);
+        Task<List<SoalVM>> GetAllAsync();
     }
 
     public class SoalAdminService : ISoalAdminService
@@ -47,7 +48,7 @@ namespace SoalJavab.Services.Admin
             _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
         }
 
-        public Task<List<SoalVM>> GetAll()
+        public Task<List<SoalVM>> GetAllAsync()
         {
             var s = _soals.Include(c => c.User)
             .Include(jvb => jvb.Javab)
@@ -64,18 +65,19 @@ namespace SoalJavab.Services.Admin
             }).ToListAsync();
             return s;
         }
-        public async Task<bool> Delete(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
-            try {
+            try
+            {
 
-            
-            var s = await _soals.FindAsync(id);
-            s.IsDeleted = true;
-            _uow.MarkAsChanged(s);
-            await _uow.SaveChangesAsync();
-            return true;
+
+                var s = await _soals.FindAsync(id);
+                s.IsDeleted = true;
+                _uow.MarkAsChanged(s);
+                await _uow.SaveChangesAsync();
+                return true;
             }
-            catch {return false;}
+            catch { return false; }
         }
     }
 }

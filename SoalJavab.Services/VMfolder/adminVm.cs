@@ -42,14 +42,14 @@ namespace SoalJavab.Services.Models.admin
         public string name { get; set; }
         public long Id { get; set; }
     }
-
-
-    public class UserRoleVM
-    {
-        public long userId { get; set; }
-        public long userRole { get; set; }
-        public string Rolename { get; set; }
-        public long RoleId { get; set; }
-
-    }
+    public class UserRoleVm
+{
+    public long UserId { get; set; }
+    public IList<RoleVm> Roles { get; set; }
+}
+public class RoleVm
+{
+    public long Id { get; set; }
+    public string RoleName { get; set; }
+}
 }

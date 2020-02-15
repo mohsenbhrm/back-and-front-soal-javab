@@ -15,8 +15,8 @@ namespace SoalJavab.Services.Admin
 {
     public interface IJavbAdminService
     {
-        Task<bool> Delete(long id);
-        Task<List<JavabVM>> GetAll();
+        Task<bool> DeleteAsync(long id);
+        Task<List<JavabVM>> GetAllAsync();
     }
 
     public class JavbAdminService : IJavbAdminService
@@ -36,18 +36,12 @@ namespace SoalJavab.Services.Admin
         {
             _uow = uow;
             _uow.CheckArgumentIsNull(nameof(_uow));
-
             _Javabs = _uow.Set<Javab>();
-
-            _securityService = securityService;
-            _securityService.CheckArgumentIsNull(nameof(_securityService));
             _usersService = usersService;
             _usersService.CheckArgumentIsNull(nameof(_usersService));
-            _contextAccessor = contextAccessor;
-            _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
         }
 
-        public Task<List<JavabVM>> GetAll()
+        public Task<List<JavabVM>> GetAllAsync()
         {
             var s = _Javabs.Include(c => c.User)
             .Include (d=>d.Soal)
@@ -62,7 +56,7 @@ namespace SoalJavab.Services.Admin
             }).ToListAsync();
             return s;
         }
-        public async Task<bool> Delete(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
             try {
             var s = await _Javabs.FindAsync(id);

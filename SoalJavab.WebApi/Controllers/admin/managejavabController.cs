@@ -1,29 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using SoalJavab.Services.Contracts;
+using SoalJavab.Services.Admin;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace SoalJavab.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "Admin,manager")]
+    [EnableCors("CorsPolicy")]
     public class manageJavabController : ControllerBase
     {
-        private ITagServices _tags;
+        private IJavbAdminService _javabs;
 
-        public manageJavabController(ITagServices tags)
+        public manageJavabController(IJavbAdminService javbAdmin)
         {
-            _tags = tags;
+            _javabs = javbAdmin;
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet,Authorize(Roles = "Manager")]
-        public IActionResult Get()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return Ok(_tags.getTags());
+                return Ok(await _javabs.GetAllAsync());
             }
             catch { return BadRequest(); }
+        }
+        [HttpDelete("{id}")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Delete(long id)
+        {
+            try
+            {
+                 if (await _javabs.DeleteAsync(id)) return Ok();
+                return BadRequest();
+            }
+            catch { return StatusCode(500); }
         }
     }
 }

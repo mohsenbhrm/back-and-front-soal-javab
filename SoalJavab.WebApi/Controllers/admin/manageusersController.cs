@@ -2,30 +2,78 @@
 using Microsoft.AspNetCore.Authorization;
 using SoalJavab.Services.Contracts;
 using SoalJavab.Services;
-
+using SoalJavab.Services.Admin;
+using SoalJavab.Services.Models.admin;
+using System.Threading.Tasks;
 
 namespace SoalJavab.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "Admin,User")]
     public class manageUsersController : ControllerBase
     {
-        private IUsersService _users;
+        private IUsersAdminService _users;
 
-        public manageUsersController(IUsersService users)
+        public manageUsersController(IUsersAdminService users)
         {
             _users = users;
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet,Authorize(Roles = "Manager")]
-        public IActionResult Get()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return Ok();
+                return Ok(await _users.GetAllAsync());
             }
             catch { return BadRequest(); }
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetNewInDay()
+        {
+            try
+            {
+                return Ok(await _users.SignupInDayAsync());
+            }
+            catch { return BadRequest(); }
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetNewInMounth()
+        {
+            try
+            {
+                return Ok(await _users.SignupInMounthAsync());
+            }
+            catch { return BadRequest(); }
+        }
+        [HttpPost("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UserBan([FromBody] JsonVm user)
+        {
+            try
+            {
+                return Ok(await _users.BanAsync(user.Id));
+            }
+            catch { return BadRequest(); }
+        }
+        [HttpPost("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UserUnBan([FromBody] JsonVm user)
+        {
+            try
+            {
+                return Ok(await _users.BanAsync(user.Id));
+            }
+            catch { return BadRequest(); }
+        }
+        [HttpPost("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ChangeRole([FromBody] UserRoleVm userRole)
+        {
+            await _users.ChangeRole(userRole);
+            return Ok();
+
         }
     }
 }

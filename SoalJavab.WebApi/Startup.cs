@@ -25,6 +25,7 @@ using Newtonsoft.Json;
 using SoalJavab.WebApi.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using SoalJavab.Services.Admin;
 
 namespace SoalJavab.WebApi
 {
@@ -76,6 +77,10 @@ namespace SoalJavab.WebApi
             //services.AddScoped<IJavabRepository,JavabRepository>();
             services.AddScoped<ISoalToUserServices, SoalToUserservices>();
             services.AddScoped<IZirReshtehServices, ZirReshtehServices>();
+            services.AddScoped<ITagAdminServices, TagAdminServices>();
+            services.AddScoped<IUsersAdminService, UsersAdminService>();
+              services.AddScoped<IJavbAdminService, JavbAdminService>();
+
             #endregion
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -170,27 +175,18 @@ namespace SoalJavab.WebApi
             #endregion
 
 
-
-
-            #region MY CODE 
-
-
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+                        {
+                            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                        });
 
             services.AddSpaStaticFiles(configuration =>
            {
                configuration.RootPath = "front-soal-javab/dist";
            });
-            #endregion
+
+
         }
-
-
-
-
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
