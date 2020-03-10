@@ -44,7 +44,7 @@ namespace SoalJavab.Services
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    context.Database.Migrate();
+                   // context.Database.Migrate();
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace SoalJavab.Services
                             DisplayName = "محسن",
                             IsActive = true,
                             LastLoggedIn = null,
-                            Password = _securityService.GetSha256Hash("1234"),
+                            Password = _securityService.GetSha256Hash("121212"),
                             SerialNumber = Guid.NewGuid().ToString("N")
                         };
                         context.Add(adminUser);

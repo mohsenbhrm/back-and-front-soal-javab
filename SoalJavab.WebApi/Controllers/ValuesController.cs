@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using SoalJavab.DataLayer;
 using SoalJavab.DomainClasses;
 using SoalJavab.Services;
@@ -13,33 +14,42 @@ namespace SoalJavab.WebApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IServiceScopeFactory _scopeFactory;
+
         private IUsersService _users;
         private IRolesService _role;
+        private readonly ISecurityService _securityService;
 
         public ValuesController (
          IRolesService IRolesService,
-         IUsersService usersService)
+         IUsersService usersService,
+         IServiceScopeFactory scopeFactory,
+         ISecurityService securityService)
         {
+            _scopeFactory = scopeFactory;
             _users = usersService;
             _role = IRolesService;
+            _securityService = securityService;
         }
         // GET api/values
         [HttpGet]
         public IActionResult Get()
         {
-            var s = _users.GetCurrentUserId();
-            _role.CahngeUserRole(s,new long []{1,2});
-             return Ok();
-         
+            return Ok();
         }
+
+
+
+
+
+
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(long id)
+        public  IActionResult GetAsync(long id)
         {
-            // var s = await _context.Reshtehs.FindAsync(id);
-            // return Ok(s);
-            return Ok();
+
+            return Ok(id);
         }
 
         // POST api/values

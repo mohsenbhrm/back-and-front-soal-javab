@@ -1,0 +1,23 @@
+html,
+body {
+  font-family: "iranyekan";
+  width: 100%;
+  height: calc(100% - 64px);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.dir-rtl {
+  direction: rtl !important;
+}
+
+.dir-ltr {
+  direction: ltr !important;
+}
+
+.scrollable-content {
+  max-height: 500px;
+  overflow: auto;
+}

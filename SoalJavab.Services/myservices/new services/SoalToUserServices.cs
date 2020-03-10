@@ -326,10 +326,8 @@ namespace SoalJavab.Services.myservices
             var user = _Userrepository.GetById(Iduser);
             var soals = _soalRepository.Get(
                 x => !x.IsDeleted &&
-                x.Regdat > user.visitedDate &&
-                 user.ReshtehUser
-                    .Select(c => c.ZirReshtehId)
-                    .Contains(x.TagSoal.FirstOrDefault().Tag.ZirReshtehId))
+                x.Regdat > user.visitedDate
+                 )
                  .LongCount();
             return soals;
         }
@@ -339,10 +337,8 @@ namespace SoalJavab.Services.myservices
             var user = _Userrepository.GetById(Iduser);
             var soals = _soalRepository.Get(
                 x => !x.IsDeleted &&
-                x.Regdat > user.visitedDate &&
-                 user.ReshtehUser
-                    .Select(c => c.ZirReshtehId)
-                    .Contains(x.TagSoal.FirstOrDefault().Tag.ZirReshtehId))
+                x.Regdat > user.visitedDate 
+                 )
                  .ToList();
             return soals;
         }

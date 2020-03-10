@@ -26,8 +26,6 @@ namespace SoalJavab.DataLayer
         public virtual DbSet<TagSoal> TagSoals { set; get; }
         public virtual DbSet<TagUser> TagUsers { set; get; }
         public virtual DbSet<JavabLike> JavabLikes { set; get; }
-        public virtual DbSet<ZirReshteh> ZirReshtehs { set; get; }
-        public virtual DbSet<ReshtehUser> ReshtehUsers { set; get; }
         public virtual DbSet<Sath> Saths { set; get; }
         public virtual DbSet<SathUser> SathUsers { set; get; }
         public virtual DbSet<ReportType> ReportTypes { set; get; }

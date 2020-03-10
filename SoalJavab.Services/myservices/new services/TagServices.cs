@@ -36,7 +36,6 @@ namespace SoalJavab.Services.myservices
             {
                 Id = x.Id,
                 Onvan = x.Onvan,
-                ZirReshtehId = x.ZirReshtehId
             }).ToList(); ;
         }
         public async Task<List<JsonVm>> GetTAGsAsync() =>
@@ -51,14 +50,13 @@ namespace SoalJavab.Services.myservices
         {
             try
             {
-                var q = _tags.Where(e => !e.IsDeleted && e.ZirReshtehId.Equals(Idzirreshteh));
+                var q = _tags.Where(e => !e.IsDeleted);
                 return q.Select(x =>
 
                new TagVM
                {
                    Id = x.Id,
                    Onvan = x.Onvan,
-                   ZirReshtehId = x.ZirReshtehId
                }).ToList();
             }
             catch
@@ -68,7 +66,7 @@ namespace SoalJavab.Services.myservices
 
         }
         public Task<List<JsonVm>> GetTagsByzirreshteAsync(long Idzirreshteh) =>
-        _tags.Where(e => !e.IsDeleted && e.ZirReshtehId.Equals(Idzirreshteh))
+        _tags.Where(e => !e.IsDeleted)
            .Select(x =>
            new JsonVm
            {
@@ -93,7 +91,6 @@ namespace SoalJavab.Services.myservices
                     throw new NullReferenceException();
                 }
                 Tag tg = new Tag();
-                tg.ZirReshtehId = tag.ZirReshtehId;
                 tg.Onvan = tag.Onvan;
                 db.Addnew<Tag>(tg);
                 db.SaveAllChanges();
@@ -113,14 +110,13 @@ namespace SoalJavab.Services.myservices
                 }
 
                 Tag tg = new Tag();
-                tg.ZirReshtehId = tag.ZirReshtehId;
                 tg.Onvan = tag.Onvan;
                 db.Addnew<Tag>(tg);
                 await db.SaveAllChangesAsync();
                 tag.Id = tg.Id;
 
                 if (tg != null)
-                    return new TagVM { Id = tg.Id, Onvan = tg.Onvan, ZirReshtehId = tg.ZirReshtehId };
+                    return new TagVM { Id = tg.Id, Onvan = tg.Onvan };
                 throw new Exception();
             }
             catch { return null; }
@@ -162,7 +158,7 @@ namespace SoalJavab.Services.myservices
             var q = db.Set<TagSoal>().Where(e => !e.Isdeleted && e.Soal.Id.Equals(Idsoal)).Select(e => e.Tag);
 
             var s = db.Set<Tag>()
-                .Where(e => !e.IsDeleted && e.ZirReshteh.Id.Equals(q.FirstOrDefault().ZirReshtehId)).Except(q)
+                .Where(e => !e.IsDeleted).Except(q)
                 .Select(e => new JsonVm { Id = e.Id, name = e.Onvan }).ToList();
             return s;
         }

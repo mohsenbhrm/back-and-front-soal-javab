@@ -11,7 +11,7 @@ namespace SoalJavab.DomainClasses
         public virtual IList<SoalFollower> SoalFollower { get; set; }
         public virtual IList<Javab> Javab { get; set; }
         public virtual IList<JavabLike> JavabLike { get; set; }
-        public virtual IList<ReshtehUser> ReshtehUser { get; set; }
+        //public virtual IList<ReshtehUser> ReshtehUser { get; set; }
         public virtual IList<SoalToUser> SoalToUser { get; set; }
         public virtual IList<ReportUser> ReportUser { get; set; }
         public virtual IList<ReportSoal> ReportSoal { get; set; }

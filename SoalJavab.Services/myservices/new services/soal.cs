@@ -34,12 +34,12 @@ namespace SoalJavab.Services.myservices
             try
             {
                 var soal = _soalRepository.GetById(id);
-                var zr = soal.TagSoal.Where(x => !x.Isdeleted).FirstOrDefault().Tag.ZirReshteh;
+                var zr = soal.TagSoal.Where(x => !x.Isdeleted).FirstOrDefault().Tag;
                 var s = new SoalVM
                 {
                     Id = soal.Id,
                     Matn = soal.Matn,
-                    ZirReshtehId = zr.Id
+                    
                 };
                 return s;
             }
@@ -59,7 +59,6 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.name,
                     Id = n.Id,
-                    ZirReshtehId = 1
                 }
                 );
             }
@@ -71,7 +70,6 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.name,
                     Id = n.Id,
-                    ZirReshtehId = 1
                 }
                 );
             }
@@ -92,7 +90,7 @@ namespace SoalJavab.Services.myservices
                 {
                     Matn = soalVM.Matn,
                     ApplicationUserId = UserId,
-                    ZirReshtehId = 1
+                    //ZirReshtehId = 1
                 },
                 w);
                 db.SaveAllChanges();
@@ -187,8 +185,6 @@ namespace SoalJavab.Services.myservices
                     JavabCount = c.Javab.Where(i => !i.IsDeleted).LongCount(),
                     SoalId = c.Id,
                     Matn = c.Matn,
-                    Reshteh = c.ZirReshteh.Reshteh.Onvan,
-                    Zirreshteh = c.ZirReshteh.Onvan,
                     username = c.User.Username
                 }).FirstOrDefault();
                 return x;
@@ -203,8 +199,6 @@ namespace SoalJavab.Services.myservices
             {
                 var t = _Soals.Where(x => x.User.Id == IdUser && !x.IsDeleted && x.TagSoal.Any())
                 .Include(b => b.Javab)
-                .Include(z => z.ZirReshteh)
-                .ThenInclude(y => y.Reshteh)
                 .Include(tg => tg.TagSoal).ThenInclude(th => th.Tag).ToList();
                 var q = t.Select(x => new SoalOfUserVM
                 {
@@ -213,10 +207,7 @@ namespace SoalJavab.Services.myservices
                     RegDate = x.Regdat.ToString(),
                     SoalId = x.Id,
                     Matn = x.Matn,
-                    Reshteh = x.ZirReshteh.Reshteh.Onvan,
-                    Zirreshteh = x.ZirReshteh.Onvan,
                     JavabCount = x.Javab.Where(j => !j.IsDeleted).LongCount(),
-                    IdZirreshteh = x.ZirReshtehId,
                     Tags = x.TagSoal.Select(c => new TagVM
                     {
                         Id = c.TagId,
@@ -310,7 +301,7 @@ namespace SoalJavab.Services.myservices
             {
 
                 var w = db.Set<Tag>()
-                    .Where(c => !c.IsDeleted && c.ZirReshtehId == ZirReshtehID)
+                    .Where(c => !c.IsDeleted)
                     .Select(c => c.Id).ToArray();
                 var e = _Soals.Where(x =>
                                 w.Contains(x.TagSoal.FirstOrDefault().TagId)

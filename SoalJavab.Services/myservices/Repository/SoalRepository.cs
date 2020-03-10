@@ -166,7 +166,7 @@ namespace SoalJavab.Services
             {
 
                 var w = db.Set<Tag>()
-                    .Where(c => !c.IsDeleted && c.ZirReshtehId == ZirReshtehID)
+                    .Where(c => !c.IsDeleted)
                     .Select(c => c.Id).ToArray();
                 var e = _SoalDbSet.Where(x =>
                                 w.Contains(x.TagSoal.FirstOrDefault().TagId)
@@ -180,7 +180,7 @@ namespace SoalJavab.Services
         {
             try
             {
-                var q = _SoalDbSet.Where(x => ZirReshtehID.Contains(x.ZirReshtehId) && !x.IsDeleted);
+                var q = _SoalDbSet.Where(x =>!x.IsDeleted);
                 return q.ToList();
             }
             catch { return null; }
@@ -190,7 +190,7 @@ namespace SoalJavab.Services
         {
             try
             {
-                var q = await _SoalDbSet.Where(x => ZirReshtehID.Contains(x.ZirReshtehId) && !x.IsDeleted).ToListAsync();
+                var q = await _SoalDbSet.Where(x => !x.IsDeleted).ToListAsync();
                 return q;
             }
             catch { return null; }

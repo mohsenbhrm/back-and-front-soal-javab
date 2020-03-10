@@ -55,11 +55,11 @@ namespace SoalJavab.Services
         }
         public IList<Tag> GetByReshteh(long id)
         {
-            return _Tag.Where(e => !e.IsDeleted && e.ZirReshtehId.Equals(id)).ToList();
+            return _Tag.Where(e => !e.IsDeleted).ToList();
         }
         public async Task<IList<Tag>> GetByReshtehAsync(long id)
         {
-            return await _Tag.Where(e => !e.IsDeleted && e.ZirReshtehId.Equals(id)).ToListAsync();
+            return await _Tag.Where(e => !e.IsDeleted).ToListAsync();
         }
          public IList<TagVM> CreatRange(IList<TagVM> t)
         {
@@ -69,10 +69,11 @@ namespace SoalJavab.Services
                 IList<Tag> tg = new List<Tag>();
                 foreach(var n in t)
                 {
-                    tg.Add(new Tag{
-                        ZirReshtehId = n.ZirReshtehId,
-                Onvan = n.Onvan
-                });
+                    tg.Add(new Tag
+                    {
+                        //ZirReshtehId = n.ZirReshtehId,
+                        Onvan = n.Onvan
+                    });
                 }
                 db.AddThisRange<Tag>(tg);
                 db.SaveAllChanges();
@@ -87,7 +88,6 @@ namespace SoalJavab.Services
             try
             {
                 Tag tg = new Tag();
-                tg.ZirReshtehId = t.ZirReshtehId;
                 tg.Onvan = t.Onvan;
                 db.Addnew<Tag>(tg);
                 await db.SaveAllChangesAsync();

@@ -304,7 +304,7 @@ namespace SoalJavab.DataLayer.Migrations
 
                     b.HasIndex("ZirReshtehId");
 
-                    b.ToTable("ReshtehUsers");
+                    b.ToTable("ReshtehUser");
                 });
 
             modelBuilder.Entity("SoalJavab.DomainClasses.Role", b =>
@@ -381,7 +381,7 @@ namespace SoalJavab.DataLayer.Migrations
 
                     b.Property<byte[]>("RowVersion");
 
-                    b.Property<long>("ZirReshtehId");
+                    b.Property<long?>("ZirReshtehId");
 
                     b.HasKey("Id");
 
@@ -448,7 +448,7 @@ namespace SoalJavab.DataLayer.Migrations
 
                     b.Property<string>("Onvan");
 
-                    b.Property<long>("ZirReshtehId");
+                    b.Property<long?>("ZirReshtehId");
 
                     b.HasKey("Id");
 
@@ -566,7 +566,7 @@ namespace SoalJavab.DataLayer.Migrations
 
                     b.HasIndex("ReshtehId");
 
-                    b.ToTable("ZirReshtehs");
+                    b.ToTable("ZirReshteh");
                 });
 
             modelBuilder.Entity("SoalJavab.DomainClasses.ApplicationUser", b =>
@@ -646,7 +646,7 @@ namespace SoalJavab.DataLayer.Migrations
             modelBuilder.Entity("SoalJavab.DomainClasses.ReshtehUser", b =>
                 {
                     b.HasOne("SoalJavab.DomainClasses.ApplicationUser", "User")
-                        .WithMany("ReshtehUser")
+                        .WithMany()
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -676,10 +676,9 @@ namespace SoalJavab.DataLayer.Migrations
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SoalJavab.DomainClasses.ZirReshteh", "ZirReshteh")
+                    b.HasOne("SoalJavab.DomainClasses.ZirReshteh")
                         .WithMany("Soal")
-                        .HasForeignKey("ZirReshtehId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ZirReshtehId");
                 });
 
             modelBuilder.Entity("SoalJavab.DomainClasses.SoalFollower", b =>
@@ -707,10 +706,9 @@ namespace SoalJavab.DataLayer.Migrations
 
             modelBuilder.Entity("SoalJavab.DomainClasses.Tag", b =>
                 {
-                    b.HasOne("SoalJavab.DomainClasses.ZirReshteh", "ZirReshteh")
+                    b.HasOne("SoalJavab.DomainClasses.ZirReshteh")
                         .WithMany("Tag")
-                        .HasForeignKey("ZirReshtehId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ZirReshtehId");
                 });
 
             modelBuilder.Entity("SoalJavab.DomainClasses.TagSoal", b =>
@@ -728,7 +726,7 @@ namespace SoalJavab.DataLayer.Migrations
             modelBuilder.Entity("SoalJavab.DomainClasses.TagUser", b =>
                 {
                     b.HasOne("SoalJavab.DomainClasses.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("TagUsers")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
 

@@ -43,7 +43,6 @@ namespace SoalJavab.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             #region  new code user authenticate 
-
             services.AddOptions<BearerTokensOptions>()
                     .Bind(Configuration.GetSection("BearerTokens"))
                     .Validate(bearerTokens =>
@@ -182,7 +181,7 @@ namespace SoalJavab.WebApi
 
             services.AddSpaStaticFiles(configuration =>
            {
-               configuration.RootPath = "front-soal-javab/dist";
+               configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
            });
 
 
@@ -195,6 +194,16 @@ namespace SoalJavab.WebApi
             {
                 app.UseHsts();
             }
+            app.Use(async (context, next) => {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value) &&
+                    !context.Request.Path.Value.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler(appBuilder =>
@@ -243,30 +252,35 @@ namespace SoalJavab.WebApi
             app.UseDefaultFiles(); // so index.html is not required
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}/{action}/{id}",
+                    defaults: new { controller = "Home", action = "Index" });
+
             });
+            // app.UseMvcWithDefaultRoute();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = env.ContentRootPath + "\\..\\" + "front-soal-javab";
+                spa.Options.SourcePath = env.WebRootPath;// + "\\..\\" + "front-soal-javab";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
+                // if (env.IsDevelopment())
+                // {
+                //    spa.UseAngularCliServer(npmScript: "start");
+                // }
             });
-            app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            //app.UseSwagger();
+
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //});
 
             app.UseCors("CorsPolicy");
 
@@ -274,4 +288,5 @@ namespace SoalJavab.WebApi
 
         }
     }
+    
 }

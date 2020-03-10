@@ -30,9 +30,6 @@ namespace SoalJavab.DomainClasses
         [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser User { set; get; }
         public long ApplicationUserId { set; get; }
-        [ForeignKey("ZirReshtehId")]
-        public virtual ZirReshteh ZirReshteh { set; get; }
-        public long ZirReshtehId { get; set; }
 
     }
 }
