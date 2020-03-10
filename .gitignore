@@ -4,6 +4,10 @@
 /front-soal-javab/dist
 /front-soal-javab/tmp
 /front-soal-javab/out-tsc
+/SoalJavab.WebApi/wwwroot
+/SoalJavab.WebApi/wwwroot/*
+SoalJavab.WebApi/wwwroot/*
+SoalJavab.WebApi/wwwroot
 # Only exists if Bazel was run
 /front-soal-javab/bazel-out
 
