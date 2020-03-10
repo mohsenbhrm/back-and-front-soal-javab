@@ -15,6 +15,8 @@ chrome-profiler-events*.json
 speed-measure-plugin*.json
 
 # IDEs and editors
+/SoalJavab.WebApi/wwwroot
+/SoalJavab.WebApi/wwwroot/*
 /front-soal-javab/.idea
 .project
 .classpath
