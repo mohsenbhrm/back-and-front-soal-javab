@@ -8,6 +8,10 @@
 /SoalJavab.WebApi/wwwroot/*
 SoalJavab.WebApi/wwwroot/*
 SoalJavab.WebApi/wwwroot
+wwwroot/*
+/wwwroot/*
+/wwwroot
+wwwroot
 # Only exists if Bazel was run
 /front-soal-javab/bazel-out
 
