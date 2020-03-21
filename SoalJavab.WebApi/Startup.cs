@@ -157,7 +157,7 @@ namespace SoalJavab.WebApi
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                        .WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
+                        //.WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowAnyOrigin()
