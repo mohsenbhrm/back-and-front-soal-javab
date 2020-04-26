@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 // const server = 'https://localhost:5001';
-const server = '';
+const server = 'http://api.porsopey.ir';
 //  const server = 'http://localhost:5000';
 
 

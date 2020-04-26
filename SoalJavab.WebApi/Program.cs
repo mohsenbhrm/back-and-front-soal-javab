@@ -24,11 +24,11 @@ namespace SoalJavab.WebApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
         WebHost.CreateDefaultBuilder(args)
-        // .UseKestrel()
-            //.UseContentRoot(Directory.GetCurrentDirectory())
-            ////.UseUrls("http://localhost:5000", "http://192.168.1.5:5000")
-            //.UseKestrel()
-            //.UseIISIntegration()
+         //.UseKestrel()
+         //   .UseContentRoot(Directory.GetCurrentDirectory())
+         //   .UseUrls("http://localhost:5000")//, "http://192.168.1.5:5000")
+         //   .UseKestrel()
+         //   .UseIISIntegration()
             .UseStartup<Startup>();
            
     }

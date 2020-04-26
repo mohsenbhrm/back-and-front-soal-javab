@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using SoalJavab.Services.Models;
 using SoalJavab.Services.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SoalJavab.WebApi.Controllers
 {
@@ -17,7 +18,8 @@ namespace SoalJavab.WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("CorsPolicy")]
-    [Authorize]
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AccountController : Controller
     {
         private readonly IZirReshtehServices _zirreshteh;

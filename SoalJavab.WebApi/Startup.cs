@@ -157,11 +157,11 @@ namespace SoalJavab.WebApi
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                        //.WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
+                       .WithOrigins("http://porsopey.ir")  //.WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowAnyOrigin()
-                        .AllowCredentials()
+                       // .AllowCredentials()
                         .Build());
 
             });
@@ -179,10 +179,10 @@ namespace SoalJavab.WebApi
                             c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                         });
 
-            services.AddSpaStaticFiles(configuration =>
-           {
-               configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
-           });
+           // services.AddSpaStaticFiles(configuration =>
+           //{
+           //    configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
+           //});
 
 
         }
@@ -204,7 +204,7 @@ namespace SoalJavab.WebApi
                     await next();
                 }
             });
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseExceptionHandler(appBuilder =>
             {
@@ -251,7 +251,7 @@ namespace SoalJavab.WebApi
             app.UseStatusCodePages();
             app.UseDefaultFiles(); // so index.html is not required
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            //app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -261,19 +261,19 @@ namespace SoalJavab.WebApi
                     defaults: new { controller = "Home", action = "Index" });
 
             });
-            // app.UseMvcWithDefaultRoute();
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = env.WebRootPath;// + "\\..\\" + "front-soal-javab";
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                // if (env.IsDevelopment())
-                // {
-                //    spa.UseAngularCliServer(npmScript: "start");
-                // }
-            });
+            //    spa.Options.SourcePath = env.WebRootPath;// + "\\..\\" + "front-soal-javab";
+
+            //    // if (env.IsDevelopment())
+            //    // {
+            //    //    spa.UseAngularCliServer(npmScript: "start");
+            //    // }
+            //});
 
             //app.UseSwagger();
 

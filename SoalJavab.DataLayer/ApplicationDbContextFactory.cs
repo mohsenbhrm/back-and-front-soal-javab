@@ -22,7 +22,7 @@ namespace SoalJavab.DataLayer
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = "Data Source=185.116.161.67,2017;Initial Catalog=porsopey_db;User ID=porsopey_usr;Password=t$16Vkm2;";
             //var connectionString = configuration.GetConnectionString("ConnectionStrings:ApplicationDbContextConnection");
-            //var connectionString  = "Data Source=.;Initial Catalog=newDbCore;Integrated Security = true;Trusted_Connection=True";// configuration.GetConnectionString("ConnectionStrings");
+            //var connectionString = "Data Source=.;Initial Catalog=newDbCore;Integrated Security = true;Trusted_Connection=True";// configuration.GetConnectionString("ConnectionStrings");
             //.Replace("|DataDirectory|", Path.Combine(basePath, "wwwroot", "app_data"));
             builder.UseSqlServer(connectionString);
             return new ApplicationDbContext(builder.Options);
