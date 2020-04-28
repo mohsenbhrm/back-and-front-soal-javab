@@ -10,7 +10,7 @@ namespace SoalJavab.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin,User")]
+    [Authorize(Roles = "Admin")]
     public class manageUsersController : ControllerBase
     {
         private IUsersAdminService _users;
