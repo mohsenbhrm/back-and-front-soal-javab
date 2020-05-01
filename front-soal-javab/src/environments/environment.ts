@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 // const server = 'https://localhost:5001';
-const server = 'http://api.porsopey.ir';
-//  const server = 'http://localhost:5000';
+// const server = 'http://api.porsopey.ir';
+const server = 'http://192.168.1.52:5000';
 
 
 export const environment = {

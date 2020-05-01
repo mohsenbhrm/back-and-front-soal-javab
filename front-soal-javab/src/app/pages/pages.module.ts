@@ -9,6 +9,7 @@ import { QuestionsFeedComponent } from './questions-feed/questions-feed.componen
 import { EditQuestionModalComponent } from './my-question-list/edit-question-modal/edit-question-modal.component';
 import { EditAnswerModalComponent } from './my-answer-list/edit-answer-modal/edit-answer-modal.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SearchComponent } from './search/search.component';
 
 
 
@@ -21,7 +22,8 @@ import { ProfileComponent } from './profile/profile.component';
     QuestionsFeedComponent,
     EditQuestionModalComponent,
     EditAnswerModalComponent,
-    ProfileComponent
+    ProfileComponent,
+    SearchComponent
   ],
   imports: [
     SharedModule

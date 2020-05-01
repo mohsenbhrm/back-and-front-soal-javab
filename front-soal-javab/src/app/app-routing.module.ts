@@ -10,6 +10,7 @@ import { MyAnswerListComponent } from './pages/my-answer-list/my-answer-list.com
 import { QuestionsFeedComponent } from './pages/questions-feed/questions-feed.component';
 import { SignUpComponent } from './login/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { SearchComponent } from './pages/search/search.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'question',
         component: QuestionComponent,
+      },
+      {
+        path: 'search',
+        component: SearchComponent,
       },
       {
         path: 'my-questions',

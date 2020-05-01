@@ -11,6 +11,7 @@ import { HeaderService } from './header.service';
 })
 export class HeaderComponent implements OnInit {
 
+  search: string;
   userInfo;
 
   constructor(
@@ -19,7 +20,6 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private headerService: HeaderService
   ) {
-
   }
 
   ngOnInit() {
@@ -35,5 +35,8 @@ export class HeaderComponent implements OnInit {
   changeLang(language: string) {
     this.translate.use(language);
   }
+  onSearch() {
+    console.log("thththt" + this.search);
 
+  }
 }
