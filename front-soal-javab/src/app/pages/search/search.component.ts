@@ -16,23 +16,22 @@ export class SearchComponent implements OnInit {
   hasTags = true;
   loadMoreLoading = false;
   answerLoading = false;
-  soalcount ;
+  soalcount;
   newFeedTimer: Observable<any>;
   constructor(private searchservice: SearchService,
-    private toastrService: ToastrService) { }
+              private toastrService: ToastrService) { }
 
   ngOnInit() {
     // this.searchservice.getInitFeeds().subscribe(res =>
     //   {
     //     this.questionList = res;
     //   });
-      this.searchservice.search("د").subscribe(res =>
-        {
-          this.questionList = res;
-        });
-      this.searchservice.getSoalCount().subscribe(sts => {
-        this.soalcount = sts;
-      })
+    this.searchservice.search('د').subscribe(res => {
+      this.questionList = res;
+    });
+    this.searchservice.getSoalCount().subscribe(sts => {
+      this.soalcount = sts;
+    });
   }
 
 }

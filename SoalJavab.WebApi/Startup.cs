@@ -78,7 +78,9 @@ namespace SoalJavab.WebApi
             services.AddScoped<IZirReshtehServices, ZirReshtehServices>();
             services.AddScoped<ITagAdminServices, TagAdminServices>();
             services.AddScoped<IUsersAdminService, UsersAdminService>();
-              services.AddScoped<IJavbAdminService, JavbAdminService>();
+            services.AddScoped<IJavbAdminService, JavbAdminService>();
+            services.AddScoped<IstatisticsService, statisticsService>();
+
 
             #endregion
 
@@ -157,7 +159,8 @@ namespace SoalJavab.WebApi
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                       .WithOrigins("http://porsopey.ir")  //.WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
+                    //    .WithOrigins("http://porsopey.ir")  
+                       .WithOrigins("http://localhost:4200") //Note:  The URL must be specified without a trailing slash (/).
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowAnyOrigin()

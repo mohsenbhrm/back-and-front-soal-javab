@@ -11,9 +11,9 @@ import { ApiConfig } from '@app/core/common/models/api-config.model';
 })
 export class SearchService {
 
-  constructor(private http:HttpClient,
-    private headerService: HeaderService,
-    @Inject('api.config') private apiConfig: ApiConfig) { }
+  constructor(private http: HttpClient,
+              private headerService: HeaderService,
+              @Inject('api.config') private apiConfig: ApiConfig) { }
 
 
   getInitFeeds(): Observable<any> {
@@ -26,12 +26,12 @@ export class SearchService {
     }));
     }
 
-    search(name: string): Observable<any> {
+    search(src: string): Observable<any> {
       const credential = {
-        name
+        src
         // captcha
       };
-      return this.http.post(`${this.apiConfig.baseUrl}/api/statistics`, credential)
+      return this.http.post(`${this.apiConfig.baseUrl}/api/statistics/search2`, credential)
         .pipe(map((login: any) => {
           return login;
         }

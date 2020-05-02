@@ -5,12 +5,14 @@ using SoalJavab.Services;
 using SoalJavab.Services.Admin;
 using SoalJavab.Services.Models.admin;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace SoalJavab.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [EnableCors("CorsPolicy")]
+    [Authorize(Roles = "Admin,manager")]
     public class statisticsController : ControllerBase
     {
         private IstatisticsService _sta;
@@ -21,42 +23,38 @@ namespace SoalJavab.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsersCount()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return Ok(await _sta.usersCount());
+                return Ok(await _sta.get());
             }
             catch { return BadRequest(); }
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetSoalsCount()
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> search([FromBody] string name)
         {
             try
             {
-                return Ok(await _sta.soalsCount());
+                return Ok(await _sta.search(name));
             }
             catch { return BadRequest(); }
         }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetJavabsCount()
+        [HttpPost("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> search2([FromBody] nameobj name)
         {
             try
             {
-                return Ok(await _sta.javabsCount());
+                return Ok(await _sta.search(name.src));
             }
             catch { return BadRequest(); }
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetTagsCount()
-        {
-            try
-            {
-                return Ok(await _sta.tagsCount());
-            }
-            catch { return BadRequest(); }
-        }
+        
+    }
+    public class nameobj {
+       public string src {set;get;}
     }
 }

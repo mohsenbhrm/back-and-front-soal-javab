@@ -15,10 +15,9 @@ namespace SoalJavab.Services.Admin
 {
     public interface IstatisticsService
     {
-        Task<long> soalsCount();
-        Task<long> javabsCount();
-        Task<long> usersCount();
-        Task<long> tagsCount();
+        
+        Task<statistic> get();
+        Task<List<Soal>> search(string name);
     }
 
     public class statisticsService : IstatisticsService
@@ -32,25 +31,30 @@ namespace SoalJavab.Services.Admin
             _uow = uow;
             _uow.CheckArgumentIsNull(nameof(_uow));
         }
-        public Task<long> javabsCount()
+
+        public async Task<statistic> get()
         {
-            var q = _uow.Set<Javab>().LongCountAsync();
-            return q;
+            var st = new statistic();
+            st.user = await _uow.Set<ApplicationUser>().LongCountAsync();
+            st.soal = await _uow.Set<Soal>().LongCountAsync();
+            st.javab = await _uow.Set<Javab>().LongCountAsync();
+            st.tag = await _uow.Set<Tag>().LongCountAsync();
+            return st;
         }
-        public Task<long> soalsCount()
+
+
+        public Task<List<Soal>> search(string name)
         {
-            var q = _uow.Set<Soal>().LongCountAsync();
-            return q;
+            var s = _uow.Set<Soal>().Where(x=>x.Matn.Contains(name)).ToListAsync();
+            
+            return s;
         }
-        public Task<long> tagsCount()
-        {
-            var q = _uow.Set<Tag>().LongCountAsync();
-            return q;
-        }
-        public Task<long> usersCount()
-        {
-            var q = _uow.Set<ApplicationUser>().LongCountAsync();
-            return q;
-        }
+
+    }
+    public class statistic {
+        public long user{get; set;}
+        public long soal{get; set;}
+        public long javab{get; set;}
+        public long tag{get; set;}
     }
 }
