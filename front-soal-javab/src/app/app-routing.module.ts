@@ -43,6 +43,11 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        children: [
+          {
+            path: 'search',
+            component: SearchComponent,
+          }]
       },
       {
         path: 'question',
@@ -50,6 +55,10 @@ const routes: Routes = [
       },
       {
         path: 'search',
+        component: SearchComponent,
+      },
+      {
+        path: 'search/:search',
         component: SearchComponent,
       },
       {
