@@ -1,0 +1,21 @@
+<div *ngFor="let item of javabfiter(false)">
+  <div>
+    <small class="text-lite-dark">
+      <span class="badge badge-primary">{{item.username}}</span> -
+      <!-- <span>{{item.date}}</span> -->
+    </small>
+    {{item.matn}} <button (click)="delete(item.id)" class="btn btn-sm btn-danger">حذف</button>
+  </div>
+
+</div>
+<hr />
+<div class="bg-warning" *ngFor="let item of javabfiter(true)">
+  <div >
+    <small class="text-lite-dark">
+      <span class="badge badge-primary">{{item.username}}</span> -
+      <!-- <span>{{item.date}}</span> -->
+    </small>
+    {{item.matn}} <button (click)="undo(item.id)" class="btn btn-sm btn-success">برگشت</button>
+  </div>
+
+</div>

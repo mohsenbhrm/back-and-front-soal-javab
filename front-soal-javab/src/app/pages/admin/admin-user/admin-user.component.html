@@ -1,0 +1,16 @@
+<div *ngFor="let item of users">
+  <div>
+    <small class="text-lite-dark">
+    <span class="badge badge-primary">{{item.userName}}</span>
+    <!-- <span>{{item.lastLogin}}</span> -->
+  </small>
+    <div>
+  <small *ngFor="let rl of item.role">
+    <span class="badge badge-warning">
+      {{rl.name}}
+    </span>
+  </small>
+</div>
+  </div>
+</div>
+<hr />

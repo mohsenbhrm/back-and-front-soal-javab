@@ -1,0 +1,47 @@
+<p class="mx-3 pt-5 ">پنل مدیریت </p>
+<ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+  <ngb-panel id='1' >
+
+    <ng-template ngbPanelHeader >
+      <button ngbPanelToggle class="btn pr-2 d-flex flex-column justify-content-center align-items-start ">
+        پنل جواب ها
+      </button>
+      <ng-template ngbPanelContent >
+        <app-admin-javab></app-admin-javab>
+      </ng-template>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id='2'>
+
+    <ng-template ngbPanelHeader>
+      <button  ngbPanelToggle class="btn pr-2 d-flex flex-column justify-content-center align-items-start ">
+        پنل کاربران
+      </button>
+      <ng-template ngbPanelContent>
+        <app-admin-user></app-admin-user>
+      </ng-template>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id='3'>
+
+    <ng-template ngbPanelHeader>
+      <button ngbPanelToggle class="btn pr-2 d-flex flex-column justify-content-center align-items-start">
+        پنل پرسشها
+      </button>
+      <ng-template ngbPanelContent>
+        <app-admin-soal></app-admin-soal>
+      </ng-template>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id='4'>
+
+    <ng-template ngbPanelHeader>
+      <button ngbPanelToggle class="btn pr-2 d-flex flex-column justify-content-center align-items-start">
+        پنل تگها
+      </button>
+      <ng-template ngbPanelContent>
+        <app-admin-tag></app-admin-tag>
+      </ng-template>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

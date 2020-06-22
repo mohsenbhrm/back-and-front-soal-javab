@@ -3,6 +3,7 @@
   "question": "Ask a question",
   "my-questions": "My questions",
   "my-answers": "My answers",
+  "my-answers-List": "List of answers I gave",
   "Bootstrap Element": "Bootstrap Element",
   "Bootstrap Grid": "Bootstrap Grid",
   "Component": "Component",
@@ -17,7 +18,7 @@
   "Urdu": "Urdu",
   "Spanish": "Spanish",
   "Italian": "Italian",
-  "Farsi": "Farsi",
+  "Farsi": "فارسی",
   "German": "German",
   "Simplified Chinese": "Simplified Chinese",
   "Search" : "Search",
@@ -36,5 +37,18 @@
   "Password": "Password",
   "Repeat Password": "Repeat Password",
   "Register": "Register",
-  "Log in": "Log in"
+  "Log in": "Log in",
+
+
+  "Submit a question": "Submit a question",
+  "Question And Answer": "Question And Answer",
+  "Questions I can answer":"You have been asked",
+  "Questions Feed" :"Questions Feed",
+  "Username required" :"Username required",
+  "Username" :"Username",
+  "Password required" :"Password required",
+  "Questions-text-required": "Questions text required",
+  "Tag-is-required":"Tag is required",
+  "Text-of-Question":"Write Your Question"
+
 }

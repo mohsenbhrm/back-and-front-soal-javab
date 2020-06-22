@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injectable } from '@angular/core';
 import { QuestionsFeedService } from './questions-feed.service';
 import { ToastrService } from 'ngx-toastr';
 import { interval, Observable, Subscription } from 'rxjs';
 
+@Injectable()
 @Component({
   selector: 'app-questions-feed',
   templateUrl: './questions-feed.component.html',
   styleUrls: ['./questions-feed.component.scss']
 })
+
 export class QuestionsFeedComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
 
@@ -45,8 +47,6 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
         this.hasTags = false;
       }
     });
-
-
   }
 
   loadMore() {
@@ -67,7 +67,8 @@ export class QuestionsFeedComponent implements OnInit, OnDestroy {
 
   sendAnswer(item) {
     this.answerLoading = true;
-    this.questionFeedService.tryAnswer(item.soalId, this.answer).subscribe(
+    this.questionFeedService.tryAnswer(item.soalId, this.answer)
+    .subscribe(
       resp => {
         this.answerLoading = false;
         this.toastrService.success('جواب با موفقیت ثبت شد', 'ثبت پاسخ');

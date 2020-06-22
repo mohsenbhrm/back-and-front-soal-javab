@@ -5,13 +5,16 @@ import { environment } from 'src/environments/environment';
 import { HeaderService } from '@app/layout/header/header.service';
 import { map } from 'rxjs/operators';
 import { ApiConfig } from '@app/core/common/models/api-config.model';
+import { search } from "./search.model";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  searchResults = new BehaviorSubject<Array<Result>>();
+  // srs = new BehaviorSubject
+  //  value = new BehaviorSubject(search);
+  searchResults = new BehaviorSubject<search>(null);
 
 
   constructor(private http: HttpClient,
@@ -49,6 +52,6 @@ export class SearchService {
         // captcha
       };
       this.http.post(`${this.apiConfig.baseUrl}/api/statistics/search2`, credential)
-      .subscribe(results => this.searchResults.next(results));
+      .subscribe((results: search) => this.searchResults.next(results));
     }
 }

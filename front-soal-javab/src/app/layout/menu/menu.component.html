@@ -7,7 +7,7 @@
         <span class="m-0"></span>
         <ul id="menu" class="list-unstyled">
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">داشبورد</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">{{'Dashboard'|translate}} </a>
           </li>
           <!-- <li id="subMenuToggle">
             <input id="btnSubMenuToggle" type="checkbox" />
@@ -46,19 +46,19 @@
             </ul>
           </li> -->
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/home/question']" routerLinkActive="router-link-active" href="/">ثبت سوال</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/home/question']" routerLinkActive="router-link-active" href="/">{{'Submit a question' |translate}}</a>
           </li>
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/home/my-questions']" routerLinkActive="router-link-active" href="/">پرسش های من</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/home/my-questions']" routerLinkActive="router-link-active" href="/">{{'my-questions'|translate}}</a>
           </li>
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/home/my-answers']" routerLinkActive="router-link-active" href="/">پاسخ های من</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/home/my-answers']" routerLinkActive="router-link-active" href="/">{{'my-answers'|translate}}</a>
           </li>
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/home/question-feed']" routerLinkActive="router-link-active" href="">فید سوالات</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/home/question-feed']" routerLinkActive="router-link-active" href="">{{'Questions Feed'|translate}}</a>
           </li>
           <li>
-            <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a>
+            <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">{{'Search'|translate}}</a>
           </li>
           <!-- <li class="position-absolute w-100 px-2 d-md-none" style="bottom: 0;">
 

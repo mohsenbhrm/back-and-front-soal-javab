@@ -1,7 +1,7 @@
 <section class="container-fluid">
   <div class="card">
     <div class="card-body">
-      <h4>لیست سوالاتی که می توانم پاسخ دهم</h4>
+      <h4>{{'Questions I can answer'|translate}}</h4>
       <div *ngIf="hasTags">
         <div *ngIf="questionList && questionList.length > 0" class="scrollable-content">
           <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
@@ -27,6 +27,22 @@
                 <div>
                   <div class="card">
                     <div class="card-body">
+                      <div *ngFor="let jvb of item.javabs;index as ji" >
+                        <div class="row no-gutters">
+                          <div class="col-12">
+                            <div  class=" pr-2 d-flex flex-column justify-content-center mb-1 align-items-start">
+                              <div class="d-flex mb-1">
+                                <small class="text-lite-dark">
+                                  <span class="badge ">{{ji+1}}</span> -
+
+                                  <span class="badge badge-primary">{{jvb.username}}</span> -
+                                  <span>{{jvb.matn}}</span>
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="row">
                         <div class="col-10">
                           <div class="form-group mb-0">
@@ -45,6 +61,12 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div >
+                  <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
+                  <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
+                    <span class="badge badge-warning ml-2">{{tag.name}}</span>
+                  </a>
                 </div>
               </ng-template>
             </ngb-panel>

@@ -1,26 +1,22 @@
 <section class="container-fluid">
   <div class="card">
     <div class="card-body">
-      <h4>سوال {{soalcount.soal}} </h4>
-      <h4>تگ ها {{soalcount.tag}} </h4>
-      <h4>کاربران {{soalcount.user}} </h4>
-      <h4>جوابها {{soalcount.javab}} </h4>
-
       <h4>لیست سوالاتی جستجو شده</h4>
       <div *ngIf="hasTags">
-        <div *ngIf="questionList && questionList.length > 0" class="scrollable-content">
+        <div *ngIf="questionList " class="scrollable-content">
           <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
-            <ngb-panel *ngFor="let item of questionList; let i=$implicit" id="{{i.soalId}}">
+            <ngb-panel *ngFor="let item of questionList; let i=$implicit" id="{{i.soal.id}}">
               <ng-template ngbPanelHeader>
                 <div class="row no-gutters">
                   <div class="col-12">
                     <button ngbPanelToggle class="btn pr-2 d-flex flex-column justify-content-center align-items-start">
                       <div class="d-flex mb-2">
                         <small class="text-lite-dark">
-                          <span class="badge badge-primary">{{item.username}}</span> -
-                          <span>{{item.regDate}}</span>
+                          <span class="badge badge-primary">{{item.userName}}</span> -
+                          <span>{{item.soal.date}}</span>
                         </small>
                       </div>
+
                       <div class="">
                         {{item.soal.matn}}
                       </div>
@@ -32,44 +28,58 @@
                 <div>
                   <div class="card">
                     <div class="card-body">
+                      <div *ngFor="let jvb of item.javab;" >
+                        <div class="row no-gutters">
+                          <div class="col-12">
+                            <div  class="btn pr-2 d-flex flex-column justify-content-center mb-1 align-items-start">
+                              <div class="d-flex mb-2">
+                                <small class="text-lite-dark">
+                                  <span class="badge badge-primary">{{jvb.username}}</span> -
+                                  <span>{{jvb.date}}</span>
+                                </small>
+                              </div>
+
+                              <div class="">
+                                {{jvb.matn}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <hr/>
+                      </div>
                       <div class="row">
                         <div class="col-10">
                           <div class="form-group mb-0">
+
                             <input type="text" [(ngModel)]="answer" class="form-control">
                           </div>
                         </div>
                         <div class="col-2">
-                          <!-- <button class="btn btn-primary" [disabled]="!answer" (click)="sendAnswer(item)">
+                          <button class="btn btn-primary" [disabled]="!answer" (click)="send(item)">
                             <span *ngIf="answerLoading === false">پاسخ</span>
                             <div *ngIf="answerLoading === true" class="spinner-border" role="status">
                               <span class="sr-only">Loading...</span>
                             </div>
-                          </button> -->
+                          </button>
                         </div>
 
                       </div>
                     </div>
                   </div>
                 </div>
+                <div >
+                  <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
+                  <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
+                    <span class="badge badge-warning ml-2">{{tag.name}}</span>
+                  </a>
+                </div>
               </ng-template>
             </ngb-panel>
           </ngb-accordion>
-          <div class="d-flex justify-content-center align-items-center">
-            <!-- <a *ngIf="questionList.length > 0" href="javascript:void(0)" class="m-3" (click)="loadMore()">
-              <span *ngIf="loadMoreLoading === false">سوالات بیشتر</span>
-              <div *ngIf="loadMoreLoading === true" class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </a> -->
+          <div  class="d-flex justify-content-center align-items-center salam">
           </div>
         </div>
       </div>
-      <div *ngIf="!hasTags" class="d-flex justify-content-center align-items-center">
-        <h5 class="text-danger">
-          لطفا در قسمت پروفایل تخصص های خود را انتخاب کنید
-        </h5>
-      </div>
-
     </div>
   </div>
 </section>

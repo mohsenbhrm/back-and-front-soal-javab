@@ -2,7 +2,7 @@
 
   <app-menu class="ml-3"></app-menu>
 
-  <a class="navbar-brand ml-auto" [routerLink]="['/']" routerLinkActive="router-link-active">سوال و جواب</a>
+  <a class="navbar-brand ml-auto" [routerLink]="['/']" routerLinkActive="router-link-active">{{'Question And Answer'|translate}}</a>
 
   <form class="form-inline mx-3" (ngSubmit)="onSearch()">
     <input class="form-control ml-sm-2" name="search" [(ngModel)]="search"  type="search" placeholder="{{ 'Search' | translate }}" aria-label="Search">

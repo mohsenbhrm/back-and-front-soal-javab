@@ -10,6 +10,12 @@ import { EditQuestionModalComponent } from './my-question-list/edit-question-mod
 import { EditAnswerModalComponent } from './my-answer-list/edit-answer-modal/edit-answer-modal.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
+import { AdminUserComponent } from './admin/admin-user/admin-user.component';
+import { AdminSoalComponent } from './admin/admin-soal/admin-soal.component';
+import { AdminJavabComponent } from './admin/admin-javab/admin-javab.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -23,10 +29,16 @@ import { SearchComponent } from './search/search.component';
     EditQuestionModalComponent,
     EditAnswerModalComponent,
     ProfileComponent,
-    SearchComponent
+    SearchComponent,
+    AdminPanelComponent,
+    AdminTagComponent,
+    AdminUserComponent,
+    AdminSoalComponent,
+    AdminJavabComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   entryComponents: [
     EditQuestionModalComponent,

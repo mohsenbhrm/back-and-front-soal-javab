@@ -11,6 +11,7 @@ import { QuestionsFeedComponent } from './pages/questions-feed/questions-feed.co
 import { SignUpComponent } from './login/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SearchComponent } from './pages/search/search.component';
+import { AdminPanelComponent } from './pages/admin/admin-panel/admin-panel.component';
 
 
 const routes: Routes = [
@@ -20,9 +21,37 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'admin/',
+    redirectTo: 'admin',
+    pathMatch: 'full',
+  },
+  {
     path: 'login',
     // loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
     component: LoginComponent
+  },
+  {
+    path: 'admin',
+    component: LayoutComponent,
+    // loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+    // component: AdminPanelComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'admin',
+        pathMatch: 'full',
+
+      },
+      {
+        path: 'admin',
+    component: AdminPanelComponent,
+      },
+      {
+        path: '**',
+        pathMatch: 'full',
+        redirectTo: 'home'
+      }
+    ]
   },
   {
     path: 'sign-up',
@@ -43,11 +72,6 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        children: [
-          {
-            path: 'search',
-            component: SearchComponent,
-          }]
       },
       {
         path: 'question',

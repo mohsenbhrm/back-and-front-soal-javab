@@ -1,7 +1,7 @@
 <section class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <h4>لیست جواب هایی که داده ام</h4>
+            <h4>{{'my-answers-List'|translate}}</h4>
 
             <div class="scrollable-content">
                 <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" (panelChange)="getAnswerDetails($event)">
@@ -78,7 +78,7 @@
                                             <div class="">
                                                 {{question.matn}}
                                             </div>
-                                        </div>     
+                                        </div>
                                     </div>
                                 </div>
                             </div>

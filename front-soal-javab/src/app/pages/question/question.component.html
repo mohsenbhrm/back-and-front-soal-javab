@@ -1,41 +1,16 @@
 <section class="container-fluid">
   <div class="card">
     <div class="card-body">
-      <h4>پرسش سوال</h4>
+      <h4>{{'پرسش سوال'|translate}}</h4>
       <form [formGroup]="registerQuestion">
         <div class="row">
-          <!-- <div class="col-sm-6">
-            <div class="form-group">
-              <select formControlName="field" class="form-control">
-                <option [ngValue]="null" disabled>رشته</option>
-                <option *ngFor="let item of fields" [ngValue]="item.id">{{item.onvan}}</option>
-              </select>
-              <span *ngIf="registerQuestion.get('field').hasError('required') &&
-               registerQuestion.get('field').value === null &&
-               registerQuestion.get('field').touched" class="text-danger">
-                <small>رشته الزامی است</small>
-              </span>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select formControlName="subField" class="form-control">
-                <option [ngValue]="null" disabled>زیر رشته</option>
-                <option *ngFor="let item of activeSubFields" [ngValue]="item.id">{{item.onvan}}</option>
-              </select>
-              <span *ngIf="registerQuestion.get('subField').hasError('required') &&
-              registerQuestion.get('subField').value === null &&
-              registerQuestion.get('subField').touched" class="text-danger">
-                <small>زیر رشته الزامی است</small>
-              </span>
-            </div>
-          </div> -->
+
           <div class="col-12">
             <div class="form-group">
-              <textarea formControlName="questionBody" class="form-control" placeholder="متن سوال" rows="6"></textarea>
+              <textarea formControlName="questionBody" class="form-control" placeholder="{{'Text-of-Question'|translate}}" rows="6"></textarea>
               <span *ngIf="registerQuestion.get('questionBody').hasError('required') &&
               registerQuestion.get('questionBody').touched" class="text-danger">
-                <small>متن سوال الزامی است</small>
+              <small>{{'Questions-text-required'|translate}}</small>
               </span>
             </div>
           </div>
@@ -53,7 +28,7 @@
               </tag-input>
               <span *ngIf="registerQuestion.get('tags').hasError('required') &&
               registerQuestion.get('tags').touched" class="text-danger">
-                <small>تگ الزامی است</small>
+                <small>{{'Tag-is-required'|translate}}</small>
               </span>
             </div>
           </div>
@@ -62,7 +37,7 @@
           <div *ngIf="disabled" class="spinner-border text-light" role="status">
             <span class="sr-only">Loading...</span>
           </div>
-          <span *ngIf="!disabled">ثبت سوال</span>
+          <span *ngIf="!disabled">{{'ثبت سوال'|translate}}</span>
         </button>
       </form>
     </div>

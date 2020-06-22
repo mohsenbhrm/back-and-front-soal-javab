@@ -1,0 +1,39 @@
+<p >مدیریت سوالها</p>
+<div class="table-responsive border">
+  <table class="table table-condensed">
+    <thead>
+      <tr class="bg-info">
+        <th>#</th>
+        <th>نام کاربری</th>
+        <th>متن سوال </th>
+        <th>تاریخ</th>
+        <th>حذف/برگشت</th>
+      </tr>
+    </thead>
+    <tbody >
+      <tr   *ngFor="let item of soalfiter(false)">
+        <td>{{item.id}}</td>
+        <td>{{item.userName}}</td>
+        <td>{{item.matn}}</td>
+        <td> {{item.date}}</td>
+        <td><button (click)="delete(item.id)" class="btn btn-sm btn-danger">حذف</button></td>
+
+      </tr>
+      <tr class="bg-warning">
+        <td>
+        </td>
+        <td></td>
+        <td></td>
+        <td> </td>
+        <td></td>
+      </tr>
+      <tr   *ngFor="let item of soalfiter(true)">
+        <td>{{item.id}}</td>
+        <td>{{item.userName}}</td>
+        <td>{{item.matn}}</td>
+        <td> {{item.date}}</td>
+        <td><button (click)="undo(item.id)" class="btn btn-sm btn-success">برگشت</button></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>

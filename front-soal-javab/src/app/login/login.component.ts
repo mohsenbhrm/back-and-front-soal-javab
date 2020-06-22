@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/core/auth/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   loginButtonDisabled = false;
 
   constructor(
+    private translate: TranslateService,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -65,5 +67,9 @@ export class LoginComponent implements OnInit {
       userName: ['', [Validators.required]],
       passWord: ['', [Validators.required]]
     });
+  }
+
+  changeLang(language: string) {
+    this.translate.use(language);
   }
 }
