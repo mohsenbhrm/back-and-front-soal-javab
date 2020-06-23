@@ -35,10 +35,22 @@ namespace SoalJavab.WebApi.Controllers
         {
             try
             {
-                 if (await _javabs.DeleteAsync(id)) return Ok();
+                 if (await _javabs.DeleteAsync(id)) return Ok(await _javabs.GetAllAsync());
                 return BadRequest();
             }
             catch { return StatusCode(500); }
+        }
+        [HttpPut("{id}")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Put(long id)
+        {
+            try
+            {
+                if (await _javabs.undoDeletedAsync(id)) return Ok(await _javabs.GetAllAsync());
+                return BadRequest();
+            }
+            catch { return StatusCode(500); }
+
         }
     }
 }

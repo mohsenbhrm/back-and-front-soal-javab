@@ -14,7 +14,8 @@ namespace SoalJavab.Services.Models.admin
         public string Matn { get; set; }
         public IList<JsonVm> Tags { get; set; }
         public DateTime date { set; get; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted{ get; set; }
+        public string userName{get;set;}
     }
     public class JavabVM
     {

@@ -78,17 +78,21 @@ namespace SoalJavab.WebApi.Controllers
         [IgnoreAntiforgeryToken]
         public IActionResult Create([FromBody] JavabVM javab)
         {
+            try {
             if (!ModelState.IsValid
             || (javab == null))
             {
                 return BadRequest();
             }
-            var q = _javab.Creatjavab(javab);
-            if (q)
+            var q = _javab.Creatjavab1(javab);
+            if (q != null)
             {
-                return Ok();
+                return Ok(q);
             }
             return BadRequest();
+            }
+            catch { 
+            return BadRequest();}
         }
         
         [HttpPut("{id}")]

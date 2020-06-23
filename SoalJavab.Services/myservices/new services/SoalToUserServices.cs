@@ -73,8 +73,8 @@ namespace SoalJavab.Services.myservices
             }
         }
         private IList<SoalToUserVM> _Get_new_Soal_To_user_by_UserId(long userId)
-         {
-             var User = _users.GetCurrentUserAsync().Result;
+        {
+            var User = _users.GetCurrentUserAsync().Result;
 
             var stu = new List<SoalToUserVM>();
 
@@ -85,13 +85,28 @@ namespace SoalJavab.Services.myservices
 
             if (sq.Count() < 1)
             { return stu; }
-             stu = sq.Select(x=> new SoalToUserVM {
+            stu = sq.Select(x => new SoalToUserVM
+            {
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
                 regDate = x.Regdat,
+                tags = x.TagSoal.Where(c => !c.Isdeleted)
+               .Select(ut => new userTagVm
+               {
+                   Id = ut.TagId,
+                   Name = ut.Tag.Onvan
+               }).ToList(),
+                javabs = x.Javab.Where(j => !j.IsDeleted)
+               .Select(Jl => new JavabVM
+               {
+                   Id = Jl.Id,
+                   IdUser = Jl.User.Id,
+                   Matn = Jl.Matn,
+                   Username = Jl.User.Username
+               }).ToList(),
                 SoaltoUserId = x.TagSoal.FirstOrDefault().Id
-            }).OrderByDescending(x=>x.SoalId).ToList();
+            }).OrderByDescending(x => x.SoalId).ToList();
             return stu;
         }
         private IList<SoalToUserVM> old_Get_new_Soal_To_user_by_UserId(long userId)

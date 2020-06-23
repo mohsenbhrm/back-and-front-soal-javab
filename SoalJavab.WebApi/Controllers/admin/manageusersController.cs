@@ -5,12 +5,14 @@ using SoalJavab.Services;
 using SoalJavab.Services.Admin;
 using SoalJavab.Services.Models.admin;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace SoalJavab.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,manager")]
+    [EnableCors("CorsPolicy")]  
     public class manageUsersController : ControllerBase
     {
         private IUsersAdminService _users;

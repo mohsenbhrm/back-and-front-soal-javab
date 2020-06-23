@@ -320,7 +320,8 @@ namespace SoalJavab.Services.myservices
                         .Where(x => Tagid.Contains(x.TagId))
                         .Select(sl => sl.Soal).Distinct()
                         .Include(v=>v.User)
-                        .Include(ts=>ts.TagSoal);
+                        .Include(j=> j.Javab).ThenInclude(ju=>ju.User)
+                        .Include(ts=>ts.TagSoal).ThenInclude(ts=>ts.Tag);
                 return tgs.ToList();
             }
             catch { return null; }

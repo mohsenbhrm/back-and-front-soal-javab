@@ -26,7 +26,7 @@ namespace SoalJavab.WebApi
         WebHost.CreateDefaultBuilder(args)
          .UseKestrel()
            .UseContentRoot(Directory.GetCurrentDirectory())
-           .UseUrls("http://localhost:5000", "http://192.168.1.52:5000")
+           .UseUrls("http://localhost:5000", "http://192.168.1.53:5000")
            .UseKestrel()
            .UseIISIntegration()
             .UseStartup<Startup>();

@@ -14,5 +14,6 @@ namespace SoalJavab.Services.Contracts
         bool isJavabOfuser(long javabId, long userId);
         IList<JavabVM> GetAllJavabsByuserId(long userId);
         bool Delete(long JavabId);
+        JavabVM Creatjavab1(JavabVM jv);
     }
 }

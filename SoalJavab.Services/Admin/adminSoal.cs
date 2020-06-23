@@ -18,6 +18,7 @@ namespace SoalJavab.Services.Admin
 
         Task<bool> DeleteAsync(long id);
         Task<List<SoalVM>> GetAllAsync();
+        Task<bool> undoDeletedAsync(long id);
     }
 
     public class SoalAdminService : ISoalAdminService
@@ -50,7 +51,8 @@ namespace SoalJavab.Services.Admin
 
         public Task<List<SoalVM>> GetAllAsync()
         {
-            var s = _soals.Include(c => c.User)
+            var s = _soals
+            .Include(c => c.User)
             .Include(jvb => jvb.Javab)
             .Include(tg => tg.TagSoal).ThenInclude(tag => tag.Tag)
             .Select(x => new SoalVM
@@ -61,7 +63,8 @@ namespace SoalJavab.Services.Admin
                 .Select(tags => tags.Tag)
                 .Select(a => new JsonVm { Id = a.Id, name = a.Onvan }).ToList(),
                 IsDeleted = x.IsDeleted,
-                date = x.Regdat
+                date = x.Regdat,
+                userName = x.User.Username
             }).ToListAsync();
             return s;
         }
@@ -73,6 +76,18 @@ namespace SoalJavab.Services.Admin
 
                 var s = await _soals.FindAsync(id);
                 s.IsDeleted = true;
+                _uow.MarkAsChanged(s);
+                await _uow.SaveChangesAsync();
+                return true;
+            }
+            catch { return false; }
+        }
+        public async Task<bool> undoDeletedAsync(long id)
+        {
+            try
+            {
+                var s = await _soals.FindAsync(id);
+                s.IsDeleted = false;
                 _uow.MarkAsChanged(s);
                 await _uow.SaveChangesAsync();
                 return true;

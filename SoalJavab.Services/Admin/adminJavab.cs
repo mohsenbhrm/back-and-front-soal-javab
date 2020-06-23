@@ -17,6 +17,7 @@ namespace SoalJavab.Services.Admin
     {
         Task<bool> DeleteAsync(long id);
         Task<List<JavabVM>> GetAllAsync();
+        Task<bool> undoDeletedAsync(long id);
     }
 
     public class JavbAdminService : IJavbAdminService
@@ -43,7 +44,8 @@ namespace SoalJavab.Services.Admin
 
         public Task<List<JavabVM>> GetAllAsync()
         {
-            var s = _Javabs.Include(c => c.User)
+            var s = _Javabs
+            .Include(c => c.User)
             .Include (d=>d.Soal)
             .Select(x => new JavabVM
             {
@@ -61,6 +63,17 @@ namespace SoalJavab.Services.Admin
             try {
             var s = await _Javabs.FindAsync(id);
             s.IsDeleted = true;
+            _uow.MarkAsChanged(s);
+            await _uow.SaveChangesAsync();
+            return true;
+            }
+            catch {return false;}
+        }
+        public async Task<bool> undoDeletedAsync(long id)
+        {
+            try {
+            var s = await _Javabs.FindAsync(id);
+            s.IsDeleted = false;
             _uow.MarkAsChanged(s);
             await _uow.SaveChangesAsync();
             return true;

@@ -70,6 +70,8 @@ namespace SoalJavab.Services.Models
         public long SoalId { get; set; }
         public long SoaltoUserId { get; set; }
         public string Matn { get; set; }
+        public List<userTagVm> tags { get; set; }
+        public List<JavabVM> javabs { get; set; }
         public DateTime regDate { get; set; }
     }
     public class JavabVM

@@ -79,6 +79,7 @@ namespace SoalJavab.WebApi
             services.AddScoped<ITagAdminServices, TagAdminServices>();
             services.AddScoped<IUsersAdminService, UsersAdminService>();
             services.AddScoped<IJavbAdminService, JavbAdminService>();
+            services.AddScoped<ISoalAdminService,SoalAdminService>();
             services.AddScoped<IstatisticsService, statisticsService>();
 
 

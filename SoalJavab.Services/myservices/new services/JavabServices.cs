@@ -112,7 +112,27 @@ namespace SoalJavab.Services.myservices
             }
             catch { return false; }
         }
-        
+        public JavabVM Creatjavab1(JavabVM jv)
+        {
+            try
+            {
+                var s = _users.GetCurrentUserAsync().Result;
+                var sl = _soals.GetById(jv.IdSoal);
+                if (sl == null || s == null) throw new Exception() ; 
+                db.Addnew<Javab>(new Javab
+                {
+                    Matn = jv.Matn,
+                    IsDeleted = false,
+                    Isvisited = false,
+                    Soal = sl,
+                    User = s,
+                    RegDate = DateTime.Now
+                });
+                db.SaveAllChanges();
+                return jv;
+            }
+            catch {  throw new Exception() ;  }
+        }
         // public long GetById(long id)
         // {
 
