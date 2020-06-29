@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 export interface TagModel {
   value: number;
   display: string;
+  usedSoal: number;
+  usedUser: number;
 }
 
 @Component({

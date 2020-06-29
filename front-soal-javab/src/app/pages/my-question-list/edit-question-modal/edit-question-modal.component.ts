@@ -35,7 +35,9 @@ export class EditQuestionModalComponent implements OnInit {
     this.item.tags.forEach(element => {
       oldTags.push({
         value: element.id,
-        display: element.onvan
+        display: element.onvan,
+        usedUser: element.usedUser,
+        usedSoal: element.usedSoal
       });
     });
 

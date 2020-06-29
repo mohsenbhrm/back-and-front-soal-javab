@@ -13,8 +13,6 @@
                                         <div class="d-flex mb-2">
                                             <small class="text-lite-dark">
                                                 <span class="badge badge-primary">{{item.javabCount}}</span> -
-                                                <span>{{item.reshteh}}</span> -
-                                                <span>{{item.zirreshteh}}</span> -
                                                 <span>{{item.regDate}}</span>
                                             </small>
                                         </div>
@@ -68,9 +66,15 @@
                         <ng-template ngbPanelContent>
                             <div *ngIf="answers">
                                 <div *ngFor="let item of answers" class="card">
-                                    <div class="card-body p-2">
+                                  <div class="d-flex mb-2">
+                                    <small class="text-lite-dark">
+                                        <span class="badge badge-primary">{{item.username}}</span> -
+                                        <span>{{item.regDate}}</span>
+                                    </small>
+                                </div>
+
+                                  <div class="card-body p-2">
                                         <div class="d-flex flex-column">
-                                            <span>{{item.username}}</span>
                                             <span>{{item.matn}}</span>
                                         </div>
                                     </div>

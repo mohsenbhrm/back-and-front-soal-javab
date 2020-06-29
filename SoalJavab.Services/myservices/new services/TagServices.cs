@@ -77,11 +77,7 @@ namespace SoalJavab.Services.myservices
         {
             var q = _tagRepository.Delete(IdTag);
         }
-        public TagVM getTagForCreat(string ZirReshte)
-        {
-            var t = new TagVM { ZirReshtehId = long.Parse(ZirReshte) };
-            return t;
-        }
+
         public TagVM CreatTag(TagVM tag)
         {
             try
@@ -121,19 +117,24 @@ namespace SoalJavab.Services.myservices
             }
             catch { return null; }
         }
-        public IList<JsonVm> GetTags(long IdZirreshte)
-        {
 
-            var q = _tagRepository.GetByReshteh(IdZirreshte)
-                .Select(e => new JsonVm { Id = e.Id, name = e.Onvan }).ToList();
-            return q;
-        }
-        public IList<JsonVm> GetTags(string TagName)
+        public IList<TagVM> GetTags(string TagName)
         {
             try
             {
-                var q = _tags.Where(x => x.Onvan.Contains(TagName))
-                    .Select(e => new JsonVm { Id = e.Id, name = e.Onvan }).ToList();
+                var q = _tags
+                .Include(ts => ts.TagSoal)
+                .Include(tu => tu.TagUsers)
+
+                .Where(x => x.Onvan.Contains(TagName))
+                    .Select(e => new TagVM
+                    {
+                        Id = e.Id,
+                        Onvan = e.Onvan,
+                        UsedSoal = e.TagSoal.LongCount(),
+                        UsedUser = e.TagUsers.LongCount()
+                    }
+                     ).ToList();
                 return q;
             }
             catch
@@ -174,7 +175,6 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.Name,
                     Id = n.Id,
-                    ZirReshtehId = 1
                 }
                 );
             }
@@ -186,7 +186,6 @@ namespace SoalJavab.Services.myservices
                 {
                     Onvan = n.Name,
                     Id = n.Id,
-                    ZirReshtehId = 1
                 }
                 );
             }

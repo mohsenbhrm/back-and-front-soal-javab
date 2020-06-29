@@ -19,7 +19,9 @@ export class QuestionService {
         return data.map(d => {
           const tagData: TagModel = {
             value: d.id,
-            display: d.name
+            display: d.onvan,
+            usedUser: d.usedUser,
+            usedSoal: d.usedSoal
           };
           return tagData;
         });

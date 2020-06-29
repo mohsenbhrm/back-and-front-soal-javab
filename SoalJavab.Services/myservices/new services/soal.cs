@@ -316,10 +316,11 @@ namespace SoalJavab.Services.myservices
         {
             try
             {
+
                 var tgs = db.Set<TagSoal>()
-                        .Where(x => Tagid.Contains(x.TagId))
+                        .Where(x => Tagid.Contains(x.TagId) && !x.Soal.IsDeleted)
                         .Select(sl => sl.Soal).Distinct()
-                        .Include(v=>v.User)
+                        .Include(v =>v.User)
                         .Include(j=> j.Javab).ThenInclude(ju=>ju.User)
                         .Include(ts=>ts.TagSoal).ThenInclude(ts=>ts.Tag);
                 return tgs.ToList();

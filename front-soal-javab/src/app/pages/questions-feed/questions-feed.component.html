@@ -24,6 +24,12 @@
                 </div>
               </ng-template>
               <ng-template ngbPanelContent>
+                <div >
+                  <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
+                  <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
+                    <span class="badge badge-warning ml-2">{{tag.name}}</span>
+                  </a>
+                </div>
                 <div>
                   <div class="card">
                     <div class="card-body">
@@ -62,12 +68,7 @@
                     </div>
                   </div>
                 </div>
-                <div >
-                  <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
-                  <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
-                    <span class="badge badge-warning ml-2">{{tag.name}}</span>
-                  </a>
-                </div>
+
               </ng-template>
             </ngb-panel>
           </ngb-accordion>

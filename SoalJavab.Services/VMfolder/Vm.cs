@@ -26,7 +26,6 @@ namespace SoalJavab.Services.Models
     public class TagVM
     {
         public long Id { get; set; }
-        public long ZirReshtehId { get; set; }
         [Display(Name = "عنوان تگ")]
         public string Onvan { get; set; }
         public long UsedSoal { get; set; }
@@ -93,6 +92,7 @@ namespace SoalJavab.Services.Models
     {
         public string name { get; set; }
         public long Id { get; set; }
+        public long count {get;set;}
     }
     public class LoginVm
     {

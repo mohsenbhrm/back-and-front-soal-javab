@@ -23,6 +23,9 @@
                 <tag-input-dropdown [keepOpen]="false" [autocompleteObservable]='requestAutocompleteItems' [showDropdownIfEmpty]="true">
                   <ng-template let-item="item" let-index="index">
                     {{ item.display }}
+                 <small class="mr-3">
+                  {{item.usedUser}}
+                 </small>
                   </ng-template>
                 </tag-input-dropdown>
               </tag-input>

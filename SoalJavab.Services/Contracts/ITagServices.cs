@@ -16,10 +16,8 @@ namespace SoalJavab.Services.Contracts
         // Task<IList<TagVM>> GetByUserAsync(ApplicationUser user);
         Task<List<TagVM>> GetByUserAsync(ApplicationUser user);
         IList<JsonVm> GetOtherTagsforSoal(long Idsoal);
-        TagVM getTagForCreat(string ZirReshte);
-        IList<JsonVm> GetTags(long IdZirreshte);
         IList<TagVM> getTags();
-        IList<JsonVm> GetTags(string TagName);
+        IList<TagVM> GetTags(string TagName);
         Task<IList<JsonVm>> GetTAGsAsync(long IdZirreshte);
         Task<List<JsonVm>> GetTAGsAsync();
         Task<List<JsonVm>> GetTagsByzirreshteAsync(long Idzirreshteh);
