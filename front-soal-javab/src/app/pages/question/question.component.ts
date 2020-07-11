@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface TagModel {
   value: number;
@@ -13,14 +14,14 @@ export interface TagModel {
   usedSoal: number;
   usedUser: number;
 }
-
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
 export class QuestionComponent implements OnInit {
-
+  tagInsert :string;
+  tagNext :string;
   registerQuestion: FormGroup;
   // fields: any[];
   // activeSubFields: any[];
@@ -30,8 +31,12 @@ export class QuestionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private questionService: QuestionService,
-    private toastrService: ToastrService
-  ) { }
+    private toastrService: ToastrService,
+    translate: TranslateService
+  ) {
+    translate.stream('Insert-Tag').subscribe((text:string) => {this.tagInsert = text});
+    translate.stream('Next-Tag').subscribe((text:string) => {this.tagNext = text});
+}
 
   ngOnInit() {
     // this.questionService.getEssentialForQuestion().subscribe(fields => {

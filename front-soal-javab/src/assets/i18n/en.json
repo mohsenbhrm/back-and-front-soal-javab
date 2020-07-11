@@ -36,19 +36,35 @@
   "Email": "Email",
   "Password": "Password",
   "Repeat Password": "Repeat Password",
+  "Repeat Password required": "Repeat Password required",
+  "Password_not_match":"Password not match",
+
   "Register": "Register",
   "Log in": "Log in",
 
 
-  "Submit a question": "Submit a question",
+  "Submit a question": "submit a question",
   "Question And Answer": "Question And Answer",
   "Questions I can answer":"You have been asked",
-  "Questions Feed" :"Questions Feed",
+  "Questions Feed" :"questions Feed",
   "Username required" :"Username required",
   "Username" :"Username",
   "Password required" :"Password required",
-  "Questions-text-required": "Questions text required",
-  "Tag-is-required":"Tag is required",
-  "Text-of-Question":"Write Your Question"
+  "Questions-text-required": "question's text required",
+  "Tag-is-required":"tag is required",
+  "Text-of-Question":"Write Your Question",
+  "Insert-Tag":"insert tag",
+  "Next-Tag":"next tag",
+
+
+  "name_required" :"name required",
+  "family_required" :"family required",
+  "email_required" :"email required",
+  "email_format_failed" :"invlid email format ",
+  "password_min_length":"minimum 6 character required for password",
+  "name":"name",
+  "Family":"Family",
+  "e-mail":"Email"
+
 
 }

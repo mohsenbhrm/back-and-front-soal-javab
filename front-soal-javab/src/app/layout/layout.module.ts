@@ -6,42 +6,22 @@ import { SharedModule } from '@app/shared/shared.module';
 import { LayoutComponent } from './layout.component';
 import { RouterModule } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
+import { LanguageComponent } from './language/language/language.component';
+import { SearchformComponent } from './searchform/searchform.component';
 
-
-// const routes: Routes = [
-//   {
-//     path: '',
-//     component: LayoutComponent,
-//     pathMatch: 'full'
-//   },
-//   {
-//     path: 'home',
-//     component: LayoutComponent,
-//     pathMatch: 'full',
-//     children: [
-//       {
-//         path: '',
-//         component: QuestionComponent,
-//         pathMatch: 'full'
-//       },
-//       {
-//         path: 'question',
-//         component: QuestionComponent,
-//         pathMatch: 'full'
-//       }
-//     ]
-//   }
-// ];
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     LayoutComponent,
     MenuComponent,
+    LanguageComponent,
+    SearchformComponent,
   ],
   imports: [
     SharedModule,
     RouterModule
-  ]
+  ],
+  exports: [LanguageComponent]
 })
 export class LayoutModule { }

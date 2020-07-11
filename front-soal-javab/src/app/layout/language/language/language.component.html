@@ -1,0 +1,30 @@
+
+
+
+
+<div  class="d-flex justify-content-between">
+  <ul class="navbar-nav flex-row mx-3 mt-2">
+    <li class=" nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+      <a class="nav-link"  style="cursor: pointer" ngbDropdownToggle id="navbarDropdown1" role="button">
+        <i class="fa fa-language"></i> {{ 'Language' | translate }} <b class="caret"></b>
+      </a>
+      <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu dropdown-menu-left">
+        <a ngbDropdownItem (click)="changeLang('en')">{{ 'English' | translate }}</a>
+        <a ngbDropdownItem (click)="changeLang('fa')">{{ 'Farsi' | translate }}</a>
+      </div>
+    </li>
+
+    <li class="nav-item mr-3" ngbDropdown display="dynamic" placement="bottom-left">
+      <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown2" role="button">
+        <i class="fa fa-user"></i>
+         <span *ngIf="userInfo"> {{userInfo.username}} </span>
+         <span *ngIf="!userInfo">&nbsp;کاربر &nbsp;</span>
+         <b class="caret"></b>
+      </a>
+      <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-left">
+        <a (click)="toggleMenu()" ngbDropdownItem [routerLink]="['/home/profile']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i> {{ 'Profile' | translate }}</a>
+        <a ngbDropdownItem href="#" (click)="onLoggedout()"><i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}</a>
+      </div>
+    </li>
+  </ul>
+</div>

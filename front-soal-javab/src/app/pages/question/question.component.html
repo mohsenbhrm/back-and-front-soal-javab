@@ -18,7 +18,7 @@
           <div class="col-12">
             <div class="form-group">
               <tag-input  formControlName="tags" (onAdd)="checkIfAvalable($event)" theme='bootstrap' [onlyFromAutocomplete]="false"
-              [placeholder]="'تگ بعدی'" [secondaryPlaceholder]="'تگ را وارد کنید'"
+              [placeholder]='tagNext' [secondaryPlaceholder]='tagInsert'
               [separatorKeyCodes]="[32]" [allowDupes]="false">
                 <tag-input-dropdown [keepOpen]="false" [autocompleteObservable]='requestAutocompleteItems' [showDropdownIfEmpty]="true">
                   <ng-template let-item="item" let-index="index">
@@ -26,6 +26,7 @@
                  <small class="mr-3">
                   {{item.usedUser}}
                  </small>
+
                   </ng-template>
                 </tag-input-dropdown>
               </tag-input>
