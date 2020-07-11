@@ -38,12 +38,34 @@ export class AuthService {
   }
 
   signUp(body): Observable<any> {
-    return this.httpClient.post(`${environment.apiConfig.baseUrl}/api/Account/SignUp`, body).pipe(map(
+    return this.httpClient.post(`${environment.apiConfig.baseUrl}/api/Account/SignUp`, body)
+    .pipe(map(
       (login: any) => {
         if (login.access_token) {
           this.storeToken(login); // , rememberMe);
-          this.router.navigate(['/home']);
+          //this.router.navigate(['/home']);
         }
+      }
+    ));
+
+  }
+  activeUser(username: string, activeCode: string): Observable<any> {
+    const activeVm = {
+      username,
+      activeCode
+    };
+    return this.httpClient.post(`${environment.apiConfig.baseUrl}/api/Account/activate`, activeVm)
+    .pipe(map(
+      (login: any) => {
+        if (login.access_token) {
+          this.storeToken(login); // , rememberMe);
+          console.log('darad token');
+          this.router.navigate(['/home']);
+          console.log('darad token');
+        } else {
+          console.log('bedoone token'); }
+
+
       }
     ));
 

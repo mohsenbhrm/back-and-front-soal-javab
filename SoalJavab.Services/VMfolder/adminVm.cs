@@ -13,7 +13,7 @@ namespace SoalJavab.Services.Models.admin
         [Required(ErrorMessage = "متن سوال را وارد کنید")]
         public string Matn { get; set; }
         public IList<JsonVm> Tags { get; set; }
-        public DateTime date { set; get; }
+        public string date { set; get; }
         public bool IsDeleted{ get; set; }
         public string userName{get;set;}
     }
@@ -25,7 +25,7 @@ namespace SoalJavab.Services.Models.admin
         [Required]
         public long IdSoal { get; set; }
         public bool IsDeleted {get;set;}
-        public DateTime date {get;set;}
+        public string date {get;set;}
         public long IdUser { get; set; }
         public string Username { get; set; }
     }

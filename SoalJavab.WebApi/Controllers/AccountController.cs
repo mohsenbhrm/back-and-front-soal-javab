@@ -11,6 +11,8 @@ using Newtonsoft.Json.Linq;
 using SoalJavab.Services.Models;
 using SoalJavab.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace SoalJavab.WebApi.Controllers
 {
@@ -29,6 +31,8 @@ namespace SoalJavab.WebApi.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IAntiForgeryCookieService _antiforgery;
         private readonly ITokenFactoryService _tokenFactoryService;
+        private IWebMailService _webMailService;
+        private IOptionsSnapshot<SmtpConfig> _smtpConfig;
 
         public AccountController(
             IUsersService usersService,
@@ -37,7 +41,10 @@ namespace SoalJavab.WebApi.Controllers
             IUnitOfWork uow,
             IAntiForgeryCookieService antiforgery,
             ITagServices tagServices,
-            IZirReshtehServices zirReshteh
+            IZirReshtehServices zirReshteh,
+            IWebMailService webMailService,
+            IOptionsSnapshot<SmtpConfig> smtpConfig  // will be provided from the `appsettings.json` file.
+
             )
         {
             _zirreshteh = zirReshteh;
@@ -56,12 +63,15 @@ namespace SoalJavab.WebApi.Controllers
 
             _tokenFactoryService = tokenFactoryService;
             _tokenFactoryService.CheckArgumentIsNull(nameof(tokenFactoryService));
+
+            _webMailService = webMailService;
+            _smtpConfig = smtpConfig;
         }
 
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody]  LoginVm loginUser)
+        public async Task<IActionResult> Login([FromBody] LoginVm loginUser)
         {
             if (loginUser == null)
             {
@@ -73,19 +83,29 @@ namespace SoalJavab.WebApi.Controllers
             {
                 return Unauthorized();
             }
+            // user.OldLoggedIn = user.LastLoggedIn;
+            // var result = await _tokenFactoryService.CreateJwtTokensAsync(user);
+            // await _tokenStoreService.AddUserTokenAsync(user, result.RefreshTokenSerial, result.AccessToken, null);
+            // await _uow.SaveChangesAsync();
+
+            // _antiforgery.RegenerateAntiForgeryCookies(result.Claims);
+            var result = await TokenMake(user);
+
+            return Ok(new { access_token = result.AccessToken, refresh_token = result.RefreshToken });
+        }
+        private async Task<JwtTokensData> TokenMake(ApplicationUser user)
+        {
             user.OldLoggedIn = user.LastLoggedIn;
             var result = await _tokenFactoryService.CreateJwtTokensAsync(user);
             await _tokenStoreService.AddUserTokenAsync(user, result.RefreshTokenSerial, result.AccessToken, null);
             await _uow.SaveChangesAsync();
-
             _antiforgery.RegenerateAntiForgeryCookies(result.Claims);
-
-            return Ok(new { access_token = result.AccessToken, refresh_token = result.RefreshToken });
+            return result;
         }
 
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> RefreshToken([FromBody]JToken jsonBody)
+        public async Task<IActionResult> RefreshToken([FromBody] JToken jsonBody)
         {
             var refreshTokenValue = jsonBody.Value<string>("refreshToken");
             if (string.IsNullOrWhiteSpace(refreshTokenValue))
@@ -135,15 +155,13 @@ namespace SoalJavab.WebApi.Controllers
         public async Task<IActionResult> GetUserInfo()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            // var q = _zirreshteh.GetByUser(_usersService.GetCurrentUserId());
-            var q =await _Tags.GetByUserAsync(await _usersService.GetCurrentUserAsync());
-            // var q = _Tags.GetByUser(_usersService.GetCurrentUserId());
-            if (q!=null)
-            return Json(new
-            {
-                Username = claimsIdentity.Name,
-                Tags = q
-            });
+            var q = await _Tags.GetByUserAsync(await _usersService.GetCurrentUserAsync());
+            if (q != null)
+                return Json(new
+                {
+                    Username = claimsIdentity.Name,
+                    Tags = q
+                });
             return Json(new
             {
                 Username = claimsIdentity.Name,
@@ -156,11 +174,33 @@ namespace SoalJavab.WebApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SignUp([FromBody] SignUpVm signUp)
         {
+           var baseUrl = string.Format(@"http://localhost:4200/");
             var us = await _usersService.isUserNameExcist(signUp.Username);
             if (us)
             { return BadRequest(new JsonResult("نام کاربری تکراری است")); }
+            // var q = await _usersService.AddNewUserAsync(signUp);
             var q = await _usersService.AddNewUserAsync(signUp);
-            return await Login(q);
+
+
+
+           // var q = await _usersService.FindUserAsync(signUp.Username, signUp.Password);
+
+            await _webMailService.SendEmailAsync(
+                smtpConfig: _smtpConfig.Value,
+                emails: new List<MailAddress>
+                    {
+                        new MailAddress { ToName = signUp.Name, ToAddress = signUp.Email },
+                    },
+                    subject: "Hello!",
+                    // message: "salam");
+                    message: string.Format(@"
+                    Hello!<br/>  
+                    This is an email from us! <br/> 
+                    <a href='{0}active-user/{1}/{2}'>
+                    activate link{0}</a>
+                    <br/>",baseUrl,q.activeCode , q.username ));
+
+            return Ok(new { access_token = q.username, refresh_token = q.activeCode });
         }
 
         [HttpPost("[action]")]
@@ -173,6 +213,25 @@ namespace SoalJavab.WebApi.Controllers
             if (b)
                 return Ok();
             return BadRequest(error);
+        }
+
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> activate([FromBody] ActivUserVm active)
+        {
+            active.CheckArgumentIsNull(nameof(active));
+            if (!string.IsNullOrEmpty(active.activeCode) && !string.IsNullOrEmpty(active.username))
+            {
+                var q = await _usersService.FindUserAsync(active);
+                if (q != null)
+                {
+                    var result = await TokenMake(q);
+
+                    return Ok(new { access_token = result.AccessToken, refresh_token = result.RefreshToken });
+                }
+            }
+            return BadRequest("okkkoko");
         }
     }
 }

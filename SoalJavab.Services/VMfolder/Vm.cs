@@ -71,7 +71,7 @@ namespace SoalJavab.Services.Models
         public string Matn { get; set; }
         public List<userTagVm> tags { get; set; }
         public List<JavabVM> javabs { get; set; }
-        public DateTime regDate { get; set; }
+        public string regDate { get; set; }
     }
     public class JavabVM
     {
@@ -93,6 +93,11 @@ namespace SoalJavab.Services.Models
         public string name { get; set; }
         public long Id { get; set; }
         public long count {get;set;}
+    }
+     public class ActivUserVm
+    {
+        public string activeCode { set; get; }
+        public string username { set; get; }
     }
     public class LoginVm
     {

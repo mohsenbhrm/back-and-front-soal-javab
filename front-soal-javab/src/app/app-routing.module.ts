@@ -12,6 +12,7 @@ import { SignUpComponent } from './login/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SearchComponent } from './pages/search/search.component';
 import { AdminPanelComponent } from './pages/admin/admin-panel/admin-panel.component';
+import { ActivateUserComponent } from './login/activate-user/activate-user.component';
 
 
 const routes: Routes = [
@@ -33,8 +34,6 @@ const routes: Routes = [
   {
     path: 'admin',
     component: LayoutComponent,
-    // loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-    // component: AdminPanelComponent,
     children: [
       {
         path: '',
@@ -57,6 +56,14 @@ const routes: Routes = [
     path: 'sign-up',
     component: SignUpComponent
   },
+  {
+    path: 'active-user',
+    component: ActivateUserComponent,
+  },
+    {
+      path: 'active-user/:active/:user',
+      component: ActivateUserComponent,
+    },
   {
     path: 'home',
     // component: LayoutComponent,

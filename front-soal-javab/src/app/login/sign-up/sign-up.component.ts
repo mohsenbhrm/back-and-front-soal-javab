@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-up',
@@ -64,12 +65,15 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
+    const header = new HttpHeaders();
+    header.set('Content-Type', 'application/json');
+
     const body = this.signUpForm.getRawValue();
 
     this.authService.signUp(body).subscribe(
       reponse => {
         this.toastr.success('ثبت نام با موفقیت انجام شد. خوش آمدید', 'ثبت نام موفق');
-
+        this.router.navigate(['/active-user']);
       }, err => {
         this.toastr.error(err.error.value, 'ثبت نام نا موفق');
         this.signUpForm.controls.passWord.setValue('');

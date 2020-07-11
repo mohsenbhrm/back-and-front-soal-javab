@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SoalJavab.Common;
 
 namespace SoalJavab.Services.myservices
 {
@@ -90,7 +91,7 @@ namespace SoalJavab.Services.myservices
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
-                regDate = x.Regdat,
+                regDate = x.Regdat.ToShortDateTimeString(),
                 tags = x.TagSoal.Where(c => !c.Isdeleted)
                .Select(ut => new userTagVm
                {
@@ -132,7 +133,7 @@ namespace SoalJavab.Services.myservices
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
-                regDate = x.Regdat,
+                regDate =x.Regdat.ToShortDateTimeString(),
             }).OrderByDescending(x=>x.SoalId).ToList();
             return stu;
         }
@@ -152,7 +153,7 @@ namespace SoalJavab.Services.myservices
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
-                regDate = x.Regdat,
+                regDate = x.Regdat.ToShortDateTimeString(),
             }).OrderByDescending(x=>x.SoalId).ToList();
             return stu;
         }
@@ -179,7 +180,7 @@ namespace SoalJavab.Services.myservices
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
-                regDate = x.Regdat,
+                regDate = x.Regdat.ToShortDateTimeString(),
             }).OrderByDescending(x=>x.SoalId).ToList();
             return stu;
         }
@@ -200,42 +201,11 @@ namespace SoalJavab.Services.myservices
                 Username = x.User.Username,
                 SoalId = x.Id,
                 Matn = x.Matn,
-                regDate = x.Regdat,
-            }).TakeLast(10).ToList();
+                regDate = x.Regdat.ToShortDateTimeString()
+                            }).TakeLast(10).ToList();
             
             return stu.OrderByDescending(x=>x.SoalId).ToList();
         }
-       
-       
-        //  private IList<SoalToUser> Post_Soal_To_user_by_UserId(long userId)
-        // {
-        //     var stu = new List<SoalToUser>();
-        //     var u = _Userrepository.Get_ZirReshtehId_by_UserId(userId);
-        //     //سوالهای جدید را بر اساس شناسه سوال که بزگتر از آخرین سوال پرسیده شده از کاربر باشه رو جدا میکند
-        //     var sq = _soal.GetAllByzirreshteh(u.FirstOrDefault())
-        //     .Where(x => x.ApplicationUserId != userId && x.Id > lastSoalToUserId(userId)).ToList();
-
-        //     foreach (var n in u.Skip(1))
-        //     {
-        //         var q = _soal.GetAllByzirreshteh(n)
-        //         .Where(x => x.ApplicationUserId != userId && x.Id > lastSoalToUserId(userId)).ToList();
-
-        //         sq.Concat(q);
-        //     }
-        //     if (sq.Count() < 1)
-        //     { return stu; }
-        //     var User = _users.GetCurrentUserAsync().Result;
-        //      stu = sq.Select(x=> new SoalToUser {
-        //         User = User,
-        //         Soal = x,
-        //         Isanswered =  false ,
-        //         Isdeleted = false,
-        //         IsVisited = false
-        //     }).ToList();
-        //     db.Set<SoalToUser>().AddRange(stu);
-        //     db.SaveAllChanges();
-        //     return stu.ToList();
-        // }
         public IList<Soal> Post_Soal_To_user_by_UserId_10(long userId)
         {
             var u = _Userrepository.Get_ZirReshtehId_by_UserId(userId);

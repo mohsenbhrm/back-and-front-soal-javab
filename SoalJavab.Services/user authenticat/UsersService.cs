@@ -26,8 +26,9 @@ namespace SoalJavab.Services
         Task<List<ApplicationUser>> GetActiveUsers();
         Task<List<ApplicationUser>> GetNotActiveUsers();
         bool addUserReshteh(long[] id);
-        Task<LoginVm> AddNewUserAsync(SignUpVm signUp);
+        Task<ActivUserVm> AddNewUserAsync(SignUpVm signUp);
         Task<bool> isUserNameExcist(string username);
+        Task<ApplicationUser> FindUserAsync(ActivUserVm active);
     }
 
     public class UsersService : IUsersService
@@ -67,6 +68,21 @@ namespace SoalJavab.Services
             return _users.FirstOrDefaultAsync(x => x.Username == username && x.Password == passwordHash);
             // var passwordHash = _securityService.GetSha256Hash(password);
             //return _users.FirstOrDefaultAsync(x => x.Username == username && x.Password == passwordHash);
+        }
+        public async Task<ApplicationUser> FindUserAsync(ActivUserVm active)
+        {
+
+            var q = await _users.FirstOrDefaultAsync(x => x.Username == active.username && x.SerialNumber == active.activeCode);
+            if ( q!= null){
+                if(q.IsActive) {
+                 return null;
+            }
+            q.IsActive = true;
+            await _uow.SaveChangesAsync();
+            return q;
+            }
+            else return null;
+            
         }
 
         public Task<bool> isUserNameExcist(string username)
@@ -175,14 +191,14 @@ namespace SoalJavab.Services
             return true;
         }
 
-        public async Task<LoginVm> AddNewUserAsync(SignUpVm signUp)
+        public async Task<LoginVm> AddNewUserAsyncold(SignUpVm signUp)
         {
             var q = new ApplicationUser
             {
                 Username = signUp.Username,
                 Name = signUp.Name,
                 Password = _securityService.GetSha256Hash(signUp.Password),
-                IsActive = true,
+                IsActive = false,
                 Regdate = DateTime.Now,
                 LastLoggedIn = DateTimeOffset.Now,
                 NewReg = true,
@@ -191,21 +207,28 @@ namespace SoalJavab.Services
             };
 
             await _users.AddAsync(q);
-            //    var s = new List<ReshtehUser>();
-            //    foreach(var n in signUp.zirReshteh)
-            //    {
-            //        s.Add(new ReshtehUser {
-            //            ApplicationUserId =q.Id,
-            //            IsDeleted = false,
-            //            ZirReshtehId=n
-            //        });
-            //    }
-            //    await _uow.Set<ReshtehUser>().AddRangeAsync(s);
             await _uow.SaveAllChangesAsync();
             return new LoginVm { username = signUp.Username, password = signUp.Password };
+        }
 
-            // return null;
+         public async Task<ActivUserVm> AddNewUserAsync(SignUpVm signUp)
+        {
+            var q = new ApplicationUser
+            {
+                Username = signUp.Username,
+                Name = signUp.Name,
+                Password = _securityService.GetSha256Hash(signUp.Password),
+                IsActive = false,
+                Regdate = DateTime.Now,
+                LastLoggedIn = DateTimeOffset.Now,
+                NewReg = true,
+                SerialNumber = Guid.NewGuid().ToString("N"),
+                DisplayName = signUp.Name
+            };
 
+            await _users.AddAsync(q);
+            await _uow.SaveAllChangesAsync();
+            return new ActivUserVm { username = signUp.Username, activeCode = q.SerialNumber };
         }
     }
 }

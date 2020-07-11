@@ -1,10 +1,9 @@
-PUT   http://localhost:5000/api/manageTags/1
-Authorization:    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3MjEwN2UxNy0yNGUwLTljMDAtOWVhNy05YWIzYjZmZDFiY2UiLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxLyIsImlhdCI6MTU4MTQ3ODgzMiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Im1vaHNlbiIsIkRpc3BsYXlOYW1lIjoibW9oc2VuIGJhaHJhbWkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3NlcmlhbG51bWJlciI6IjJiOTRhZmFlODY1ZjRlMmRiNTljMzliNmVlMTdmNzBhIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIl0sIm5iZiI6MTU4MTQ3ODgzMywiZXhwIjoxNTgxNDk2ODMzLCJhdWQiOiJBbnkifQ.ohqPFIvjTNiF1J-qKnIwepg31_ukVvUH883aVdYVL9E
-
+POST http://localhost:5000/api/Account/activate
 Content-Type: application/json
 
 {
-    "name": "mohsen",
-    "Id": "1"
+    "username": "mohsen1",
+    "activeCode": "ed0d4dce08654b37ba569cdd954d914e",
+
 }
 

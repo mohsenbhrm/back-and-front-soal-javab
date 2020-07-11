@@ -51,5 +51,14 @@
   "Password required" :"رمز عبور الزامی است",
   "Questions-text-required": "متن سوال الزامی است",
   "Tag-is-required":"تگ الزامی است",
-  "Text-of-Question":"متن پرسش"
+  "Text-of-Question":"متن پرسش",
+
+  "activate_massage_email": "لینک فعال ساز حساب کاربری برای شما ارسال شده است",
+  "activate_massage_redirect": "حساب کاربری شما با موفقیت فعال شد",
+  "activate_massage_fail": "فعالسازی نا موفق! لینک نامعتبر است و یا دو باره امتحان کنید",
+  "activate_massage_succes": "حساب کاربری شما با موفقیت فعال شد",
+
+  "activate_massage": "لینک فعال ساز حساب کاربری برای شما ارسال شده است"
+
+
 }

@@ -42,6 +42,15 @@ namespace SoalJavab.WebApi
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region mail config
+            services.Configure<SmtpConfig>(options => Configuration.GetSection("SmtpConfig").Bind(options));
+            services.AddScoped<IWebMailService, WebMailService>();
+            services.AddScoped<IViewRendererService, ViewRendererService>();
+
+
+
+            #endregion
+
             #region  new code user authenticate 
             services.AddOptions<BearerTokensOptions>()
                     .Bind(Configuration.GetSection("BearerTokens"))
@@ -79,8 +88,9 @@ namespace SoalJavab.WebApi
             services.AddScoped<ITagAdminServices, TagAdminServices>();
             services.AddScoped<IUsersAdminService, UsersAdminService>();
             services.AddScoped<IJavbAdminService, JavbAdminService>();
-            services.AddScoped<ISoalAdminService,SoalAdminService>();
+            services.AddScoped<ISoalAdminService, SoalAdminService>();
             services.AddScoped<IstatisticsService, statisticsService>();
+
 
 
             #endregion
@@ -165,7 +175,7 @@ namespace SoalJavab.WebApi
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowAnyOrigin()
-                       // .AllowCredentials()
+                        // .AllowCredentials()
                         .Build());
 
             });
@@ -183,10 +193,10 @@ namespace SoalJavab.WebApi
                             c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                         });
 
-           // services.AddSpaStaticFiles(configuration =>
-           //{
-           //    configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
-           //});
+            // services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
+            //});
 
 
         }
@@ -198,7 +208,8 @@ namespace SoalJavab.WebApi
             {
                 app.UseHsts();
             }
-            app.Use(async (context, next) => {
+            app.Use(async (context, next) =>
+            {
                 await next();
                 if (context.Response.StatusCode == 404 &&
                     !Path.HasExtension(context.Request.Path.Value) &&
@@ -292,5 +303,5 @@ namespace SoalJavab.WebApi
 
         }
     }
-    
+
 }

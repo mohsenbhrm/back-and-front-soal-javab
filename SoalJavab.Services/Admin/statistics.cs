@@ -56,14 +56,14 @@ namespace SoalJavab.Services.Admin
             .Select(c => new searchVm
             {
                 userName = c.User.Username,
-                soal = new SoalVM { date = c.Regdat, Id = c.Id, Matn = c.Matn },
+                soal = new SoalVM { date = c.Regdat.TopersianShortDateTimeString(), Id = c.Id, Matn = c.Matn },
                 javab = c.Javab
               .Select(x => new JavabVM
               {
                   Matn = x.Matn,
                   Username = x.User.Username,
                   IdUser = x.User.Id,
-                  date = x.RegDate
+                  date = x.RegDate.TopersianShortDateTimeString()
               }).ToList(),
               tags = c.TagSoal.Where(v => !v.Isdeleted)
                .Select(ut => new JsonVm

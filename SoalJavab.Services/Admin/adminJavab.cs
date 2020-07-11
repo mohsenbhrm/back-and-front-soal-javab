@@ -52,7 +52,7 @@ namespace SoalJavab.Services.Admin
                 Matn = x.Matn,
                 Id = x.Id,
                 IsDeleted = x.IsDeleted,
-                date = x.RegDate,
+                date = x.RegDate.TopersianShortDateTimeString(),
                 Username = x.User.Username,
                 IdSoal = x.Soal.Id
             }).ToListAsync();

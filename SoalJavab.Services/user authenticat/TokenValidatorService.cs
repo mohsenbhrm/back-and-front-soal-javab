@@ -21,7 +21,6 @@ namespace SoalJavab.Services
         {
             _usersService = usersService;
             _usersService.CheckArgumentIsNull(nameof(usersService));
-
             _tokenStoreService = tokenStoreService;
             _tokenStoreService.CheckArgumentIsNull(nameof(_tokenStoreService));
         }

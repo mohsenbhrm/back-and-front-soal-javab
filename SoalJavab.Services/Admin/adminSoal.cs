@@ -63,7 +63,7 @@ namespace SoalJavab.Services.Admin
                 .Select(tags => tags.Tag)
                 .Select(a => new JsonVm { Id = a.Id, name = a.Onvan }).ToList(),
                 IsDeleted = x.IsDeleted,
-                date = x.Regdat,
+                date = x.Regdat.TopersianShortDateTimeString(),
                 userName = x.User.Username
             }).ToListAsync();
             return s;

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.7.0" />
     <ProjectReference Include="..\SoalJavab.Common\SoalJavab.Common.csproj" />
     <ProjectReference Include="..\SoalJavab.DataLayer\SoalJavab.DataLayer.csproj" />
     <ProjectReference Include="..\SoalJavab.DomainClasses\SoalJavab.DomainClasses.csproj" />

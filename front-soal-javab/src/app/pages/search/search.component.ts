@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
   newFeedTimer: Observable<any>;
   constructor(private searchservice: SearchService,
               private toastrService: ToastrService,
-              private rout:ActivatedRoute,
+              private rout: ActivatedRoute,
               private router: Router,
               public questionFeedService: QuestionsFeedService) { }
 
