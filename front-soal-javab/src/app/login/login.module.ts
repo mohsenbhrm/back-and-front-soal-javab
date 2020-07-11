@@ -34,7 +34,7 @@ import {LanguageComponent} from '@app/layout/language/language/language.componen
 
     // RouterModule.forChild(routes)
   ],
-  exports:[LanguageComponent]
+  exports: [LanguageComponent]
 
 })
 export class LoginModule { }
