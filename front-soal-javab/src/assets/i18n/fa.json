@@ -35,10 +35,11 @@
   "Full Name": "Full Name",
   "Email": "Email",
   "Password": "رمز ورود",
-  "Repeat Password": "Repeat Password",
+  "Repeat Password": "تکرار رمز عبور",
+  "Repeat Password required": "تکرار رمز عبور الزامی است",
+  "Password_not_match":"رمز عبور تطابق ندارد",
   "Register": "ثبت نام",
   "Log in": "ورود",
-
 
 
   "Submit a question": "ثبت سوال",
@@ -51,5 +52,18 @@
   "Password required" :"رمز عبور الزامی است",
   "Questions-text-required": "متن سوال الزامی است",
   "Tag-is-required":"تگ الزامی است",
-  "Text-of-Question":"متن پرسش"
+  "Text-of-Question":"متن پرسش",
+  "Insert-Tag":"تگ را وارد کنید",
+  "Next-Tag":"تگ بعدی",
+
+  "name_required" :"نام الزامی است",
+  "family_required" :"نام خانوادگی الزامی است",
+  "email_required" :"ایمیل الزامی است",
+  "email_format_failed" :"قالب ایمیل را رعایت کنید",
+  "password_min_length":"رمز ورود حدافل باید 6 کاراکتر یا بیشتر باشد",
+  "name":"نام",
+  "Family":"نام خانوادگی",
+  "E-mail":"ایمیل"
+
+
 }

@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { LanguageComponent } from '@app/layout/language/language/language.component';
+import { LayoutModule } from '@app/layout/layout.module';
 
 // const routes: Routes = [
 //   {
@@ -21,13 +23,17 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 @NgModule({
   declarations: [
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+
   ],
   imports: [
     SharedModule,
-    RouterModule
+    RouterModule,
+    LayoutModule,
 
     // RouterModule.forChild(routes)
-  ]
+  ],
+  exports:[LanguageComponent]
+
 })
 export class LoginModule { }

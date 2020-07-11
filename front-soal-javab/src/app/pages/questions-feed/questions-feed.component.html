@@ -13,7 +13,7 @@
                       <div class="d-flex mb-2">
                         <small class="text-lite-dark">
                           <span class="badge badge-primary">{{item.username}}</span> -
-                          <span>{{item.regDate}}</span>
+                          <span dir="ltr">{{item.regDate}}</span>
                         </small>
                       </div>
                       <div class="">
@@ -27,7 +27,7 @@
                 <div >
                   <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
                   <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
-                    <span class="badge badge-warning ml-2">{{tag.name}}</span>
+                    <span class="badge badge-info ml-2">{{tag.name}}</span>
                   </a>
                 </div>
                 <div>
@@ -41,7 +41,7 @@
                                 <small class="text-lite-dark">
                                   <span class="badge ">{{ji+1}}</span> -
 
-                                  <span class="badge badge-primary">{{jvb.username}}</span> -
+                                  <span class="badge badge-secondary">{{jvb.username}}</span> -
                                   <span>{{jvb.matn}}</span>
                                 </small>
                               </div>

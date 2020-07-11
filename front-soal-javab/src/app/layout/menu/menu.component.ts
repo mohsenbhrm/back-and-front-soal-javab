@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 
+@Injectable({providedIn: 'root'
+})
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -13,7 +15,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  menuToggle(e) {
+  menuToggle() {
     this.menuExpanded = !this.menuExpanded;
   }
 
