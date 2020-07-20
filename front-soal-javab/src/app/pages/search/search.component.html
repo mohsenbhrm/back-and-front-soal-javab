@@ -1,8 +1,11 @@
 <section class="container-fluid">
   <div class="card">
     <div class="card-body">
-      <h4>لیست سوالاتی جستجو شده</h4>
-      <p>{{src}}</p>
+      <h3>{{"Search_term"|translate}} :
+        </h3>
+        <p>*{{src}}*</p>
+      <h5>{{"Questions_found"|translate}}</h5>
+
       <div *ngIf="hasTags">
         <div *ngIf="questionList " class="scrollable-content">
           <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
@@ -27,7 +30,6 @@
               </ng-template>
               <ng-template ngbPanelContent>
                 <div >
-                  <!-- <a (click)="menuExpanded = false" [routerLink]="['/home/search/د']" routerLinkActive="router-link-active" href="">salam kon</a> -->
                   <a [routerLink]="['/home/search/',tag.name]" routerLinkActive="router-link-active" *ngFor="let tag of item.tags" class="text-lite-dark">
                     <span class="badge badge-info ml-2">{{tag.name}}</span>
                   </a>

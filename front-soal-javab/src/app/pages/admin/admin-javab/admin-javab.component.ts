@@ -14,16 +14,15 @@ export class AdminJavabComponent implements OnInit {
   ngOnInit() {
     this.adminServices.getJavabs().subscribe(res=> this.javab=res)
   }
-  delete(id:any){
+  delete(id: any){
     this.adminServices.deleteJavab(id).subscribe(
       res=> this.javab = res)
   }
-  undo(id:any){
+  undo(id: any){
     this.adminServices.undojavab(id).subscribe(
       res=> this.javab = res)
   }
-  javabfiter(dl:any)
-  {
+  javabfiter(dl: any) {
    return this.javab.filter(x => x.isDeleted == dl )
   }
 

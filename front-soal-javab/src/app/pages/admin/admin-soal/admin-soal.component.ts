@@ -8,31 +8,30 @@ import { AdminService } from '../admin.service';
 })
 export class AdminSoalComponent implements OnInit {
 
-public mydate:any;
+  public mydate: any;
   public soals;
   constructor(private adminservice: AdminService) {
 
-}
+  }
 
   ngOnInit() {
     this.adminservice.getSoals().subscribe(
-      res=> this.soals = res
+      res => this.soals = res
     )
   }
-  submit() {  }
+  submit() { }
 
-  delete(id:any){
+  delete(id: any) {
     this.adminservice.deleteSoal(id).subscribe(
-      res=> this.soals = res
-    )
+      res => this.soals = res
+    );
   }
-  undo(id:any){
+  undo(id: any) {
     this.adminservice.undoSoal(id).subscribe(
-      res=> this.soals = res)
+      res => this.soals = res);
   }
-  soalfiter(dl:any)
-  {
-   return this.soals.filter(x => x.isDeleted == dl )
+  soalfiter(dl: any) {
+    return this.soals.filter(x => x.isDeleted === dl )
   }
 
 }

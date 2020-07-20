@@ -1,10 +1,25 @@
 <div *ngIf="!state">
-  <p>لینک فعال ساز  برای شما ارسال شده است </p>
+  <div class=" mb-5">
+    <div class="m-5  card text-white bg-info mb-3" >
+      <div class="card-header">{{'activate'|translate}} </div>
+      <div class="card-body">
+        <h4 class="card-title"></h4>
+        <p class="card-text"> {{'activate_massage'|translate}}</p>
+      </div>
+    </div>
+  </div>
 </div>
 <div *ngIf="state">
-  {{'activate_massage'|translate}}
-  <br/>
-
-  {{stateMassage}}
-  mohsen bahrami
+  <div class=" mb-5">
+    <div class="m-5  card text-white bg-success mb-3" >
+      <div class="card-header">{{'activate'|translate}} </div>
+      <div class="card-body">
+        <h4 class="card-title"></h4>
+        <p *ngIf="stateActive" class="card-text"> {{statSuccess}}</p>
+        <p *ngIf="!stateActive" class="card-text"> {{stateFail}}</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+

@@ -65,7 +65,7 @@ namespace SoalJavab.WebApi.Controllers
         {
             try
             {
-                return Ok(await _users.BanAsync(user.Id));
+                return Ok(await _users.UnBanAsync(user.Id));
             }
             catch { return BadRequest(); }
         }

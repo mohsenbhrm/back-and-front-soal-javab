@@ -64,7 +64,13 @@
   "password_min_length":"minimum 6 character required for password",
   "name":"name",
   "Family":"Family",
-  "e-mail":"Email"
+  "e-mail":"Email",
+  "ban":"ban",
+  "unBan":"Un Ban",
+  "Search_term":"Search term",
+
+"Questions_found":"Questions found"
+
 
 
 }

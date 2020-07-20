@@ -11,8 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ActivateUserComponent implements OnInit {
   state = false;
+  stateActive = false;
   stateMassage;
   statSuccess;
+  stateFail;
   username;
   activeCode;
 
@@ -26,8 +28,9 @@ export class ActivateUserComponent implements OnInit {
 
   ) {
     translate.stream('activate_massage').subscribe(x => this.stateMassage = x);
-
     translate.stream('activate_massage_succes').subscribe(x => this.statSuccess = x);
+    translate.stream('activate_massage_fail').subscribe(x => this.stateFail = x);
+
   }
 
   ngOnInit() {
@@ -37,18 +40,19 @@ export class ActivateUserComponent implements OnInit {
           this.activeCode = params.getAll('active').toString();
           this.username = params.getAll('user').toString();
           console.log('active  => ' + this.activeCode);
-          console.log('user  => ' +  this.username);
-          this.authService.activeUser('sad' + this.username, "asdasd" + this.activeCode).subscribe(
+          console.log('user  => ' + this.username);
+          this.authService.activeUser(this.username, this.activeCode).subscribe(
             reponse => {
               this.state = true;
+              this.stateActive = true;
               this.toastr.success(this.statSuccess, 'ثبت نام موفق');
-             // this.router.navigate(['/active-user']);
+              this.router.navigate(['/home']);
             }, err => {
               this.state = true;
-              this.toastr.error(err.error.value, this.stateMassage);
+              this.stateActive = false;
+              console.log('ajab active =>  ERROR ');
+              this.toastr.error(err.error.value, this.stateFail);
             });
-       //   this.router.navigate(['/home']);
-
         } else {
           this.state = true;
           console.log('ajab user  =>  Ridi   ');

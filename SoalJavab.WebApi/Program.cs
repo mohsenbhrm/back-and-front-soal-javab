@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SoalJavab.DataLayer;
-using StructureMap.AspNetCore;
 
 namespace SoalJavab.WebApi
 {
@@ -26,7 +25,7 @@ namespace SoalJavab.WebApi
         WebHost.CreateDefaultBuilder(args)
          .UseKestrel()
            .UseContentRoot(Directory.GetCurrentDirectory())
-           .UseUrls("http://localhost:5000", "http://192.168.1.51:5000")
+           .UseUrls("http://localhost:5000", "http://192.168.1.50:5000")
            .UseKestrel()
            .UseIISIntegration()
             .UseStartup<Startup>();

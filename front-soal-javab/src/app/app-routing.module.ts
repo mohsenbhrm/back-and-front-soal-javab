@@ -13,6 +13,10 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { SearchComponent } from './pages/search/search.component';
 import { AdminPanelComponent } from './pages/admin/admin-panel/admin-panel.component';
 import { ActivateUserComponent } from './login/activate-user/activate-user.component';
+import { AdminUserComponent } from './pages/admin/admin-user/admin-user.component';
+import { AdminJavabComponent } from './pages/admin/admin-javab/admin-javab.component';
+import { AdminSoalComponent } from './pages/admin/admin-soal/admin-soal.component';
+import { AdminTagComponent } from './pages/admin/admin-tag/admin-tag.component';
 
 
 const routes: Routes = [
@@ -22,7 +26,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'admin/',
+    path: 'admin',
     redirectTo: 'admin',
     pathMatch: 'full',
   },
@@ -37,18 +41,34 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'admin',
+        redirectTo: 'dashbourd',
         pathMatch: 'full',
 
       },
       {
-        path: 'admin',
+        path: 'dashbourd',
     component: AdminPanelComponent,
+      },
+      {
+        path: 'users',
+    component: AdminUserComponent,
+      },
+      {
+        path: 'javab',
+    component: AdminJavabComponent,
+      },
+      {
+        path: 'soal',
+    component: AdminSoalComponent,
+      },
+      {
+        path: 'tag',
+    component: AdminTagComponent,
       },
       {
         path: '**',
         pathMatch: 'full',
-        redirectTo: 'home'
+        redirectTo: 'admin'
       }
     ]
   },

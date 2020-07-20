@@ -16,6 +16,10 @@ namespace SoalJavab.Common
         {
             return x.ToShortDateString() +" _ "+ x.ToShortTimeString();
         }
+        public static string ToShortDateTimeString(this DateTimeOffset? x)
+        {
+            return x.ToShortDateTimeString(); //ToShortDateString() +" _ "+ x.ToShortTimeString();
+        }
         public static string TopersianShortDateTimeString(this DateTime x)
         {
             return x.ToShortDateString() +" _ "+ x.ToShortTimeString();

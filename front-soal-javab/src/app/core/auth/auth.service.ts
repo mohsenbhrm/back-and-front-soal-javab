@@ -62,13 +62,9 @@ export class AuthService {
           console.log('darad token');
           this.router.navigate(['/home']);
           console.log('darad token');
-        } else {
-          console.log('bedoone token'); }
-
-
+        }
       }
     ));
-
   }
 
   storeToken(login: Login, rememberMe?: boolean) {

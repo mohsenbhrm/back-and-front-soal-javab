@@ -61,7 +61,7 @@ namespace SoalJavab.Services.Admin
                 IsActive = x.IsActive,
                 Ban = x.Ban,
                 Address = x.Address.State + " " + x.Address.City,
-                LastLogin = x.LastLoggedIn,
+                LastLogin = x.LastLoggedIn.ToString(),
                 role = x.UserRoles.Select(f => f.Role).ToList()
             }).ToListAsync();
             return s;
@@ -88,7 +88,7 @@ namespace SoalJavab.Services.Admin
                 IsActive = x.IsActive,
                 Ban = x.Ban,
                 Address = x.Address.State + " " + x.Address.City,
-                LastLogin = x.LastLoggedIn
+                LastLogin = x.LastLoggedIn.ToShortDateTimeString()
             }).ToListAsync();
             return s;
         }
@@ -102,7 +102,7 @@ namespace SoalJavab.Services.Admin
                 IsActive = x.IsActive,
                 Ban = x.Ban,
                 Address = x.Address.State + " " + x.Address.City,
-                LastLogin = x.LastLoggedIn
+                LastLogin = x.LastLoggedIn.ToShortDateTimeString()
             }).ToListAsync();
             return s;
         }
@@ -147,7 +147,7 @@ public class UserVm
     public long Id { get; set; }
     public string UserName { set; get; }
     public string FullName { set; get; }
-    public DateTimeOffset? LastLogin { set; get; }
+    public string LastLogin { set; get; }
     public bool IsActive { set; get; }
     public bool Ban { set; get; }
     public string Address { set; get; }

@@ -231,7 +231,7 @@ namespace SoalJavab.WebApi.Controllers
                     return Ok(new { access_token = result.AccessToken, refresh_token = result.RefreshToken });
                 }
             }
-            return BadRequest("okkkoko");
+            return BadRequest();
         }
     }
 }
