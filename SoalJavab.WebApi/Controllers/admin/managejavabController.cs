@@ -4,30 +4,41 @@ using SoalJavab.Services.Contracts;
 using SoalJavab.Services.Admin;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
+using System;
 
-namespace SoalJavab.WebApi.Controllers
+namespace SoalJavab.WebApi.Controllers.admin
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin,manager")]
     [EnableCors("CorsPolicy")]
-    public class manageJavabController : ControllerBase
+    public class JavabController : ControllerBase
     {
         private IJavbAdminService _javabs;
 
-        public manageJavabController(IJavbAdminService javbAdmin)
+        public JavabController(IJavbAdminService javbAdmin)
         {
             _javabs = javbAdmin;
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{pageId}"),HttpGet]
+        public async Task<IActionResult> Get(int pageId=0)
         {
             try
             {
-                return Ok(await _javabs.GetAllAsync());
+                return Ok(await _javabs.GetAllAsync(pageId));
             }
             catch { return BadRequest(); }
+        }
+         [HttpGet("[action]/{pageId}"),HttpGet("[action]")]
+        public async Task<IActionResult> GetAllDeleted(int pageId=0)
+        {
+            try
+            {
+                return Ok(await _javabs.GetAllDeletedAsync(pageId));
+            }
+            catch 
+            { return BadRequest(); }
         }
         [HttpDelete("{id}")]
         [IgnoreAntiforgeryToken]
@@ -35,7 +46,7 @@ namespace SoalJavab.WebApi.Controllers
         {
             try
             {
-                 if (await _javabs.DeleteAsync(id)) return Ok(await _javabs.GetAllAsync());
+                 if (await _javabs.DeleteAsync(id)) return Ok(await _javabs.GetAllAsync((int)id));
                 return BadRequest();
             }
             catch { return StatusCode(500); }
@@ -46,7 +57,7 @@ namespace SoalJavab.WebApi.Controllers
         {
             try
             {
-                if (await _javabs.undoDeletedAsync(id)) return Ok(await _javabs.GetAllAsync());
+                if (await _javabs.undoDeletedAsync(id)) return Ok(await _javabs.GetAllAsync((int)id));
                 return BadRequest();
             }
             catch { return StatusCode(500); }

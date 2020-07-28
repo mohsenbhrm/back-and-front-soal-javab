@@ -52,5 +52,7 @@ public class RoleVm
 {
     public long Id { get; set; }
     public string RoleName { get; set; }
-}
+}public class IdArray {
+        public long[] id {get; set;}
+    }
 }

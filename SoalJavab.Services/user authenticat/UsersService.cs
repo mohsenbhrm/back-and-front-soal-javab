@@ -85,10 +85,9 @@ namespace SoalJavab.Services
             
         }
 
-        public Task<bool> isUserNameExcist(string username)
-        {
-            return _users.AnyAsync(x => x.Username == username);
-        }
+        public Task<bool> isUserNameExcist(string username) => _users.AnyAsync(x => x.Username == username);
+       // public Task<bool> isEmailExcist(string username) => _users.AnyAsync(x => x.mail == username);
+
         public async Task<string> GetSerialNumberAsync(long userId)
         {
             var user = await FindUserAsync(userId);

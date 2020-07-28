@@ -90,6 +90,7 @@ namespace SoalJavab.WebApi
             services.AddScoped<IJavbAdminService, JavbAdminService>();
             services.AddScoped<ISoalAdminService, SoalAdminService>();
             services.AddScoped<IstatisticsService, statisticsService>();
+            services.AddScoped<IRoleAdminService,roleAdminService>();
 
 
 
@@ -193,12 +194,6 @@ namespace SoalJavab.WebApi
                             c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                         });
 
-            // services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = Environment.CurrentDirectory + "\\wwwroot";// env.ContentRootPath;// "front-soal-javab/dist";
-            //});
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -277,25 +272,14 @@ namespace SoalJavab.WebApi
 
             });
 
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
+          
 
-            //    spa.Options.SourcePath = env.WebRootPath;// + "\\..\\" + "front-soal-javab";
+            app.UseSwagger();
 
-            //    // if (env.IsDevelopment())
-            //    // {
-            //    //    spa.UseAngularCliServer(npmScript: "start");
-            //    // }
-            //});
-
-            //app.UseSwagger();
-
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //});
+            app.UseSwaggerUI(c =>
+            {
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseCors("CorsPolicy");
 

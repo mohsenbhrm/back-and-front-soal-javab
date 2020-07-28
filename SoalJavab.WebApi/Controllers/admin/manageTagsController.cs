@@ -5,37 +5,49 @@ using SoalJavab.Services.Admin;
 using System.Threading.Tasks;
 using SoalJavab.Services.Models.admin;
 using Microsoft.AspNetCore.Cors;
+using SoalJavab.Common;
 
-namespace SoalJavab.WebApi.Controllers
+namespace SoalJavab.WebApi.Controllers.admin
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin,manager")]
     [EnableCors("CorsPolicy")]
-    public class manageTagsController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private ITagAdminServices _tags;
 
-        public manageTagsController(ITagAdminServices tags)
+        public TagsController(ITagAdminServices tags)
         {
             _tags = tags;
+            _tags.CheckArgumentIsNull(nameof(_tags));
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        
+        [HttpGet("{pageId}"),HttpGet]
+        public async Task<IActionResult> Get(int pageId=0)
         {
             try
             {
-                return Ok(await _tags.GetAllAsync());
+                return Ok(await _tags.GetAllAsync(pageId));
             }
-            catch { return BadRequest("nnjnjnj"); }
+            catch { return BadRequest(); }
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetDeleted()
+        // [HttpGet]
+        // public async Task<IActionResult> Get()
+        // {
+        //     try
+        //     {
+        //         return Ok(await _tags.GetAllAsync());
+        //     }
+        //     catch { return BadRequest("nnjnjnj"); }
+        // }
+        [HttpGet("[action]"),HttpGet("[action]/{pageId}")]
+        public async Task<IActionResult> GetDeleted(int pageId=0)
         {
             try
             {
-                var q = await _tags.GetAllDeletedsAsync();
+                var q = await _tags.GetAllDeletedsAsync(pageId);
                 return Ok(q);
             }
             catch { return StatusCode(500); }
@@ -64,6 +76,28 @@ namespace SoalJavab.WebApi.Controllers
             }
             catch { return StatusCode(500); }
         }
-
-    }
+        [HttpDelete("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Delete([FromBody] IdArray item)
+        {
+            try
+            {
+                if (await _tags._DeleteOrUndoRangeAsync(item.id,true)) return Ok();
+                return BadRequest();
+            }
+            catch { return StatusCode(500); }
+        }
+        [HttpPut("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> undo([FromBody] IdArray item)
+        {
+            try
+            {
+                if (await _tags._DeleteOrUndoRangeAsync(item.id,false)) return Ok();
+                return BadRequest();
+            }
+            catch { return StatusCode(500); }
+        }
+    } 
+   
 }

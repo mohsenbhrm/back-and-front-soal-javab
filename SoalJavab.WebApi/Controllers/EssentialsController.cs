@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using SoalJavab.Services.Contracts;
 using Microsoft.AspNetCore.Cors;
 using SoalJavab.Services;
+using System.Threading.Tasks;
+using SoalJavab.Services.Admin;
 
 namespace SoalJavab.WebApi.Controllers
 {
@@ -12,33 +14,26 @@ namespace SoalJavab.WebApi.Controllers
     [Authorize]
     public class EssentialsController : ControllerBase
     {
-        private IReshtehServices _reshteh;
-        private ISoalToUserServices _users;
+        private IstatisticsService _sta;
 
-        public EssentialsController(IReshtehServices reshteh,ISoalToUserServices soalToUserServices)
-        {
-            _reshteh = reshteh;
-            _users = soalToUserServices;
+        public EssentialsController(IstatisticsService sta )
+        {            
+            _sta = sta;
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost("[action]")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> search([FromBody] nameobj name)
         {
             try
             {
-                return Ok(_reshteh.Get());
+                return Ok(await _sta.search(name.src));
             }
             catch { return BadRequest(); }
         }
-        [HttpGet("{Id}")]
-        public IActionResult Get(long Id)
-        {
-            try
-            {
-               
-                return Ok();
-            }
-            catch { return BadRequest("123213"); }
-        }
+
+    }
+    public class nameobj {
+       public string src {set;get;}
     }
 }

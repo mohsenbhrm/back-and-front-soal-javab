@@ -10,17 +10,25 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using SoalJavab.Services.Models.admin;
 using SoalJavab.Services.Contracts;
+using SoalJavab.Services;
 
 namespace SoalJavab.Services.Admin
 {
     public interface IUsersAdminService
     {
+        Task<long> signUpInMounthCountAsync { get; }
+        Task<long> signupInDayCountAsync { get; }
+        Task<long> getCountAsync { get; }
+
         Task<bool> BanAsync(long id);
-        Task<List<UserVm>> GetAllAsync();
+       // Task<List<UserVm>> GetAllAsync();
         Task<List<UserVm>> SignupInMounthAsync();
         Task<List<UserVm>> SignupInDayAsync();
         Task<bool> UnBanAsync(long id);
         Task ChangeRole(UserRoleVm userRole);
+        Task<List<UserVm>> GetAllAsync(
+            bool isBanList,
+            int pageId = 0);
     }
 
     public class UsersAdminService : IUsersAdminService
@@ -50,10 +58,12 @@ namespace SoalJavab.Services.Admin
             _contextAccessor = contextAccessor;
             _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
         }
-
-        public Task<List<UserVm>> GetAllAsync()
+        public Task<List<UserVm>> GetAllAsync(bool isBanList = false,int pageId = 0)
         {
-            var s = _users.Include(ur => ur.UserRoles).ThenInclude(rl => rl.Role).Select(x => new UserVm
+            var s = _users.Where(d => d.Ban == isBanList).OrderByDescending(i=>i.Id)
+            .Include(ur => ur.UserRoles)
+                    .ThenInclude(rl => rl.Role)
+            .Select(x => new UserVm
             {
                 Id = x.Id,
                 FullName = x.FullName,
@@ -63,9 +73,29 @@ namespace SoalJavab.Services.Admin
                 Address = x.Address.State + " " + x.Address.City,
                 LastLogin = x.LastLoggedIn.ToString(),
                 role = x.UserRoles.Select(f => f.Role).ToList()
-            }).ToListAsync();
+            }).Skip(pageId * myParams.pageSize).Take(myParams.pageSize).ToListAsync();
             return s;
         }
+        public Task<List<UserVm>> GetAllBanedAsync(int pageId = 0)
+        {
+            var s = _users.Where(d => d.Ban).OrderByDescending(i => i.Id)
+            .Include(ur => ur.UserRoles)
+                    .ThenInclude(rl => rl.Role)
+            .Select(x => new UserVm
+            {
+                Id = x.Id,
+                FullName = x.FullName,
+                UserName = x.Username,
+                IsActive = x.IsActive,
+                Ban = x.Ban,
+                Address = x.Address.State + " " + x.Address.City,
+                LastLogin = x.LastLoggedIn.ToString(),
+                role = x.UserRoles.Select(f => f.Role).ToList()
+            }).Skip(pageId * myParams.pageSize).Take(myParams.pageSize).ToListAsync();
+            return s;
+        }
+
+        public Task<long> getCountAsync => _users.LongCountAsync();
 
         public async Task<bool> BanAsync(long id)
         {
@@ -92,20 +122,61 @@ namespace SoalJavab.Services.Admin
             }).ToListAsync();
             return s;
         }
+        public Task<long> signupInDayCountAsync
+        {
+            get
+            {
+                var s = _users.Where(c => c.Regdate.Date == DateTime.Now.Date)
+                .Select(x => new UserVm
+                {
+                    FullName = x.FullName,
+                    UserName = x.Username,
+                    IsActive = x.IsActive,
+                    Ban = x.Ban,
+                    Address = x.Address.State + " " + x.Address.City,
+                    LastLogin = x.LastLoggedIn.ToShortDateTimeString()
+                }).LongCountAsync();
+                return s;
+            }
+        }
+
         public Task<List<UserVm>> SignupInMounthAsync()
         {
-            var s = _users.Where(c => c.Regdate.Year == DateTime.Now.Year && c.Regdate.Month == DateTime.Now.Month)
+            var s = _users.Where(c => 
+            c.Regdate.Year == DateTime.Now.Year && 
+            c.Regdate.Month == DateTime.Now.Month)
             .Select(x => new UserVm
             {
+                Id = x.Id,
+                role = x.UserRoles.Select(f => f.Role).ToList(),
                 FullName = x.FullName,
                 UserName = x.Username,
                 IsActive = x.IsActive,
                 Ban = x.Ban,
                 Address = x.Address.State + " " + x.Address.City,
-                LastLogin = x.LastLoggedIn.ToShortDateTimeString()
+                LastLogin = x.LastLoggedIn.ToString()
             }).ToListAsync();
             return s;
         }
+
+        public Task<long> signUpInMounthCountAsync
+        {
+            get
+            {
+                var s = _users.Where(c => c.Regdate.Year == DateTime.Now.Year && c.Regdate.Month == DateTime.Now.Month)
+                .Select(x => new UserVm
+                {
+                    FullName = x.FullName,
+                    UserName = x.Username,
+                    IsActive = x.IsActive,
+                    Ban = x.Ban,
+                    Address = x.Address.State + " " + x.Address.City,
+                    LastLogin = x.LastLoggedIn.ToShortDateTimeString()
+                }).LongCountAsync();
+                return s;
+            }
+        }
+
         public async Task<bool> UnBanAsync(long id)
         {
             try
@@ -121,14 +192,14 @@ namespace SoalJavab.Services.Admin
         public Task ChangeRole(UserRoleVm userRole)
         {
             var user = _users.Select(x => x.UserRoles.Where(i => i.UserId == userRole.UserId));
-            
-             var ur = _uow.Set<UserRole>();
-             foreach (var f in user)
-            {ur.RemoveRange(f);
-                 //_uow.Delete(f); 
-                 }
+
+            var ur = _uow.Set<UserRole>();
+            foreach (var f in user)
+            {
+                ur.RemoveRange(f);
+            }
             _uow.SaveAllChangesAsync();
-           
+
             foreach (var i in userRole.Roles)
             {
                 ur.Add(new UserRole

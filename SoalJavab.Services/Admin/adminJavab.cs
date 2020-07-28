@@ -15,8 +15,12 @@ namespace SoalJavab.Services.Admin
 {
     public interface IJavbAdminService
     {
+        Task<long> getCountAsync { get; }
+        Task<long> getTodayCountAsync { get; }
+
         Task<bool> DeleteAsync(long id);
-        Task<List<JavabVM>> GetAllAsync();
+        Task<List<JavabVM>> GetAllAsync(int pageId);
+        Task<List<JavabVM>> GetAllDeletedAsync(int pageId = 0);
         Task<bool> undoDeletedAsync(long id);
     }
 
@@ -41,12 +45,31 @@ namespace SoalJavab.Services.Admin
             _usersService = usersService;
             _usersService.CheckArgumentIsNull(nameof(_usersService));
         }
-
-        public Task<List<JavabVM>> GetAllAsync()
+        public Task<long> getCountAsync => _Javabs.LongCountAsync();
+        public Task<long> getTodayCountAsync => _Javabs.Where(c => c.RegDate == DateTime.Now.Date).LongCountAsync();
+        public Task<List<JavabVM>> GetAllAsync(int pageId=0)
         {
-            var s = _Javabs
+            var s = _Javabs.Where(d => !d.IsDeleted).OrderByDescending(i=>i.Id)
             .Include(c => c.User)
             .Include (d=>d.Soal)
+            .Skip(myParams.pageSize*pageId).Take(myParams.pageSize)
+            .Select(x => new JavabVM
+            {
+                Matn = x.Matn,
+                Id = x.Id,
+                IsDeleted = x.IsDeleted,
+                date = x.RegDate.TopersianShortDateTimeString(),
+                Username = x.User.Username,
+                IdSoal = x.Soal.Id
+            }).ToListAsync();
+            return s;
+        }
+        public Task<List<JavabVM>> GetAllDeletedAsync(int pageId=0)
+        {
+            var s = _Javabs.Where(d => d.IsDeleted).OrderByDescending(i=>i.Id)
+            .Include(c => c.User)
+            .Include (d=>d.Soal)
+            .Skip(myParams.pageSize*pageId).Take(myParams.pageSize)
             .Select(x => new JavabVM
             {
                 Matn = x.Matn,
