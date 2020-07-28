@@ -6,6 +6,7 @@ using System.Text;
 
 namespace SoalJavab.Services.Models
 {
+  
     public class SoalVM
     {
         [HiddenInput]
@@ -135,5 +136,9 @@ namespace SoalJavab.Services.Models
     {
         public string Name { get; set; }
         public long Id { get; set; }
+    } 
+    public class IdArray {
+        public long[] i {get; set;}
     }
+    
 }

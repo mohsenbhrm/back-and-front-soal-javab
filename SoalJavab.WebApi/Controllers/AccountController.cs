@@ -174,7 +174,7 @@ namespace SoalJavab.WebApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> SignUp([FromBody] SignUpVm signUp)
         {
-           var baseUrl = string.Format(@"http://localhost:4200/");
+            var baseUrl = string.Format(@"http://localhost:4200/");
             var us = await _usersService.isUserNameExcist(signUp.Username);
             if (us)
             { return BadRequest(new JsonResult("نام کاربری تکراری است")); }
@@ -183,7 +183,7 @@ namespace SoalJavab.WebApi.Controllers
 
 
 
-           // var q = await _usersService.FindUserAsync(signUp.Username, signUp.Password);
+            // var q = await _usersService.FindUserAsync(signUp.Username, signUp.Password);
 
             await _webMailService.SendEmailAsync(
                 smtpConfig: _smtpConfig.Value,
@@ -198,7 +198,7 @@ namespace SoalJavab.WebApi.Controllers
                     This is an email from us! <br/> 
                     <a href='{0}active-user/{1}/{2}'>
                     activate link{0}</a>
-                    <br/>",baseUrl,q.activeCode , q.username ));
+                    <br/>", baseUrl, q.activeCode, q.username));
 
             return Ok(new { access_token = q.username, refresh_token = q.activeCode });
         }
@@ -232,6 +232,31 @@ namespace SoalJavab.WebApi.Controllers
                 }
             }
             return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        [HttpPost("[action]")]
+        public  IActionResult recovery([FromBody] string active)
+        {      
+           // _usersService.
+            //   _webMailService.SendEmailAsync(
+            //     smtpConfig: _smtpConfig.Value,
+            //     emails: new List<MailAddress>
+            //         {
+            //             new MailAddress { ToName = signUp.Name, ToAddress = signUp.Email },
+            //         },
+            //         subject: "Hello!",
+            //         // message: "salam");
+            //         message: string.Format(@"
+            //         Hello!<br/>  
+            //         This is an email from us! <br/> 
+            //         <a href='{0}active-user/{1}/{2}'>
+            //         activate link{0}</a>
+            //         <br/>", baseUrl, q.activeCode, q.username));
+
+            // return Ok(new { access_token = q.username, refresh_token = q.activeCode });
+         return Ok(active);
         }
     }
 }

@@ -10,14 +10,18 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using SoalJavab.Services.Models.admin;
 using SoalJavab.Services.Contracts;
+using SoalJavab.Services;
+
 
 namespace SoalJavab.Services.Admin
 {
     public interface ISoalAdminService
     {
+        Task<long> getInDayCountAsync { get; }
+        Task<long> getCountAsync { get; }
 
         Task<bool> DeleteAsync(long id);
-        Task<List<SoalVM>> GetAllAsync();
+        Task<List<SoalVM>> GetAllAsync(bool isDeletedList,int pageId = 0);
         Task<bool> undoDeletedAsync(long id);
     }
 
@@ -49,12 +53,15 @@ namespace SoalJavab.Services.Admin
             _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
         }
 
-        public Task<List<SoalVM>> GetAllAsync()
+        public Task<long> getCountAsync => _soals.LongCountAsync();
+        public Task<long> getInDayCountAsync => _soals.Where(c => c.Regdat == DateTime.Now.Date).LongCountAsync();
+        public Task<List<SoalVM>> GetAllAsync(bool isDeletedList, int pageId = 0)
         {
-            var s = _soals
+            var s = _soals.Where(d => d.IsDeleted == isDeletedList).OrderByDescending(i=>i.Id)
             .Include(c => c.User)
             .Include(jvb => jvb.Javab)
             .Include(tg => tg.TagSoal).ThenInclude(tag => tag.Tag)
+            .Skip(pageId*myParams.pageSize).Take(myParams.pageSize)
             .Select(x => new SoalVM
             {
                 Matn = x.Matn,

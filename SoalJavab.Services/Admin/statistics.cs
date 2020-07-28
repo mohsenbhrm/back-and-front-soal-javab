@@ -23,11 +23,31 @@ namespace SoalJavab.Services.Admin
     public class statisticsService : IstatisticsService
     {
         private readonly IUnitOfWork _uow;
+        private IRoleAdminService _role;
+        private IUsersAdminService _userAdmin;
+        private IJavbAdminService _javabAdmin;
+        private ISoalAdminService _soalAdmin;
+        private readonly ITagAdminServices _tagAdmin;
+
         public statisticsService(
+            IUsersAdminService userAdmin,
+            ISoalAdminService soalAdmin,
+            IJavbAdminService javabAdmin,
+            ITagAdminServices tagAdmin,
             IUnitOfWork uow,
-            ISecurityService securityService
+            ISecurityService securityService,
+            IRoleAdminService roleAdminService
             )
         {
+            _role = roleAdminService;
+            _userAdmin = userAdmin;
+            _userAdmin.CheckArgumentIsNull(nameof(_userAdmin));
+            _soalAdmin = soalAdmin;
+            _soalAdmin.CheckArgumentIsNull(nameof(_soalAdmin));
+            _javabAdmin = javabAdmin;
+            _javabAdmin.CheckArgumentIsNull(nameof(_javabAdmin));
+            _tagAdmin= tagAdmin;
+            _tagAdmin.CheckArgumentIsNull(nameof(_tagAdmin));
             _uow = uow;
             _uow.CheckArgumentIsNull(nameof(_uow));
         }
@@ -35,10 +55,14 @@ namespace SoalJavab.Services.Admin
         public async Task<statistic> get()
         {
             var st = new statistic();
-            st.user = await _uow.Set<ApplicationUser>().LongCountAsync();
-            st.soal = await _uow.Set<Soal>().LongCountAsync();
-            st.javab = await _uow.Set<Javab>().LongCountAsync();
-            st.tag = await _uow.Set<Tag>().LongCountAsync();
+            st.userCount =await _userAdmin.getCountAsync;
+            st.userCountDay = await _userAdmin.signupInDayCountAsync;
+            st.soalCount = await _soalAdmin.getCountAsync;
+            st.soalCountDay = await _soalAdmin.getInDayCountAsync;
+            st.javabCount = await _javabAdmin.getCountAsync;
+            st.javabCountDay = await _javabAdmin.getTodayCountAsync;
+            st.tagCount = await _tagAdmin.getCountAsync;
+            st.roleCount = await _role.getCountAsync;
             return st;
         }
 
@@ -80,11 +104,18 @@ namespace SoalJavab.Services.Admin
         }
 
     }
-    public class statistic {
-        public long user{get; set;}
-        public long soal{get; set;}
-        public long javab{get; set;}
-        public long tag{get; set;}
+    public class statistic
+    {
+        public long roleCount {get;set;}
+        public long userCount { get; set; }
+        public long userCountDay { get; set; }
+        public long soalCount { get; set; }
+        public long soalCountDay { get; set; }
+
+        public long javabCount { get; set; }
+        public long javabCountDay { get; set; }
+
+        public long tagCount { get; set; }
     }
     public class searchVm {
         public string userName { get; set; }

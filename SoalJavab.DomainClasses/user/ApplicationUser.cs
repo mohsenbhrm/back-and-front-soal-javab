@@ -23,6 +23,8 @@ namespace SoalJavab.DomainClasses
         public string Name { get; set; }
         public string Family { get; set; }
         public string Mobile { get; set; }
+       // public string mail { get; set; }
+
 
         [Column(TypeName = "datetime2")]
         public DateTime Regdate { get; set; }

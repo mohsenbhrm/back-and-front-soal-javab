@@ -15,11 +15,14 @@ namespace SoalJavab.Services.Admin
 {
     public interface ITagAdminServices
     {
+        Task<long> getCountAsync { get; }
+
         Task<bool> DeleteAsync(long id);
         Task DeleteSamesAsync();
-        Task<List<TagVM>> GetAllAsync();
-        Task<List<TagVM>> GetAllDeletedsAsync();
+        Task<List<TagVM>> GetAllAsync(int pageId);
+        Task<List<TagVM>> GetAllDeletedsAsync(int pageId);
         Task updateAsync(JsonVm item);
+        Task<bool> _DeleteOrUndoRangeAsync(long[] id, bool deleteAction);
     }
 
     public class TagAdminServices : ITagAdminServices
@@ -41,11 +44,15 @@ namespace SoalJavab.Services.Admin
             _securityService = securityService;
             _securityService.CheckArgumentIsNull(nameof(_securityService));
         }
+        public Task<long> getCountAsync => _Tags.LongCountAsync();
 
-        public Task<List<TagVM>> GetAllAsync()
+        public Task<List<TagVM>> GetAllAsync(int pageId=0)
         {
-            var s = _Tags.Where(d => !d.IsDeleted).Include(c => c.TagSoal)
+         var q = new List<TagVM>();
+            var s = _Tags.Where(d => !d.IsDeleted).OrderByDescending(i=>i.Id)
+            .Include(c => c.TagSoal)
             .Include(us => us.TagUsers)
+            .Skip(myParams.pageSize * pageId).Take(myParams.pageSize)
             .Select(x => new TagVM
             {
                 Onvan = x.Onvan,
@@ -55,10 +62,12 @@ namespace SoalJavab.Services.Admin
             }).ToListAsync();
             return s;
         }
-        public Task<List<TagVM>> GetAllDeletedsAsync()
+        public Task<List<TagVM>> GetAllDeletedsAsync(int pageId=0)
         {
-            var s = _Tags.Where(d => d.IsDeleted).Include(c => c.TagSoal)
+            var s = _Tags.Where(d => d.IsDeleted).OrderByDescending(i=>i.Id)
+            .Include(c => c.TagSoal)
             .Include(us => us.TagUsers)
+            .Skip(myParams.pageSize * pageId).Take(myParams.pageSize)
             .Select(x => new TagVM
             {
                 Onvan = x.Onvan,
@@ -94,14 +103,47 @@ namespace SoalJavab.Services.Admin
         public async Task<bool> DeleteAsync(long id)
         {
             try
-            {
-                var s = await _Tags.FindAsync(id);
-                s.IsDeleted = true;
-                _uow.MarkAsChanged(s);
+            {  
+                var s = await _DeleteOrUndoAsync(id,true);
+                if (s)
+                {
                 await _uow.SaveChangesAsync();
+                return true;}
+                return false;
+            }
+            catch { return false; }
+        }
+        private async Task<bool> _DeleteOrUndoAsync(long id,bool deleteAction)
+        {
+            try
+            {
+                var s =await _Tags.FindAsync(id);
+                s.IsDeleted = deleteAction;
+                _uow.MarkAsChanged(s);
                 return true;
             }
             catch { return false; }
+        }
+        public async Task<bool> _DeleteOrUndoRangeAsync(long[] id,bool deleteAction)
+        {
+            try
+            {
+                Task<bool> res = Task.Run(() =>
+                {
+                    return false;
+                });
+                foreach (var i in id)
+                {
+                    res = _DeleteOrUndoAsync(i,deleteAction);
+                }
+                if (await res)
+                {
+                    await _uow.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch { throw new KeyNotFoundException(); }
         }
         public Task updateAsync(JsonVm item)
         {

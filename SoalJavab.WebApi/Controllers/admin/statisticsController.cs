@@ -42,19 +42,17 @@ namespace SoalJavab.WebApi.Controllers
             }
             catch { return BadRequest(); }
         }
-        [HttpPost("[action]")]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> search2([FromBody] nameobj name)
-        {
-            try
-            {
-                return Ok(await _sta.search(name.src));
-            }
-            catch { return BadRequest(); }
-        }
+        // [HttpPost("[action]")]
+        // [IgnoreAntiforgeryToken]
+        // public async Task<IActionResult> search2([FromBody] nameobj name)
+        // {
+        //     try
+        //     {
+        //         return Ok(await _sta.search(name.src));
+        //     }
+        //     catch { return BadRequest(); }
+        // }
         
     }
-    public class nameobj {
-       public string src {set;get;}
-    }
+    
 }
