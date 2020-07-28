@@ -11,11 +11,15 @@ import { Observable } from 'rxjs';
 export class AdminUserComponent implements OnInit {
 
   public users;
+  public banedusers;
+
   constructor(private adminservices: AdminService,
               private toastrService: ToastrService) { }
 
   ngOnInit() {
     this.adminservices.getUsers().subscribe(res => this.users = res);
+    this.adminservices.getdeletedUsers().subscribe(res => this.banedusers = res);
+
   }
   userfiter(dl: any) {
     return this.users.filter(x => x.ban === dl );

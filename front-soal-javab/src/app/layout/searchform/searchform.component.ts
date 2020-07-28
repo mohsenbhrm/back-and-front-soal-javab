@@ -21,7 +21,7 @@ export class SearchformComponent implements OnInit {
   onSearch() {
 this._menu.menuToggle()
     this.router.navigate(['/home/search',this.search]);
-    this.searchservice.search2(this.search);
+    this.searchservice.search(this.search);
     // console.log(this.router.navigate(['./search',this.search]));
     // console.log("thththt" + this.search);
 

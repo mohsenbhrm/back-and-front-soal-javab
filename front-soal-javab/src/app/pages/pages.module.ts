@@ -16,6 +16,7 @@ import { AdminUserComponent } from './admin/admin-user/admin-user.component';
 import { AdminSoalComponent } from './admin/admin-soal/admin-soal.component';
 import { AdminJavabComponent } from './admin/admin-javab/admin-javab.component';
 import { RouterModule } from '@angular/router';
+import { AdminRoleComponent } from './admin/admin-role/admin-role.component';
 
 
 
@@ -34,7 +35,8 @@ import { RouterModule } from '@angular/router';
     AdminTagComponent,
     AdminUserComponent,
     AdminSoalComponent,
-    AdminJavabComponent
+    AdminJavabComponent,
+    AdminRoleComponent
   ],
   imports: [
     SharedModule,

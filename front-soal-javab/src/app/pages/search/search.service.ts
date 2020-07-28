@@ -12,8 +12,6 @@ import { search } from "./search.model";
   providedIn: 'root'
 })
 export class SearchService {
-  // srs = new BehaviorSubject
-  //  value = new BehaviorSubject(search);
   searchResults = new BehaviorSubject<search>(null);
 
 
@@ -30,28 +28,17 @@ export class SearchService {
     }));
     }
 
-    search(src: string): Observable<any> {
-      const credential = {
-        src
-        // captcha
-      };
-      return this.http.post(`${this.apiConfig.baseUrl}/api/statistics/search2`, credential)
-        .pipe(map((login: any) => {
-          return login;
-        }
-        ));
-    }
+
 
     onResults() {
       return this.searchResults.asObservable();
     }
-
-    search2(src: string) {
+    search(src: string) {
       const credential = {
         src
         // captcha
       };
-      this.http.post(`${this.apiConfig.baseUrl}/api/statistics/search2`, credential)
+      this.http.post(`${this.apiConfig.baseUrl}/api/essentials/search`, credential)
       .subscribe((results: search) => this.searchResults.next(results));
     }
 }

@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { QuestionService } from '../question/question.service';
 import { TagModel } from '../question/question.component';
+import { Text } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-profile',
@@ -106,15 +107,14 @@ export class ProfileComponent implements OnInit {
   }
 
   requestAutocompleteItems = (text: string): Observable<any> => {
+
     const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
-    return this.questionService.tryTagSearch(url);
+    return this.questionService.tryTagSearch(text);
   }
 
   checkIfAvalable($event) {
     if (typeof ($event.value) === 'string') {
-
-      const url = `${environment.apiConfig.baseUrl}/api/Tags/${$event.display}/`;
-      return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
+      return this.questionService.tryTagSearch($event.display).subscribe((res: TagModel[]) => {
         const result = res.find(el => el.display === $event.display);
         if (result) {
           const tagRes = this.selectTagsForm.controls.tags.value.find(el => el.display === $event.display);

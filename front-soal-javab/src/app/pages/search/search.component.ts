@@ -33,7 +33,7 @@ export class SearchComponent implements OnInit {
       let id = params.get('search');
       this.src = id;
       console.log('searc  => ' + this.src);
-      this.searchservice.search2(id);
+      this.searchservice.search(id);
     });
 
     this.searchservice.onResults().subscribe(res => {

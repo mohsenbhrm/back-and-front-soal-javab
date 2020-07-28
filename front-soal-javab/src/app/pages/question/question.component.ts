@@ -63,8 +63,8 @@ export class QuestionComponent implements OnInit {
     //     return data;
     //   })));
     // } else {
-    const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
-    return this.questionService.tryTagSearch(url);
+
+    return this.questionService.tryTagSearch(text);
     // }
 
   }
@@ -72,8 +72,7 @@ export class QuestionComponent implements OnInit {
   checkIfAvalable($event) {
     if (typeof ($event.value) === 'string') {
 
-      const url = `${environment.apiConfig.baseUrl}/api/Tags/${$event.display}/`;
-      return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
+      return this.questionService.tryTagSearch($event.value).subscribe((res: TagModel[]) => {
         const result = res.find(el => el.display === $event.display);
         if (result) {
           const tagRes = this.registerQuestion.controls.tags.value.find(el => el.display === $event.display);

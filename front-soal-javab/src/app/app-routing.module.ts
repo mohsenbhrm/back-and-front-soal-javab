@@ -17,6 +17,7 @@ import { AdminUserComponent } from './pages/admin/admin-user/admin-user.componen
 import { AdminJavabComponent } from './pages/admin/admin-javab/admin-javab.component';
 import { AdminSoalComponent } from './pages/admin/admin-soal/admin-soal.component';
 import { AdminTagComponent } from './pages/admin/admin-tag/admin-tag.component';
+import { AdminRoleComponent } from './pages/admin/admin-role/admin-role.component';
 
 
 const routes: Routes = [
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path: 'soal',
     component: AdminSoalComponent,
+      },
+      {
+        path: 'role',
+    component: AdminRoleComponent,
       },
       {
         path: 'tag',

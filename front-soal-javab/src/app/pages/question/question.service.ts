@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, pipe,of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { TagModel } from './question.component';
+
 
 @Injectable({ providedIn: 'root' })
 export class QuestionService {
@@ -13,7 +14,13 @@ export class QuestionService {
   //   return this.http.get(`${environment.apiConfig.baseUrl}/api/Essentials`);
   // }
 
-  tryTagSearch(url): Observable<any> {
+  tryTagSearch(text:string): Observable<any> {
+    if (text.length < 3) {
+      console.log(text)
+      return of<any[]>([]);
+
+    }
+    const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
     return this.http.get(url)
       .pipe(map((data: any) => {
         return data.map(d => {

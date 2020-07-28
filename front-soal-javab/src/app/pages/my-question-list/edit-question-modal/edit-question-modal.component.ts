@@ -49,9 +49,8 @@ export class EditQuestionModalComponent implements OnInit {
 
   checkIfAvalable($event) {
     if (typeof ($event.value) === 'string') {
-
       const url = `${environment.apiConfig.baseUrl}/api/Tags/${$event.display}/`;
-      return this.questionService.tryTagSearch(url).subscribe((res: TagModel[]) => {
+      return this.questionService.tryTagSearch($event.value).subscribe((res: TagModel[]) => {
         const result = res.find(el => el.display === $event.display);
         if (result) {
           const tagRes = this.editQuestionForm.controls.tags.value.find(el => el.display === $event.display);
@@ -62,8 +61,7 @@ export class EditQuestionModalComponent implements OnInit {
   }
 
   requestAutocompleteItems = (text: string): Observable<any> => {
-    const url = `${environment.apiConfig.baseUrl}/api/Tags/${text}`;
-    return this.questionService.tryTagSearch(url);
+    return this.questionService.tryTagSearch(text);
   }
 
   sendEditedQuestionBack() {
