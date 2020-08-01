@@ -13,7 +13,7 @@ namespace SoalJavab.DataLayer
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            var basePath = Directory.GetCurrentDirectory();
+            var basePath =  Directory.GetCurrentDirectory();
             Console.WriteLine($"Using `{basePath}` as the BasePath");
             var configuration = new ConfigurationBuilder()
                                     .SetBasePath(basePath)

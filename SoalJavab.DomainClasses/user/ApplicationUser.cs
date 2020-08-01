@@ -51,6 +51,8 @@ namespace SoalJavab.DomainClasses
         {
             get { return Name + " " + Family; }
         }
+        public string email{ set; get; }
+
         // سایر خواص اضافی در اینجا
 
         public virtual Address Address { get; set; }

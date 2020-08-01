@@ -63,11 +63,9 @@ namespace SoalJavab.Services
 
         public Task<ApplicationUser> FindUserAsync(string username, string password)
         {
-            var passwordHash = _securityService.GetSha256Hash(password);
+            var passwordHash =  _securityService.GetSha256Hash(password);
 
             return _users.FirstOrDefaultAsync(x => x.Username == username && x.Password == passwordHash);
-            // var passwordHash = _securityService.GetSha256Hash(password);
-            //return _users.FirstOrDefaultAsync(x => x.Username == username && x.Password == passwordHash);
         }
         public async Task<ApplicationUser> FindUserAsync(ActivUserVm active)
         {

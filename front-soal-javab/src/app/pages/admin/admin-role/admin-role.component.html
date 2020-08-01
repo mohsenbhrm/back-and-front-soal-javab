@@ -1,12 +1,33 @@
-<div class=" card-columns"  >
-  <div class="m-1  card text-white bg-success "  *ngFor="let item of role">
+<div>
+  <form [formGroup]="addRoleForm"  class="w-50">
+    <div class="form-group">
+      <input type="text" formControlName="roleName" class="form-control text-right"
+        placeholder="نام نقش کاربری">
+      <span *ngIf="addRoleForm.get('roleName').hasError('required') && addRoleForm.get('roleName').touched"
+        class="text-danger">
+        <small>{{'Username required'|translate}}</small>
+      </span>
+    </div>
+    <button [disabled]="addRoleButtonDisabled" class="btn btn-primary text-light w-50" type="submit"
+      (click)="addRole()">
+      <div *ngIf="addRoleButtonDisabled" class="spinner-border text-light" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <span *ngIf="!addRoleButtonDisabled">افزودن</span>
+    </button>
+
+  </form>
+</div>
+<hr />
+<div class=" card-columns ">
+  <div class="m-1   card text-white bg-success " *ngFor="let item of role">
     <div class="card-header"><small class="text-lite-dark">
-      <span class="badge badge-primary">{{item.id}}</span> -
-      <span>{{item.roleName}}</span>
-      <button  class="btn btn-sm btn-danger mr-1">حذف</button>
-    </small></div>
+        <span class="badge badge-primary">{{item.id}}</span> -
+        <span>{{item.roleName}}</span>
+        <button class="btn btn-sm btn-danger mr-1">حذف</button>
+      </small></div>
     <div class="card-body">
-      <span class="card-text "dir="ltr"> {{item.roleName}}</span>
+      <span class="card-text " dir="ltr"> {{item.roleName}}</span>
     </div>
   </div>
 </div>
