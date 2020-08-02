@@ -32,3 +32,10 @@
   </div>
 </div>
 <hr />
+<div class="d-flex justify-content-center">
+
+  <button (click)="loadMore(pageId+1)" class="btn btn-sm btn-secondary  mr-1">{{'next'|translate}}</button>
+  <span class="m-2 badge badge-primary">{{pageId+1}}</span>
+  <button *ngIf="pageId>0" (click)="loadMore(pageId-1)"
+    class="btn btn-sm btn-secondary  mr-1">{{'Previous'|translate}}</button>
+</div>

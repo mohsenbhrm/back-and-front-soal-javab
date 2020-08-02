@@ -78,6 +78,11 @@
   "unBan":"بازگشت",
   "Search_term":"عبارت مورد جستجو",
 
-"Questions_found":"پرسش های یافت شده"
+"Questions_found":"پرسش های یافت شده",
+"Previous":"قبلی",
+"next":"بعدی",
+"Nothing_found":"موردی یافت نشد",
+"":"",
+"":""
 
 }

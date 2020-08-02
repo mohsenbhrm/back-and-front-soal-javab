@@ -5,6 +5,7 @@ import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpHeaders } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-role',
@@ -15,13 +16,30 @@ export class AdminRoleComponent implements OnInit {
   public role;
   addRoleForm: FormGroup;
   addRoleButtonDisabled = false;
+  public pageId = 0;
+  public deletedPageId = 0;
+  public msgnothingfound;
 
   constructor(private adminServices: AdminService,
-              private fb: FormBuilder,
-              private authService: AuthService,
-              private router: Router,
-              private toastr: ToastrService
-  ) { }
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService,
+    private translate: TranslateService
+
+  ) {
+    translate.stream('Nothing_found').subscribe((text: string) => { this.msgnothingfound = text });
+  }
+
+
+  loadMore(id: any) {
+    this.adminServices.getRoles(id).subscribe(res => {
+      this.role = res
+      this.pageId = id;
+    }, err => {
+      this.toastr.error(this.msgnothingfound, '!');
+    });
+  }
 
   ngOnInit() {
     this.adminServices.getRoles().subscribe(res => this.role = res);
@@ -63,7 +81,8 @@ export class AdminRoleComponent implements OnInit {
 
   initForm() {
     this.addRoleForm = this.fb.group({
-      roleName: ['', [Validators.required]]});
+      roleName: ['', [Validators.required]]
+    });
   }
 
 }

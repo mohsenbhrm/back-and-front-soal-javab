@@ -21,18 +21,53 @@ export class AdminService {
     return this.http.get(`${environment.apiConfig.baseUrl}/api/statistics`);
   }
 
-  getJavabs(): Observable<any> {
-    return this.http.get(this._basurl + 'javab');
-  }
-  getSoals(): Observable<any> {
-    return this.http.get(this._basurl + 'soals');
+  //#region  soal
+  getSoals(pageid:number = 0): Observable<any> {
+    return this.http.get(this._basurl + 'soals/'+pageid);
 
   }
-  getUsers(): Observable<any> {
-    return this.http.get(this._basurl + 'users');
+  getAllDeletedSoals(pageid:number = 0): Observable<any> {
+    return this.http.get(this._basurl + 'soals/getalldeleted/'+pageid);
+
   }
-  getdeletedUsers(): Observable<any> {
-    return this.http.get(this._basurl + 'users/GetAllDeleted');
+  deleteSoal(vl: any): Observable<any> {
+    return this.http.delete(this._basurl + 'soals/' + vl);
+  }
+  undoSoal(value: number): Observable<any> {
+    const credential = {
+      value
+      // captcha
+    };
+    return this.http.put(this._basurl + 'soals/' + value, credential);
+  }
+  //#endregion
+
+  //#region javab
+
+  getJavabs(pageid:number = 0): Observable<any> {
+    return this.http.get(this._basurl + 'javab/'+pageid);
+  }
+  getDeletedJavabs(pageid:number = 0): Observable<any> {
+    return this.http.get(this._basurl + 'javab/getalldeleted/'+pageid);
+  }
+  deleteJavab(vl: any): Observable<any> {
+    return this.http.delete(this._basurl + 'javab/' + vl);
+  }
+  undojavab(value: number): Observable<any> {
+    const credential = {
+      value
+      // captcha
+    };
+    return this.http.put(this._basurl + 'javab/' + value, credential);
+  }
+  //#endregion
+
+  //#region user
+  getUsers(pageid = 0): Observable<any> {
+    return this.http.get(this._basurl + 'users/'+pageid);
+  }
+  getdeletedUsers(pageid = 0): Observable<any> {
+    return this.http.get(this._basurl + 'users/GetAllDeleted/'+pageid);
   }
   banUser(id: any): Observable<any> {
     const body = {
@@ -48,31 +83,38 @@ export class AdminService {
     };
     return this.http.post(this._basurl + 'Users/UserUnBan', body);
   }
-  getTags(): Observable<any> {
-    return this.http.get(this._basurl + 'tags');
+
+  //#endregion
+
+  //#region tag
+  getTags(pageid = 0): Observable<any> {
+    return this.http.get(this._basurl + 'tags/'+ pageid );
   }
-  getRoles(): Observable<any> {
-    return this.http.get(this._basurl + 'role');
+  getDeletedTags(pageId= 0): Observable<any> {
+    return this.http.get(this._basurl + 'tags/getdeleted/'+ pageId);
   }
-  deleteJavab(vl: any): Observable<any> {
-    return this.http.delete(this._basurl + 'javab/' + vl);
+  deleteTag(vl: any): Observable<any> {
+    return this.http.delete(this._basurl + 'tags/' + vl);
   }
-  undojavab(value: number): Observable<any> {
+  undoTag(value: number): Observable<any> {
     const credential = {
       value
       // captcha
     };
-    return this.http.put(this._basurl + 'javab/' + value, credential);
+    return this.http.put(this._basurl + 'tags/' + value,credential);
+  }
+  //#endregion
+
+  //#region role
+
+  getRoles(pageid= 0): Observable<any> {
+    return this.http.get(this._basurl + 'role/'+ pageid);
   }
 
-  deleteSoal(vl: any): Observable<any> {
-    return this.http.delete(this._basurl + 'soals/' + vl);
-  }
-  undoSoal(value: number): Observable<any> {
-    const credential = {
-      value
-      // captcha
-    };
-    return this.http.put(this._basurl + 'soals/' + value, credential);
-  }
+  //#endregion
+
+
+
+
+
 }

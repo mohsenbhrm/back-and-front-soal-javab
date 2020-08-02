@@ -1,7 +1,62 @@
 <p >مدیریت تگها</p>
 <!-- <div  class="border-bottom-1 border-dark" *ngFor="let item of tags"> -->
     <small *ngFor="let item of tags" class="text-lite-dark mr-2">
-    <span class="badge badge-primary">{{item.onvan}}-{{item.usedSoal}}-{{item.usedUser}}</span>
+    <span class="badge badge-primary">{{item.onvan}}-{{item.usedSoal}}-{{item.usedUser}}
+      <button class="badge" (click)="delete(item.id)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="9.964"
+          height="13.269" viewBox="0 0 13.964 17.269">
+          <path id="Path_419" data-name="Path 419"
+              d="M783.42,434.432h-2.688a2.337,2.337,0,0,0-4.643,0H773.4a1.975,1.975,0,0,0-1.973,1.973v.1a1.975,1.975,0,0,0,1.246,1.833v9.32a1.976,1.976,0,0,0,1.973,1.974h7.526a1.976,1.976,0,0,0,1.973-1.974v-9.32a1.975,1.975,0,0,0,1.246-1.833v-.1a1.975,1.975,0,0,0-1.973-1.973ZM778.41,433.3a1.4,1.4,0,0,1,1.376,1.133h-2.752a1.4,1.4,0,0,1,1.376-1.133Zm4.8,14.36a1.038,1.038,0,0,1-1.036,1.038h-7.526a1.039,1.039,0,0,1-1.037-1.038v-9.18h9.6Zm1.247-11.152a1.038,1.038,0,0,1-1.037,1.037H773.4a1.038,1.038,0,0,1-1.037-1.037v-.1a1.038,1.038,0,0,1,1.037-1.037H783.42a1.038,1.038,0,0,1,1.037,1.037Zm0,0"
+              transform="translate(-771.428 -432.363)" fill="#242c32" />
+          <path id="Path_420" data-name="Path 420"
+              d="M776.187,448.135a.468.468,0,0,0,.468-.468V442.4a.468.468,0,0,0-.935,0v5.268a.469.469,0,0,0,.468.468Zm0,0"
+              transform="translate(-771.713 -432.999)" fill="#242c32" />
+          <path id="Path_421" data-name="Path 421"
+              d="M778.874,448.135a.468.468,0,0,0,.468-.468V442.4a.468.468,0,0,0-.935,0v5.268a.468.468,0,0,0,.468.468Zm0,0"
+              transform="translate(-771.892 -432.999)" fill="#242c32" />
+          <path id="Path_422" data-name="Path 422"
+              d="M781.561,448.135a.469.469,0,0,0,.468-.468V442.4a.468.468,0,1,0-.935,0v5.268a.468.468,0,0,0,.468.468Zm0,0"
+              transform="translate(-772.07 -432.999)" fill="#242c32" />
+      </svg>
+  </button>
+</span>
+
+
   </small>
 <!-- </div> -->
+<hr><div class="d-flex justify-content-center">
+  <button (click)="loadMore(pageId+1)" class="btn badge btn-sm btn-secondary  mr-1">{{'next'|translate}}</button>
+  <span class="m-2 badge badge-primary">{{pageId+1}}</span>
+  <button *ngIf="pageId>0" (click)="loadMore(pageId-1)"
+    class="btn badge btn-sm btn-secondary  mr-1">{{'Previous'|translate}}</button>
+</div><hr>
 
+<small *ngFor="let item of deletedtags" class="text-lite-dark mr-2">
+  <span class="badge badge-primary">{{item.onvan}}-{{item.usedSoal}}-{{item.usedUser}}
+    <button class="badge" (click)="undo(item.id)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="9.964"
+        height="13.269" viewBox="0 0 13.964 17.269">
+        <path id="Path_419" data-name="Path 419"
+            d="M783.42,434.432h-2.688a2.337,2.337,0,0,0-4.643,0H773.4a1.975,1.975,0,0,0-1.973,1.973v.1a1.975,1.975,0,0,0,1.246,1.833v9.32a1.976,1.976,0,0,0,1.973,1.974h7.526a1.976,1.976,0,0,0,1.973-1.974v-9.32a1.975,1.975,0,0,0,1.246-1.833v-.1a1.975,1.975,0,0,0-1.973-1.973ZM778.41,433.3a1.4,1.4,0,0,1,1.376,1.133h-2.752a1.4,1.4,0,0,1,1.376-1.133Zm4.8,14.36a1.038,1.038,0,0,1-1.036,1.038h-7.526a1.039,1.039,0,0,1-1.037-1.038v-9.18h9.6Zm1.247-11.152a1.038,1.038,0,0,1-1.037,1.037H773.4a1.038,1.038,0,0,1-1.037-1.037v-.1a1.038,1.038,0,0,1,1.037-1.037H783.42a1.038,1.038,0,0,1,1.037,1.037Zm0,0"
+            transform="translate(-771.428 -432.363)" fill="#242c32" />
+        <path id="Path_420" data-name="Path 420"
+            d="M776.187,448.135a.468.468,0,0,0,.468-.468V442.4a.468.468,0,0,0-.935,0v5.268a.469.469,0,0,0,.468.468Zm0,0"
+            transform="translate(-771.713 -432.999)" fill="#242c32" />
+        <path id="Path_421" data-name="Path 421"
+            d="M778.874,448.135a.468.468,0,0,0,.468-.468V442.4a.468.468,0,0,0-.935,0v5.268a.468.468,0,0,0,.468.468Zm0,0"
+            transform="translate(-771.892 -432.999)" fill="#242c32" />
+        <path id="Path_422" data-name="Path 422"
+            d="M781.561,448.135a.469.469,0,0,0,.468-.468V442.4a.468.468,0,1,0-.935,0v5.268a.468.468,0,0,0,.468.468Zm0,0"
+            transform="translate(-772.07 -432.999)" fill="#242c32" />
+    </svg>
+</button>
+</span>
+
+
+</small>
+<hr><div class="d-flex justify-content-center">
+  <button (click)="loadMoredeleted(deletedPageId+1)" class="btn badge btn-sm btn-secondary  mr-1">{{'next'|translate}}</button>
+  <span class="m-2 badge badge-primary">{{deletedPageId+1}}</span>
+  <button *ngIf="deletedPageId>0" (click)="loadMoredeleted(deletedPageId-1)"
+    class="btn badge btn-sm btn-secondary  mr-1">{{'Previous'|translate}}</button>
+</div><hr>
