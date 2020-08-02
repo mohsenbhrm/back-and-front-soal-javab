@@ -12,7 +12,7 @@ namespace SoalJavab.WebApi.Controllers.admin
     [Route("api/admin/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin,manager")]
-    [EnableCors("CorsPolicy")]  
+    [EnableCors("CorsPolicy")]
     public class UsersController : ControllerBase
     {
         private IUsersAdminService _users;
@@ -31,21 +31,26 @@ namespace SoalJavab.WebApi.Controllers.admin
         //     }
         //     catch { return BadRequest(); }
         // }
-        [HttpGet("{pageId}"),HttpGet]
-        public async Task<IActionResult> Get(int pageId=0)
+        [HttpGet("{pageId}"), HttpGet]
+        public async Task<IActionResult> Get(int pageId = 0)
         {
             try
             {
-                return Ok(await _users.GetAllAsync(false ,pageId));
+                var q = await _users.GetAllAsync(false, pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
+
             }
             catch { return BadRequest(); }
         }
-        [HttpGet("[action]/{pageId}"),HttpGet("[action]")]
-        public async Task<IActionResult> GetAllDeleted(int pageId=0)
+        [HttpGet("[action]/{pageId}"), HttpGet("[action]")]
+        public async Task<IActionResult> GetAllDeleted(int pageId = 0)
         {
             try
             {
-                return Ok(await _users.GetAllAsync(true ,pageId));
+                var q = await _users.GetAllAsync(true, pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }
@@ -60,7 +65,7 @@ namespace SoalJavab.WebApi.Controllers.admin
         }
 
         [HttpGet("[action]/{pageId}")]
-        public async Task<IActionResult> GetNewInDay(int pageId=0)
+        public async Task<IActionResult> GetNewInDay(int pageId = 0)
         {
             try
             {
@@ -69,7 +74,7 @@ namespace SoalJavab.WebApi.Controllers.admin
             catch { return BadRequest(); }
         }
         [HttpGet("[action]/{pageId}")]
-        public async Task<IActionResult> GetNewInMounth(int pageId=0)
+        public async Task<IActionResult> GetNewInMounth(int pageId = 0)
         {
             try
             {

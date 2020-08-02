@@ -20,7 +20,7 @@ namespace SoalJavab.Services.Admin
 
         Task addRoleAsync(RoleVm role);
         Task addRoleAsync(IList<RoleVm> role);
-        Task<List<RoleVm>> GetAllAsync();
+        Task<List<RoleVm>> GetAllAsync(int pageid=0);
         Task<List<RoleVm>> searchRoleAsync(string name);
     }
 
@@ -52,7 +52,7 @@ namespace SoalJavab.Services.Admin
             _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
         }
         public Task<long> getCountAsync => _role.LongCountAsync();
-        public Task<List<RoleVm>> GetAllAsync()
+        public Task<List<RoleVm>> GetAllAsync(int pageid=0)
         {
             var s = _role
             .Select(x => new RoleVm

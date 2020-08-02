@@ -28,42 +28,35 @@ namespace SoalJavab.WebApi.Controllers.admin
         public async Task<IActionResult> Get(int pageId=0)
         {
             try
-            {
-                return Ok(await _tags.GetAllAsync(pageId));
+            {var q = await _tags.GetAllAsync(pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }
-        // [HttpGet]
-        // public async Task<IActionResult> Get()
-        // {
-        //     try
-        //     {
-        //         return Ok(await _tags.GetAllAsync());
-        //     }
-        //     catch { return BadRequest("nnjnjnj"); }
-        // }
         [HttpGet("[action]"),HttpGet("[action]/{pageId}")]
         public async Task<IActionResult> GetDeleted(int pageId=0)
         {
             try
             {
                 var q = await _tags.GetAllDeletedsAsync(pageId);
-                return Ok(q);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return StatusCode(500); }
         }
 
-        [HttpPut("{id}")]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Put(long id, [FromBody] JsonVm item)
-        {
-            try
-            {
-                await _tags.updateAsync(item);
-                return Ok();
-            }
-            catch { return BadRequest(); }
-        }
+        // [HttpPut("{id}")]
+        // [IgnoreAntiforgeryToken]
+        // public async Task<IActionResult> Put(long id, [FromBody] JsonVm item)
+        // {
+        //     try
+        //     {
+        //         await _tags.updateAsync(item);
+        //         return Ok();
+        //     }
+        //     catch { return BadRequest(); }
+        // }
 
         [HttpDelete("{id}")]
         [IgnoreAntiforgeryToken]
@@ -76,24 +69,24 @@ namespace SoalJavab.WebApi.Controllers.admin
             }
             catch { return StatusCode(500); }
         }
-        [HttpDelete("[action]")]
+        // [HttpDelete("[action]")]
+        // [IgnoreAntiforgeryToken]
+        // public async Task<IActionResult> Delete([FromBody] long item)
+        // {
+        //     try
+        //     {
+        //         if (await _tags._DeleteOrUndoRangeAsync(item,true)) return Ok();
+        //         return BadRequest();
+        //     }
+        //     catch { return StatusCode(500); }
+        // }
+        [HttpPut("{id}")]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Delete([FromBody] IdArray item)
+        public async Task<IActionResult> Put(long id)
         {
             try
             {
-                if (await _tags._DeleteOrUndoRangeAsync(item.id,true)) return Ok();
-                return BadRequest();
-            }
-            catch { return StatusCode(500); }
-        }
-        [HttpPut("[action]")]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> undo([FromBody] IdArray item)
-        {
-            try
-            {
-                if (await _tags._DeleteOrUndoRangeAsync(item.id,false)) return Ok();
+                if (await _tags._DeleteOrUndoRangeAsync(id,false)) return Ok();
                 return BadRequest();
             }
             catch { return StatusCode(500); }

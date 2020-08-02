@@ -22,7 +22,7 @@ namespace SoalJavab.Services.Admin
         Task<List<TagVM>> GetAllAsync(int pageId);
         Task<List<TagVM>> GetAllDeletedsAsync(int pageId);
         Task updateAsync(JsonVm item);
-        Task<bool> _DeleteOrUndoRangeAsync(long[] id, bool deleteAction);
+        Task<bool> _DeleteOrUndoRangeAsync(long id, bool deleteAction);
     }
 
     public class TagAdminServices : ITagAdminServices
@@ -46,10 +46,10 @@ namespace SoalJavab.Services.Admin
         }
         public Task<long> getCountAsync => _Tags.LongCountAsync();
 
-        public Task<List<TagVM>> GetAllAsync(int pageId=0)
+        public Task<List<TagVM>> GetAllAsync(int pageId = 0)
         {
-         var q = new List<TagVM>();
-            var s = _Tags.Where(d => !d.IsDeleted).OrderByDescending(i=>i.Id)
+            var q = new List<TagVM>();
+            var s = _Tags.Where(d => !d.IsDeleted).OrderByDescending(i => i.Id)
             .Include(c => c.TagSoal)
             .Include(us => us.TagUsers)
             .Skip(myParams.pageSize * pageId).Take(myParams.pageSize)
@@ -62,9 +62,9 @@ namespace SoalJavab.Services.Admin
             }).ToListAsync();
             return s;
         }
-        public Task<List<TagVM>> GetAllDeletedsAsync(int pageId=0)
+        public Task<List<TagVM>> GetAllDeletedsAsync(int pageId = 0)
         {
-            var s = _Tags.Where(d => d.IsDeleted).OrderByDescending(i=>i.Id)
+            var s = _Tags.Where(d => d.IsDeleted).OrderByDescending(i => i.Id)
             .Include(c => c.TagSoal)
             .Include(us => us.TagUsers)
             .Skip(myParams.pageSize * pageId).Take(myParams.pageSize)
@@ -103,47 +103,43 @@ namespace SoalJavab.Services.Admin
         public async Task<bool> DeleteAsync(long id)
         {
             try
-            {  
-                var s = await _DeleteOrUndoAsync(id,true);
+            {
+                var s = await _DeleteOrUndoAsync(id, true);
                 if (s)
-                {
-                await _uow.SaveChangesAsync();
-                return true;}
-                return false;
-            }
-            catch { return false; }
-        }
-        private async Task<bool> _DeleteOrUndoAsync(long id,bool deleteAction)
-        {
-            try
-            {
-                var s =await _Tags.FindAsync(id);
-                s.IsDeleted = deleteAction;
-                _uow.MarkAsChanged(s);
-                return true;
-            }
-            catch { return false; }
-        }
-        public async Task<bool> _DeleteOrUndoRangeAsync(long[] id,bool deleteAction)
-        {
-            try
-            {
-                Task<bool> res = Task.Run(() =>
-                {
-                    return false;
-                });
-                foreach (var i in id)
-                {
-                    res = _DeleteOrUndoAsync(i,deleteAction);
-                }
-                if (await res)
                 {
                     await _uow.SaveChangesAsync();
                     return true;
                 }
                 return false;
             }
-            catch { throw new KeyNotFoundException(); }
+            catch { return false; }
+        }
+        private async Task<bool> _DeleteOrUndoAsync(long id, bool deleteAction)
+        {
+            try
+            {
+                var s = await _Tags.FindAsync(id);
+                s.IsDeleted = deleteAction;
+                _uow.MarkAsChanged(s);
+                return true;
+            }
+            catch { return false; }
+        }
+        public async Task<bool> _DeleteOrUndoRangeAsync(long id, bool deleteAction)
+        {
+            try
+            {
+                var x = await _DeleteOrUndoAsync(id, deleteAction);
+                
+                if (x)
+                {
+                await _uow.SaveAllChangesAsync();
+                return x;
+                }
+                return x;
+            }
+
+            catch { throw new Exception(); }
         }
         public Task updateAsync(JsonVm item)
         {

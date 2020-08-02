@@ -79,8 +79,6 @@ namespace SoalJavab.Services.Admin
         {
             try
             {
-
-
                 var s = await _soals.FindAsync(id);
                 s.IsDeleted = true;
                 _uow.MarkAsChanged(s);

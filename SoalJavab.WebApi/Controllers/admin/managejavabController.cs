@@ -26,7 +26,9 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                return Ok(await _javabs.GetAllAsync(pageId));
+                var q = await _javabs.GetAllAsync(pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }
@@ -35,7 +37,9 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                return Ok(await _javabs.GetAllDeletedAsync(pageId));
+                var q = await _javabs.GetAllDeletedAsync(pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch 
             { return BadRequest(); }
@@ -46,7 +50,7 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                 if (await _javabs.DeleteAsync(id)) return Ok(await _javabs.GetAllAsync((int)id));
+                 if (await _javabs.DeleteAsync(id)) return Ok();
                 return BadRequest();
             }
             catch { return StatusCode(500); }
@@ -57,7 +61,7 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                if (await _javabs.undoDeletedAsync(id)) return Ok(await _javabs.GetAllAsync((int)id));
+                if (await _javabs.undoDeletedAsync(id)) return Ok();
                 return BadRequest();
             }
             catch { return StatusCode(500); }

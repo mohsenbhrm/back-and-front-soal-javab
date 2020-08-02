@@ -21,12 +21,13 @@ namespace SoalJavab.WebApi.Controllers.admin
             _roles = role;
         }
         // make all data for create question page such as list of #Reshteh and #ZirReshteh  
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{pageId}"),HttpGet]
+        public async Task<IActionResult> Get(int pageId=0)
         {
             try
-            {
-                return Ok(await _roles.GetAllAsync());
+            { var q =  await _roles.GetAllAsync(pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }

@@ -27,7 +27,9 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                return Ok(await _soals.GetAllAsync(false, pageId));
+                var q = await _soals.GetAllAsync(false, pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }
@@ -36,7 +38,9 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                return Ok(await _soals.GetAllAsync(true, pageId));
+                var q = await _soals.GetAllAsync(true, pageId);
+                if (q.Count > 0) return Ok(q);
+                return NotFound();
             }
             catch { return BadRequest(); }
         }
@@ -55,7 +59,7 @@ namespace SoalJavab.WebApi.Controllers.admin
         {
             try
             {
-                if (await _soals.DeleteAsync(id)) return Ok(await _soals.GetAllAsync(false));
+                if (await _soals.DeleteAsync(id)) return Ok();
                 return BadRequest();
             }
             catch { return StatusCode(500); }
@@ -63,12 +67,11 @@ namespace SoalJavab.WebApi.Controllers.admin
 
         [HttpPut("{id}")]
         [IgnoreAntiforgeryToken]
-
         public async Task<IActionResult> Put(long id)
         {
             try
             {
-                if (await _soals.undoDeletedAsync(id)) return Ok(await _soals.GetAllAsync(false));
+                if (await _soals.undoDeletedAsync(id)) return Ok();
                 return BadRequest();
             }
             catch { return StatusCode(500); }
