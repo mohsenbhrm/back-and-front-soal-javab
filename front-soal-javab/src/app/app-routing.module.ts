@@ -18,6 +18,7 @@ import { AdminJavabComponent } from './pages/admin/admin-javab/admin-javab.compo
 import { AdminSoalComponent } from './pages/admin/admin-soal/admin-soal.component';
 import { AdminTagComponent } from './pages/admin/admin-tag/admin-tag.component';
 import { AdminRoleComponent } from './pages/admin/admin-role/admin-role.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -80,6 +81,10 @@ const routes: Routes = [
   {
     path: 'sign-up',
     component: SignUpComponent
+  },
+  {
+    path: 'reset-pass',
+    component: ResetPasswordComponent
   },
   {
     path: 'active-user',

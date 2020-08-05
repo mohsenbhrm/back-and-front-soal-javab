@@ -7,6 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ActivateUserComponent } from './activate-user/activate-user.component';
 import { LayoutModule } from '@app/layout/layout.module';
 import {LanguageComponent} from '@app/layout/language/language/language.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 // const routes: Routes = [
 //   {
@@ -25,7 +26,8 @@ import {LanguageComponent} from '@app/layout/language/language/language.componen
   declarations: [
     LoginComponent,
     SignUpComponent,
-    ActivateUserComponent
+    ActivateUserComponent,
+    ResetPasswordComponent
   ],
   imports: [
     SharedModule,

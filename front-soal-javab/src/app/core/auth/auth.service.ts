@@ -47,7 +47,6 @@ export class AuthService {
         }
       }
     ));
-
   }
   activeUser(username: string, activeCode: string): Observable<any> {
     const activeVm = {
@@ -115,6 +114,15 @@ export class AuthService {
       return JSON.parse(account);
     }
     return null;
+  }
+
+  resetpass(username: string, mail: string, captcha?: string): Observable<any> {
+    const credential = {
+      mail,
+      username
+      // captcha
+    };
+    return this.httpClient.post(`${this.apiConfig.baseUrl}/api/Account/forgetPassword`, credential);
   }
 
 }
