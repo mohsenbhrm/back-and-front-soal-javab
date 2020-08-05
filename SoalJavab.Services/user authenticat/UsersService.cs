@@ -25,10 +25,11 @@ namespace SoalJavab.Services
         Task<List<ApplicationUser>> GetAllUsers();
         Task<List<ApplicationUser>> GetActiveUsers();
         Task<List<ApplicationUser>> GetNotActiveUsers();
-        bool addUserReshteh(long[] id);
+        // bool addUserReshteh(long[] id);
         Task<ActivUserVm> AddNewUserAsync(SignUpVm signUp);
         Task<bool> isUserNameExcist(string username);
         Task<ApplicationUser> FindUserAsync(ActivUserVm active);
+        Task<string> resetpassword(resetPasswordVm item);
     }
 
     public class UsersService : IUsersService
@@ -61,9 +62,9 @@ namespace SoalJavab.Services
             return _users.FindAsync(userId);
         }
 
-        public Task<ApplicationUser> FindUserAsync(string username, string password)
+        public Task<ApplicationUser> FindUserAsync( string username, string password)
         {
-            var passwordHash =  _securityService.GetSha256Hash(password);
+            var passwordHash = _securityService.GetSha256Hash(password);
 
             return _users.FirstOrDefaultAsync(x => x.Username == username && x.Password == passwordHash);
         }
@@ -71,20 +72,22 @@ namespace SoalJavab.Services
         {
 
             var q = await _users.FirstOrDefaultAsync(x => x.Username == active.username && x.SerialNumber == active.activeCode);
-            if ( q!= null){
-                if(q.IsActive) {
-                 return null;
-            }
-            q.IsActive = true;
-            await _uow.SaveChangesAsync();
-            return q;
+            if (q != null)
+            {
+                if (q.IsActive)
+                {
+                    return null;
+                }
+                q.IsActive = true;
+                await _uow.SaveChangesAsync();
+                return q;
             }
             else return null;
-            
+
         }
 
         public Task<bool> isUserNameExcist(string username) => _users.AnyAsync(x => x.Username == username);
-       // public Task<bool> isEmailExcist(string username) => _users.AnyAsync(x => x.mail == username);
+        // public Task<bool> isEmailExcist(string username) => _users.AnyAsync(x => x.mail == username);
 
         public async Task<string> GetSerialNumberAsync(long userId)
         {
@@ -151,24 +154,6 @@ namespace SoalJavab.Services
         {
             return _users.Where(x => !x.IsActive).ToListAsync();
         }
-        public bool addUserReshteh(long[] id)
-        {
-            var q = _uow.Set<ZirReshteh>().Where(x => id.Contains(x.Id) && !x.IsDeleted).ToList();
-            var s = _users.Where(x => x.Id == GetCurrentUserId()).FirstOrDefault();
-            var w = _uow.Set<ReshtehUser>();
-            foreach (var n in q)
-            {
-                w.Add(new ReshtehUser
-                {
-                    ApplicationUserId = s.Id,
-                    IsDeleted = false,
-                    ZirReshtehId = n.Id
-                });
-            }
-            _uow.AddThisRange(w);
-            _uow.SaveAllChanges();
-            return true;
-        }
         public bool addUserTag(long[] id)
         {
             var q = _uow.Set<Tag>().Where(x => id.Contains(x.Id) && !x.IsDeleted).ToList();
@@ -208,7 +193,7 @@ namespace SoalJavab.Services
             return new LoginVm { username = signUp.Username, password = signUp.Password };
         }
 
-         public async Task<ActivUserVm> AddNewUserAsync(SignUpVm signUp)
+        public async Task<ActivUserVm> AddNewUserAsync(SignUpVm signUp)
         {
             var q = new ApplicationUser
             {
@@ -227,5 +212,24 @@ namespace SoalJavab.Services
             await _uow.SaveAllChangesAsync();
             return new ActivUserVm { username = signUp.Username, activeCode = q.SerialNumber };
         }
+        public async Task<string> resetpassword(resetPasswordVm item)
+        {
+            try
+            {
+                var q = await _users.Where(x => x.email == item.mail && x.Username ==item.username).FirstOrDefaultAsync();
+                if (q == null) throw new Exception();
+                var psw = Guid.NewGuid().ToString();
+                psw = psw.Substring(0,psw.Length / 2);
+                q.Password = _securityService.GetSha256Hash(psw);
+                _uow.MarkAsChanged(q);
+                await _uow.SaveAllChangesAsync();
+                return psw;
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
     }
 }

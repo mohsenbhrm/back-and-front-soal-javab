@@ -237,26 +237,36 @@ namespace SoalJavab.WebApi.Controllers
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
         [HttpPost("[action]")]
-        public  IActionResult recovery([FromBody] string active)
-        {      
-           // _usersService.
-            //   _webMailService.SendEmailAsync(
-            //     smtpConfig: _smtpConfig.Value,
-            //     emails: new List<MailAddress>
-            //         {
-            //             new MailAddress { ToName = signUp.Name, ToAddress = signUp.Email },
-            //         },
-            //         subject: "Hello!",
-            //         // message: "salam");
-            //         message: string.Format(@"
-            //         Hello!<br/>  
-            //         This is an email from us! <br/> 
-            //         <a href='{0}active-user/{1}/{2}'>
-            //         activate link{0}</a>
-            //         <br/>", baseUrl, q.activeCode, q.username));
+        public async Task<IActionResult> forgetPassword([FromBody] resetPasswordVm item)
+        {
+            try
+            {
+                item.CheckArgumentIsNull(nameof(item));
+                item.mail.CheckArgumentIsNull(nameof(item.mail));
+                item.username.CheckArgumentIsNull(nameof(item.username));
+              var pass = await  _usersService.resetpassword(item);
+               
+              await  _webMailService.SendEmailAsync(
+                        smtpConfig: _smtpConfig.Value,
+                        emails: new List<MailAddress>
+                            {
+                        new MailAddress { ToName = item.username, ToAddress = item.mail },
+                            },
+                            subject: "Hello!",
+                            // message: "salam");
+                            message: string.Format(@"
+                    Hello {0}!<br/>  
+                   you can Login with your new password => <br/> 
+                    <h3>
+                    {1}
+                    </h3>
+                    <br/>", item.username, pass));
+                    return Ok();
+            }
+            catch { return BadRequest(); }
+            // _usersService.
 
             // return Ok(new { access_token = q.username, refresh_token = q.activeCode });
-         return Ok(active);
         }
     }
 }

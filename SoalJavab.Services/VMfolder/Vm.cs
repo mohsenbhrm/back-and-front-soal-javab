@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SoalJavab.Services.Models
 {
-  
+
     public class SoalVM
     {
         [HiddenInput]
@@ -93,11 +93,16 @@ namespace SoalJavab.Services.Models
     {
         public string name { get; set; }
         public long Id { get; set; }
-        public long count {get;set;}
+        public long count { get; set; }
     }
-     public class ActivUserVm
+    public class ActivUserVm
     {
         public string activeCode { set; get; }
+        public string username { set; get; }
+    }
+    public class resetPasswordVm
+    {
+        public string mail { set; get; }
         public string username { set; get; }
     }
     public class LoginVm
@@ -127,18 +132,14 @@ namespace SoalJavab.Services.Models
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
     }
-    public class userreshtehVm
-    {
-        public string Name { get; set; }
-        public long[] Id { get; set; }
-    }
     public class userTagVm
     {
         public string Name { get; set; }
         public long Id { get; set; }
-    } 
-    public class IdArray {
-        public long[] i {get; set;}
     }
-    
+    public class IdArray
+    {
+        public long[] i { get; set; }
+    }
+
 }
